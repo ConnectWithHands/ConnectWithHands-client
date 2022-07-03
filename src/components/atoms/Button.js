@@ -21,7 +21,6 @@ function Button({
     outline,
     bgColor,
   };
-
   return (
     <StyledButton {...cssStyle} className={className} onClick={onClick}>
       {children}
@@ -35,8 +34,9 @@ const StyledButton = styled.button`
   flex: ${(props) => props.flex || "auto"};
   display: flex;
   justify-content: center;
-  align-items: stretch;
-  width: ${(props) => props.width};
+  align-items: center;
+  text-align: center;
+  width: ${(props) => props.width || "auto"};
   height: ${(props) => props.height};
   margin: 0.5em;
   border-radius: 3.7px;

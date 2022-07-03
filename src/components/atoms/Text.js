@@ -33,7 +33,6 @@ const StyledSpan = styled.span`
   word-wrap: break-word;
   word-break: break-all;
   white-space: pre-wrap;
-
   &.del {
     text-decoration: line-through;
   }
@@ -42,7 +41,7 @@ const StyledSpan = styled.span`
     font-size: 1rem;
   }
   &.normal {
-    padding: 0.7em 2em;
+    padding: 0.7em 1em;
     /* padding: 0.7em 0.5em; */
     font-size: 1.2rem;
   }
