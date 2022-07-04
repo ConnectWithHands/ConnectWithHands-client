@@ -37,7 +37,7 @@ const StyledButton = styled.button`
   align-items: center;
   text-align: center;
   width: ${(props) => props.width || "auto"};
-  height: ${(props) => props.height};
+  height: ${(props) => props.height || "auto"};
   margin: 0.5em;
   border-radius: 3.7px;
   border: ${(props) =>

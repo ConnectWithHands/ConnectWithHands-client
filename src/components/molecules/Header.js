@@ -28,6 +28,7 @@ const StyledHeader = styled.div`
   align-items: center;
   width: 100%;
   height: 50px;
+  margin: 0.5em 0;
 `;
 
 const Wrapper = styled.div`
