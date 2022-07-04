@@ -4,20 +4,17 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 function Video({ facingMode }, ref) {
-  const VideoConfig =
+  const videoConfig =
     facingMode === "user"
       ? { facingMode: "user" }
       : { facingMode: { exact: "environment" } };
-  const videoConstraints = {
-    facingMode: VideoConfig,
-  };
 
   return (
     <StyledVideo
       autoPlay
       muted
       playsInline
-      videoConstraints={videoConstraints}
+      videoConstraints={videoConfig}
       ref={ref}
     />
   );
