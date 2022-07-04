@@ -3,7 +3,7 @@ import Webcam from "react-webcam";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-function Video({ ref }) {
+function Video(props, ref) {
   return <StyledVideo autoPlay muted playsInline ref={ref} />;
 }
 
@@ -21,6 +21,10 @@ const StyledVideo = styled(Webcam)`
 
 Video.propTypes = {
   ref: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.elementType }),
+  ]),
+  props: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.elementType }),
   ]),
