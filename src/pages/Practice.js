@@ -37,5 +37,4 @@ const Container = styled.div`
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 1.5em 0;
 `;
