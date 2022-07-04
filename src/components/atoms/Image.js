@@ -20,8 +20,8 @@ export default Image;
 
 const ImageContainer = styled.div`
   width: ${(props) => props.width || "100%"};
-  height: ${(props) => props.height || "100%"};
-  zindex: ${(props) => props.zIndex || 0};
+  height: ${(props) => props.height || "auto"};
+  z-index: ${(props) => props.zIndex || 1};
   overflow: hidden;
   position: relative;
 `;
