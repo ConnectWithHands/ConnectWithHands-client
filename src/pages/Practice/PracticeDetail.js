@@ -12,7 +12,7 @@ function PracticeDetail() {
       <VideoContent />
       <Wrapper>
         <ImageBox>
-          <Image width="100%" alt="example" src={language.alphabet} />
+          <Image width="90%" alt="example" src={language.alphabet} />
         </ImageBox>
         <TextBox>
           <Text className="small">자음</Text>
@@ -52,6 +52,7 @@ const TextWrapper = styled.div`
 
 const ImageBox = styled.div`
   display: flex;
+  justify-content: center;
   width: 40vw;
   height: 20vh;
   margin: 1.5em 0;
@@ -60,5 +61,4 @@ const ImageBox = styled.div`
 
 const TextBox = styled(ImageBox)`
   flex-direction: column;
-  justify-content: center;
 `;
