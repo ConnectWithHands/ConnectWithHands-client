@@ -44,8 +44,8 @@ const Wrapper = styled.div`
 
 const TextWrapper = styled.div`
   width: 86vw;
-  height: 10vh;
-  line-height: 10vh;
+  height: 8vh;
+  line-height: 8vh;
   text-align: center;
   border: 1px solid black;
 `;
@@ -55,7 +55,7 @@ const ImageBox = styled.div`
   justify-content: center;
   width: 40vw;
   height: 20vh;
-  margin: 1.5em 0;
+  margin: 1.2em 0;
   border: 1px solid black;
 `;
 
