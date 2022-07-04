@@ -62,6 +62,5 @@ const Wrapper = styled.div`
 `;
 
 PracticeListContent.propTypes = {
-  description: PropTypes.string,
-  data: PropTypes.array,
+  data: PropTypes.object,
 };
