@@ -27,7 +27,7 @@ function PracticeListContent({ data }) {
           width="100px"
           height="40px"
           className="small"
-          onClick={() => moveToPage("practice")}
+          onClick={() => moveToPage("detail")}
         >
           연습하기
         </Button>
@@ -50,8 +50,8 @@ const StyledContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  width: 320px;
-  height: 150px;
+  width: 90vw;
+  height: 25vh;
   margin: 1em 0;
   border: 1px solid black;
 `;

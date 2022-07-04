@@ -55,6 +55,10 @@ const StyledSpan = styled.span`
     font-size: 1.5rem;
     font-weight: bold;
   }
+  &.super {
+    font-size: 3rem;
+    font-weight: bold;
+  }
 `;
 
 Text.propTypes = {
