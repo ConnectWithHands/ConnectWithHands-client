@@ -3,8 +3,24 @@ import Webcam from "react-webcam";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-function Video(props, ref) {
-  return <StyledVideo autoPlay muted playsInline ref={ref} />;
+function Video({ facingMode }, ref) {
+  const VideoConfig =
+    facingMode === "user"
+      ? { facingMode: "user" }
+      : { facingMode: { exact: "environment" } };
+  const videoConstraints = {
+    facingMode: VideoConfig,
+  };
+
+  return (
+    <StyledVideo
+      autoPlay
+      muted
+      playsInline
+      videoConstraints={videoConstraints}
+      ref={ref}
+    />
+  );
 }
 
 export default forwardRef(Video);
@@ -20,6 +36,7 @@ const StyledVideo = styled(Webcam)`
 `;
 
 Video.propTypes = {
+  facingMode: PropTypes.string,
   ref: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.elementType }),
