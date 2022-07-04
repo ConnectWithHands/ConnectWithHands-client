@@ -6,6 +6,7 @@ import GlobalStyle from "./components/common/globalStyle";
 import Main from "./pages/Main";
 import Practice from "./pages/Practice";
 import Communication from "./pages/Communication";
+import CommunicationList from "./pages/Communication/CommunicationList";
 
 function App() {
   return (
@@ -14,7 +15,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/practice" element={<Practice />} />
-        <Route path="/communication" element={<Communication />} />
+        <Route path="/communication" element={<Communication />}>
+          <Route index element={<CommunicationList />} />
+        </Route>
       </Routes>
     </Wrapper>
   );
