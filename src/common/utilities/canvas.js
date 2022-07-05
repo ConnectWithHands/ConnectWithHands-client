@@ -44,25 +44,13 @@ const drawHandKeypoints = (predictions, ctx) => {
         const points = fingerLookupIndices[finger].map((idx) => keypoints[idx]);
 
         drawPath(points, ctx);
-        // const region = new Path2D();
-        // region.moveTo(points[0].x, points[0].y);
-
-        // for (let i = 1; i < points.length; i++) {
-        //   const point = points[i];
-        //   region.lineTo(point.x, point.y);
-        //   ctx.stroke(region);
-        // }
       }
 
       for (let i = 0; i < keypoints.length; i++) {
         const x = keypoints[i].x;
         const y = keypoints[i].y;
 
-        drawPoint(ctx, x, y, 5);
-
-        // ctx.beginPath();
-        // ctx.arc(x, y, 5, 0, 3 * Math.PI);
-        // ctx.fill();
+        drawPoint(ctx, x, y, 3);
       }
     });
   }
