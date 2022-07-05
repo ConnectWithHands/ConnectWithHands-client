@@ -5,11 +5,7 @@ import * as handPoseDetection from "@tensorflow-models/hand-pose-detection";
 import * as tf from "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-backend-webgl";
 
-import {
-  setHandDetector,
-  drawHandKeypoints,
-  GestureEstimator,
-} from "../../common/utilities";
+import { setHandDetector, drawHandKeypoints } from "../../common/utilities";
 
 import VideoContent from "../../components/organisms/VideoContent";
 import Image from "../../components/atoms/Image";
