@@ -10,6 +10,7 @@ import { setHandDetector, drawHandKeypoints } from "../../common/utilities";
 import VideoContent from "../../components/organisms/VideoContent";
 import Image from "../../components/atoms/Image";
 import Text from "../../components/atoms/Text";
+import Button from "../../components/atoms/Button";
 
 import language from "../../assets/language";
 import { FACING_MODE } from "../../constants/webcam";
@@ -31,22 +32,11 @@ function PracticeDetail() {
   };
 
   const runHandpose = async () => {
-    const hands = handPoseDetection.SupportedModels.MediaPipeHands;
-    const detectorConfig = {
-      runtime: "tfjs",
-      modelType: "lite",
-      maxHands: 2,
-    };
-
-    const detector = await handPoseDetection.createDetector(
-      hands,
-      detectorConfig,
-    );
-    console.log("Handpose model loaded.");
+    const detector = await setHandDetector();
 
     setInterval(() => {
       detectHands(detector);
-    }, 1000);
+    }, 100);
   };
 
   const detectHands = async (detector) => {
@@ -58,11 +48,9 @@ function PracticeDetail() {
       const video = webcamRef.current.video;
       const { videoWidth, videoHeight } = video;
 
-      // Set video width
       webcamRef.current.video.width = videoWidth;
       webcamRef.current.video.height = videoHeight;
 
-      // Set canvas height and width
       canvasRef.current.width = videoWidth;
       canvasRef.current.height = videoHeight;
 
@@ -78,6 +66,9 @@ function PracticeDetail() {
 
   return (
     <Container>
+      <Button className="small" onClick={handleFacingModeChange}>
+        카메라 전환
+      </Button>
       <VideoContent
         onClick={handleFacingModeChange}
         facingMode={facingMode}
@@ -106,7 +97,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%;
 `;
 
 const Wrapper = styled.div`
