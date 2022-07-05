@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import styled from "styled-components";
 
-import GlobalStyle from "./components/common/globalStyle";
+import GlobalStyle from "./common/globalStyle";
 import Main from "./pages/Main";
 import Practice from "./pages/Practice";
 import PracticeMain from "./pages/Practice/PracticeMain";
