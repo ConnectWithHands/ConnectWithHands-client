@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+import "@tensorflow/tfjs-core";
+import "@tensorflow/tfjs-backend-webgl";
 
 import { setHandDetector, drawHandKeypoints } from "../../common/utilities";
 
@@ -27,14 +29,6 @@ function PracticeDetail() {
     }
   };
 
-  const runHandpose = async () => {
-    const detector = await setHandDetector();
-
-    setInterval(() => {
-      detectHands(detector);
-    }, 1000);
-  };
-
   const detectHands = async (detector) => {
     if (
       typeof webcamRef.current !== "undefined" &&
@@ -50,14 +44,31 @@ function PracticeDetail() {
       canvasRef.current.width = videoWidth;
       canvasRef.current.height = videoHeight;
 
-      const hand = await detector.estimateHands(video);
-      const ctx = canvasRef.current.getContext("2d");
-      drawHandKeypoints(hand, ctx);
+      try {
+        const hand = await detector.estimateHands(video);
+
+        const ctx = canvasRef.current.getContext("2d");
+        drawHandKeypoints(hand, ctx);
+      } catch (error) {
+        detector.dispose();
+      }
     }
   };
 
   useEffect(() => {
+    let timerId;
+
+    const runHandpose = async () => {
+      const detector = await setHandDetector();
+
+      timerId = setInterval(() => {
+        detectHands(detector);
+      }, 1000);
+    };
+
     runHandpose();
+
+    return () => clearInterval(timerId);
   }, []);
 
   return (
