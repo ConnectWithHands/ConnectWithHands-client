@@ -45,14 +45,9 @@ function PracticeDetail() {
       canvasRef.current.height = videoHeight;
 
       try {
-        const hand = await detector.estimateHands(video, {
-          flipHorizontal: false,
-        });
+        const hand = await detector.estimateHands(video);
 
         const ctx = canvasRef.current.getContext("2d");
-        ctx.translate(videoWidth, 0);
-        ctx.scale(-1, 1);
-
         drawHandKeypoints(hand, ctx);
       } catch (error) {
         detector.dispose();

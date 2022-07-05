@@ -33,8 +33,6 @@ const StyledVideo = styled(Webcam)`
   right: 0;
   text-align: center;
   z-index: 2;
-  -webkit-transform: scaleX(-1);
-  transform: scaleX(-1);
   width: auto;
   height: auto;
 `;
