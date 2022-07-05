@@ -44,14 +44,19 @@ function PracticeDetail() {
       canvasRef.current.width = videoWidth;
       canvasRef.current.height = videoHeight;
 
-      const hand = await detector.estimateHands(video, {
-        flipHorizontal: false,
-      });
-      const ctx = canvasRef.current.getContext("2d");
-      ctx.translate(webcamRef.current.video.width, 0);
-      ctx.scale(-1, 1);
+      try {
+        const hand = await detector.estimateHands(video, {
+          flipHorizontal: false,
+        });
 
-      drawHandKeypoints(hand, ctx);
+        const ctx = canvasRef.current.getContext("2d");
+        ctx.translate(videoWidth, 0);
+        ctx.scale(-1, 1);
+
+        drawHandKeypoints(hand, ctx);
+      } catch (error) {
+        detector.dispose();
+      }
     }
   };
 
