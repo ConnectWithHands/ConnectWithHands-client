@@ -71,7 +71,7 @@ function PracticeDetail() {
       canvasRef.current.height = videoHeight;
 
       const hand = await detector.estimateHands(video);
-      console.log("hand", hand);
+      console.log("hands", hand);
       const ctx = canvasRef.current.getContext("2d");
       drawHandKeypoints(hand, ctx);
     }
