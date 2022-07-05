@@ -8,7 +8,6 @@ import { FACING_MODE } from "../../constants/webcam";
 function Video({ facingMode }, ref) {
   const videoConfig = {
     width: 360,
-    height: 270,
     facingMode:
       facingMode === FACING_MODE.user
         ? FACING_MODE.user
