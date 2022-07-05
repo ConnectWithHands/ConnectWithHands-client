@@ -1,9 +1,9 @@
 import hello from "./Hello";
-import giyeok from "./consonant/Giyeok";
+import Consonant from "./consonant";
 
 const Gestures = {
   hello,
-  giyeok,
+  Consonant,
 };
 
 export default Gestures;

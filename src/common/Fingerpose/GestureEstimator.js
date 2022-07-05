@@ -1,5 +1,6 @@
 import FingerPoseEstimator from "./FingerPoseEstimator";
 import { Finger, FingerCurl, FingerDirection } from "./FingerDescription";
+import { copyModel } from "@tensorflow/tfjs-core/dist/io/model_management";
 
 export default class GestureEstimator {
   constructor(knownGestures, estimatorOptions = {}) {
