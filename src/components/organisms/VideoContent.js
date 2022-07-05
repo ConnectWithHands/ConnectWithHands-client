@@ -3,29 +3,19 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import Video from "../atoms/Video";
+import Canvas from "../atoms/Canvas";
 import Button from "../atoms/Button";
 
-function VideoContent() {
-  const videoRef = useRef(null);
-  const [facingMode, setFacingMode] = useState("user");
-
-  const handleFacingModeChange = () => {
-    switch (facingMode) {
-      case "user":
-        setFacingMode("environment");
-        break;
-      case "environment":
-        setFacingMode("user");
-        break;
-    }
-  };
-
+function VideoContent({ onClick, facingMode, webcamRef, canvasRef }) {
   return (
     <Container>
-      <Button className="small" onClick={handleFacingModeChange}>
+      <Button className="small" onClick={onClick}>
         카메라 전환
       </Button>
-      <Video facingMode={facingMode} ref={videoRef} />
+      <Wrapper>
+        <Video facingMode={facingMode} ref={webcamRef} />
+        <Canvas ref={canvasRef} />
+      </Wrapper>
     </Container>
   );
 }
@@ -37,3 +27,20 @@ const Container = styled.div`
   flex-direction: column;
   align-items: flex-end;
 `;
+
+const Wrapper = styled.div`
+  position: relative;
+`;
+
+VideoContent.propTypes = {
+  onClick: PropTypes.func,
+  facingMode: PropTypes.string,
+  webcamRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.elementType }),
+  ]),
+  canvasRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.elementType }),
+  ]),
+};
