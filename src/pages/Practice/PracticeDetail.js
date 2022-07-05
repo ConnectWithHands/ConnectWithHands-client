@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+import "@tensorflow/tfjs-core";
+import "@tensorflow/tfjs-backend-webgl";
 
 import { setHandDetector, drawHandKeypoints } from "../../common/utilities";
 
