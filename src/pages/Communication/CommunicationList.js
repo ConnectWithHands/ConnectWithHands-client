@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import CommunicationContent from "../../components/organisms/CommunicationListContent";
-import COMMUNICATION_LIST from "../../constants/CommunicationListData";
+import { COMMUNICATION_LIST } from "../../constants/communication";
 
 function CommunicationList() {
   return (
