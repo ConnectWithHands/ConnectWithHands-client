@@ -29,14 +29,6 @@ function PracticeDetail() {
     }
   };
 
-  const runHandpose = async () => {
-    const detector = await setHandDetector();
-
-    setInterval(() => {
-      detectHands(detector);
-    }, 1000);
-  };
-
   const detectHands = async (detector) => {
     if (
       typeof webcamRef.current !== "undefined" &&
@@ -52,14 +44,31 @@ function PracticeDetail() {
       canvasRef.current.width = videoWidth;
       canvasRef.current.height = videoHeight;
 
-      const hand = await detector.estimateHands(video);
+      const hand = await detector.estimateHands(video, {
+        flipHorizontal: false,
+      });
       const ctx = canvasRef.current.getContext("2d");
+      ctx.translate(webcamRef.current.video.width, 0);
+      ctx.scale(-1, 1);
+
       drawHandKeypoints(hand, ctx);
     }
   };
 
   useEffect(() => {
+    let timerId;
+
+    const runHandpose = async () => {
+      const detector = await setHandDetector();
+
+      timerId = setInterval(() => {
+        detectHands(detector);
+      }, 1000);
+    };
+
     runHandpose();
+
+    return () => clearInterval(timerId);
   }, []);
 
   return (
