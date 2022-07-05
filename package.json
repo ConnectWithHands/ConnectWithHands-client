@@ -2,6 +2,9 @@
   "name": "connect-with-hands",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "16.14.2"
+  },
   "dependencies": {
     "@tensorflow-models/hand-pose-detection": "^2.0.0",
     "@tensorflow-models/knn-classifier": "^1.2.4",
