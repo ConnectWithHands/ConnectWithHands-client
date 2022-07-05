@@ -4,6 +4,7 @@ import "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-backend-webgl";
 
 import { setHandDetector, drawHandKeypoints } from "../../common/utilities";
+import { GestureEstimator, Gestures } from "../../common/Fingerpose";
 
 import VideoContent from "../../components/organisms/VideoContent";
 import Image from "../../components/atoms/Image";
@@ -46,6 +47,41 @@ function PracticeDetail() {
 
       try {
         const hand = await detector.estimateHands(video);
+        const GE = new GestureEstimator(Gestures.Consonant);
+
+        if (hand.length > 0) {
+          const gesture = GE.estimate(hand, 7);
+          console.log(gesture);
+
+          const bestGesture = gesture.map((hand) => {
+            const score = hand.gestures.map((prediction) => prediction.score);
+            const maxScore = score.indexOf(Math.max(...score));
+
+            return hand.gestures[maxScore];
+          });
+
+          let gestureName = "";
+
+          if (gesture.length > 1) {
+            // 양손일 때
+
+            if (bestGesture[0]?.name === bestGesture[1]?.name) {
+              gestureName = bestGesture[0]?.name;
+            }
+          } else if (gesture.length === 1) {
+            // 한손 일 때
+            if (bestGesture.length) {
+              if (bestGesture[0]?.numberOfHands !== 1) {
+                gestureName = "두 손이 필요해";
+              } else {
+                gestureName = bestGesture[0].name;
+              }
+            } else {
+              gestureName = "감지된 제스처가 없어";
+            }
+          }
+          console.log("최종", gestureName);
+        }
 
         const ctx = canvasRef.current.getContext("2d");
         drawHandKeypoints(hand, ctx);
