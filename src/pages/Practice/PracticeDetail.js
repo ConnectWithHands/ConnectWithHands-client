@@ -1,15 +1,76 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
+
+import { setHandDetector, drawHandKeypoints } from "../../common/utilities";
 
 import VideoContent from "../../components/organisms/VideoContent";
 import Image from "../../components/atoms/Image";
 import Text from "../../components/atoms/Text";
+import Button from "../../components/atoms/Button";
+
 import language from "../../assets/language";
+import { FACING_MODE } from "../../constants/webcam";
 
 function PracticeDetail() {
+  const webcamRef = useRef(null);
+  const canvasRef = useRef(null);
+  const [facingMode, setFacingMode] = useState(FACING_MODE.user);
+
+  const handleFacingModeChange = () => {
+    switch (facingMode) {
+      case FACING_MODE.user:
+        setFacingMode(FACING_MODE.environment);
+        break;
+      case FACING_MODE.environment:
+        setFacingMode(FACING_MODE.user);
+        break;
+    }
+  };
+
+  const runHandpose = async () => {
+    const detector = await setHandDetector();
+
+    setInterval(() => {
+      detectHands(detector);
+    }, 1000);
+  };
+
+  const detectHands = async (detector) => {
+    if (
+      typeof webcamRef.current !== "undefined" &&
+      webcamRef.current !== null &&
+      webcamRef.current.video.readyState === 4
+    ) {
+      const video = webcamRef.current.video;
+      const { videoWidth, videoHeight } = video;
+
+      webcamRef.current.video.width = videoWidth;
+      webcamRef.current.video.height = videoHeight;
+
+      canvasRef.current.width = videoWidth;
+      canvasRef.current.height = videoHeight;
+
+      const hand = await detector.estimateHands(video);
+      const ctx = canvasRef.current.getContext("2d");
+      drawHandKeypoints(hand, ctx);
+    }
+  };
+
+  useEffect(() => {
+    runHandpose();
+  }, []);
+
   return (
     <Container>
-      <VideoContent />
+      <Button className="small" onClick={handleFacingModeChange}>
+        카메라 전환
+      </Button>
+      <VideoContent
+        onClick={handleFacingModeChange}
+        facingMode={facingMode}
+        webcamRef={webcamRef}
+        canvasRef={canvasRef}
+      />
       <Wrapper>
         <ImageBox>
           <Image width="90%" alt="example" src={language.alphabet} />
@@ -32,7 +93,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%;
 `;
 
 const Wrapper = styled.div`

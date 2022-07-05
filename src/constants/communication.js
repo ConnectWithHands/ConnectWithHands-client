@@ -1,4 +1,4 @@
-const COMMUNICATION_LIST = [
+export const COMMUNICATION_LIST = [
   {
     id: 0,
     title: "실시간 대화하기",
@@ -14,5 +14,3 @@ const COMMUNICATION_LIST = [
     buttonTitle: "나만의 대화 만들기",
   },
 ];
-
-export default COMMUNICATION_LIST;

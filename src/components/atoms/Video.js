@@ -3,11 +3,16 @@ import Webcam from "react-webcam";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
+import { FACING_MODE } from "../../constants/webcam";
+
 function Video({ facingMode }, ref) {
-  const videoConfig =
-    facingMode === "user"
-      ? { facingMode: "user" }
-      : { facingMode: { exact: "environment" } };
+  const videoConfig = {
+    width: 360,
+    facingMode:
+      facingMode === FACING_MODE.user
+        ? FACING_MODE.user
+        : { exact: FACING_MODE.environment },
+  };
 
   return (
     <StyledVideo
@@ -28,17 +33,13 @@ const StyledVideo = styled(Webcam)`
   right: 0;
   text-align: center;
   z-index: 2;
-  width: 100vw;
-  height: 50vh;
+  width: auto;
+  height: auto;
 `;
 
 Video.propTypes = {
   facingMode: PropTypes.string,
   ref: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.shape({ current: PropTypes.elementType }),
-  ]),
-  props: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.elementType }),
   ]),
