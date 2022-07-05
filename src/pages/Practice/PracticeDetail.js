@@ -1,10 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 
-import * as handPoseDetection from "@tensorflow-models/hand-pose-detection";
-import * as tf from "@tensorflow/tfjs-core";
-import "@tensorflow/tfjs-backend-webgl";
-
 import { setHandDetector, drawHandKeypoints } from "../../common/utilities";
 
 import VideoContent from "../../components/organisms/VideoContent";
@@ -36,7 +32,7 @@ function PracticeDetail() {
 
     setInterval(() => {
       detectHands(detector);
-    }, 100);
+    }, 10);
   };
 
   const detectHands = async (detector) => {

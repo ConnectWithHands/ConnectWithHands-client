@@ -1,5 +1,5 @@
 import * as handPoseDetection from "@tensorflow-models/hand-pose-detection";
-import * as tf from "@tensorflow/tfjs-core";
+import "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-backend-webgl";
 
 export const setHandDetector = () => {
