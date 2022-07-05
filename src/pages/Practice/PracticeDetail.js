@@ -32,7 +32,7 @@ function PracticeDetail() {
 
     setInterval(() => {
       detectHands(detector);
-    }, 10);
+    }, 1000);
   };
 
   const detectHands = async (detector) => {
