@@ -1,9 +1,11 @@
 import hello from "./Hello";
-import Consonant from "./consonant";
+import consonants from "./consonants";
+import vowels from "./vowels";
 
 const Gestures = {
   hello,
-  Consonant,
+  consonants,
+  vowels,
 };
 
 export default Gestures;
