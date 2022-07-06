@@ -6,7 +6,7 @@ export const setHandDetector = async () => {
   const hands = await handPoseDetection.SupportedModels.MediaPipeHands;
   const detectorConfig = {
     runtime: "tfjs",
-    modelType: "lite",
+    modelType: "full",
     maxHands: 2,
   };
 
