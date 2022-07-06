@@ -33,7 +33,7 @@ export default class GestureEstimator {
       for (let fingerIdx of Finger.all) {
         poseData.push([
           Finger.getName(fingerIdx),
-          FingerCurl.getName(hand.curls[fingerIdx]),
+          FingerCurl.getName(hand.curls[fingerIdx].fingerCurled),
           FingerDirection.getName(hand.directions[fingerIdx]),
         ]);
       }
