@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
@@ -8,13 +7,9 @@ import Text from "../atoms/Text";
 import Button from "../atoms/Button";
 import ButtonList from "../molecules/ButtonList";
 
-function PracticeListContent({ data }) {
-  const navigate = useNavigate();
+import { PRACTICE_TITLE } from "../../constants/practice";
 
-  const moveToPage = (pageName) => {
-    navigate(`/practice/${pageName}`);
-  };
-
+function PracticeListContent({ data, onClick }) {
   return (
     <StyledContainer>
       <Image width="25%" height="70px" alt="logo" src={data.image} />
@@ -27,7 +22,7 @@ function PracticeListContent({ data }) {
           width="100px"
           height="40px"
           className="small"
-          onClick={() => moveToPage("detail")}
+          onClick={() => onClick("detail", PRACTICE_TITLE[data.id])}
         >
           연습하기
         </Button>
@@ -35,7 +30,7 @@ function PracticeListContent({ data }) {
           width="100px"
           height="40px"
           className="small"
-          onClick={() => moveToPage("communication")}
+          onClick={() => onClick("test", PRACTICE_TITLE[data.id])}
         >
           테스트하기
         </Button>
@@ -63,4 +58,5 @@ const Wrapper = styled.div`
 
 PracticeListContent.propTypes = {
   data: PropTypes.object,
+  onClick: PropTypes.func,
 };

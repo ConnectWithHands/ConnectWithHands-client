@@ -18,7 +18,8 @@ function App() {
         <Route path="/" element={<Main />} />
         <Route path="/practice" element={<Practice />}>
           <Route index element={<PracticeMain />} />
-          <Route path="detail" element={<PracticeDetail />} />
+          <Route path="detail/:id" element={<PracticeDetail />} />
+          <Route path="test/:id" element={<PracticeDetail />} />
         </Route>
         <Route path="/communication" element={<Communication />}>
           <Route index element={<CommunicationList />} />
