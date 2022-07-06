@@ -1,21 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import PracticeListContent from "../../components/organisms/PracticeListContent";
-import language from "../../assets/language";
+import { PRACTICE_LIST } from "../../constants/practice";
 
 function PracticeMain() {
-  const practiceList = [
-    { title: "한글 자음", description: "총 14개", image: language.consonant },
-    { title: "한글 모음", description: "총 17개", image: language.vowel },
-    { title: "알파벳", description: "총 26개", image: language.alphabet },
-  ];
+  const navigate = useNavigate();
+
+  const moveToPage = (pageName, subPage) => {
+    navigate(`/practice/${pageName}/${subPage}`);
+  };
 
   return (
     <Container>
       <Wrapper>
-        {practiceList.map((practice) => (
-          <PracticeListContent key={practice.title} data={practice} />
+        {PRACTICE_LIST.map((practice) => (
+          <PracticeListContent
+            key={practice.id}
+            data={practice}
+            onClick={moveToPage}
+          />
         ))}
       </Wrapper>
     </Container>

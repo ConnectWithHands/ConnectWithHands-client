@@ -123,4 +123,9 @@ const FingerDirection = {
   },
 };
 
-export { Handedness, Finger, FingerCurl, FingerDirection };
+const FingerPosition = {
+  Front: "front",
+  Back: "back",
+};
+
+export { Handedness, Finger, FingerCurl, FingerDirection, FingerPosition };

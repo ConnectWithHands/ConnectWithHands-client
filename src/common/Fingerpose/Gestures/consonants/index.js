@@ -13,7 +13,7 @@ import tieut from "./Tieut";
 import pieup from "./Pieup";
 import hieut from "./Hieut";
 
-const consonant = [
+const consonants = [
   giyeok,
   niuen,
   diguet,
@@ -30,4 +30,4 @@ const consonant = [
   hieut,
 ];
 
-export default consonant;
+export default consonants;

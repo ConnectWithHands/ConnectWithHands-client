@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-backend-webgl";
@@ -18,6 +19,7 @@ function PracticeDetail() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const [facingMode, setFacingMode] = useState(FACING_MODE.user);
+  const params = useParams();
 
   const handleFacingModeChange = () => {
     switch (facingMode) {
@@ -47,7 +49,7 @@ function PracticeDetail() {
 
       try {
         const hand = await detector.estimateHands(video);
-        const GE = new GestureEstimator(Gestures.Consonant);
+        const GE = new GestureEstimator(Gestures[params.id]);
 
         if (hand.length > 0) {
           const gesture = GE.estimate(hand, 7);

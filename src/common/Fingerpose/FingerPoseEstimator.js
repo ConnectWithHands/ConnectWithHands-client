@@ -56,9 +56,12 @@ export default class FingerPoseEstimator {
       let pointIndexAt = finger == Finger.Thumb ? 1 : 0;
 
       let fingerPointsAt = Finger.getPoints(finger);
+
       let startPoint = landmarks[fingerPointsAt[pointIndexAt][0]];
       let midPoint = landmarks[fingerPointsAt[pointIndexAt + 1][1]];
       let endPoint = landmarks[fingerPointsAt[3][1]];
+
+      const endPointOfZindex = endPoint.z < 0 ? "front" : "back";
 
       // check if finger is curled
       let fingerCurled = this.estimateFingerCurl(
@@ -67,6 +70,8 @@ export default class FingerPoseEstimator {
         endPoint,
       );
 
+      //여기 단계에서 각 끝 손가락의 zIndex가 양수인지 음수인지 파악해야 함
+
       let fingerPosition = this.calculateFingerDirection(
         startPoint,
         midPoint,
@@ -74,7 +79,12 @@ export default class FingerPoseEstimator {
         slopesXY[finger].slice(pointIndexAt),
       );
 
-      fingerCurls[finger] = fingerCurled;
+      //객체 안의 객체 버전
+
+      fingerCurls[finger] = {
+        fingerCurled,
+        zIndex: endPointOfZindex,
+      };
       fingerDirections[finger] = fingerPosition;
     }
 
