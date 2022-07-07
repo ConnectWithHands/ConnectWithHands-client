@@ -24,7 +24,7 @@ a.addCurl(
   Finger.Index,
   FingerCurl.NoCurl,
   1.0,
-  FingerPosition.Front,
+  FingerPosition.Palm,
 );
 a.addDirection(Handedness.Left, Finger.Index, FingerDirection.VerticalUp, 1.0);
 

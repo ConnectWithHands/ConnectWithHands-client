@@ -17,14 +17,14 @@ eo.addCurl(
   Finger.Index,
   FingerCurl.FullCurl,
   1.0,
-  FingerPosition.Front,
+  FingerPosition.Palm,
 );
 eo.addCurl(
   Handedness.Left,
   Finger.Index,
   FingerCurl.HalfCurl,
   0.8,
-  FingerPosition.Front,
+  FingerPosition.Palm,
 );
 eo.addDirection(
   Handedness.Left,

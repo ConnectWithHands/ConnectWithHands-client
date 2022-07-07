@@ -25,7 +25,7 @@ i.addDirection(
   Finger.Pinky,
   FingerDirection.VerticalUp,
   1.0,
-  FingerPosition.Front,
+  FingerPosition.Palm,
 );
 i.addDirection(
   Handedness.Left,
