@@ -123,9 +123,68 @@ const FingerDirection = {
   },
 };
 
+const Sample = {
+  xy: {
+    VerticalUp: 0,
+    VerticalDown: 1,
+    HorizontalLeft: 2,
+    HorizontalRight: 3,
+    DiagonalUpRight: 4,
+    DiagonalUpLeft: 5,
+    DiagonalDownRight: 6,
+    DiagonalDownLeft: 7,
+
+    nameMapping: {
+      0: "Vertical Up",
+      1: "Vertical Down",
+      2: "Horizontal Left",
+      3: "Horizontal Right",
+      4: "Diagonal Up Right",
+      5: "Diagonal Up Left",
+      6: "Diagonal Down Right",
+      7: "Diagonal Down Left",
+    },
+  },
+
+  yz: {
+    VerticalUp: 0,
+    VerticalDown: 1,
+    ForwardUp: 2,
+    BackwardUp: 3,
+    ForwardMiddle: 4,
+    BackwardMiddle: 5,
+    ForwardDown: 6,
+    BackwardDown: 7,
+
+    nameMapping: {
+      0: "Vertical Up",
+      1: "Vertical Down",
+      2: "Forward Up",
+      3: "Backward Up",
+      4: "Forward Middle",
+      5: "Backward Middle",
+      6: "Forward Down",
+      7: "Backward Down",
+    },
+  },
+
+  getName: function (axis, value) {
+    return typeof this[axis].nameMapping[value] !== "undefined"
+      ? this[axis].nameMapping[value]
+      : false;
+  },
+};
+
 const FingerPosition = {
-  Front: "front",
+  Palm: "palm",
   Back: "back",
 };
 
-export { Handedness, Finger, FingerCurl, FingerDirection, FingerPosition };
+export {
+  Handedness,
+  Finger,
+  FingerCurl,
+  FingerDirection,
+  FingerPosition,
+  Sample,
+};

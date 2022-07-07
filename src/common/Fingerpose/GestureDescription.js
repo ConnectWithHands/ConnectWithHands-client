@@ -8,16 +8,19 @@ export default class GestureDescription {
     this.directions = {};
   }
 
-  addCurl(handedness, finger, curl, contrib = 1.0, zIndex = "") {
+  addCurl(handedness, finger, curl, contrib = 1.0, palmOrback = "") {
     if (!this.curls[handedness]?.[finger]) {
       this.curls[handedness] = {
         ...this.curls[handedness],
-        [finger]: [[curl, contrib, zIndex]],
+        [finger]: [[curl, contrib, palmOrback]],
       };
     } else {
       this.curls[handedness] = {
         ...this.curls[handedness],
-        [finger]: [...this.curls[handedness][finger], [curl, contrib, zIndex]],
+        [finger]: [
+          ...this.curls[handedness][finger],
+          [curl, contrib, palmOrback],
+        ],
       };
     }
   }
@@ -43,7 +46,7 @@ export default class GestureDescription {
     // look at the detected curl of each finger and compare with
     // the expected curl of this finger inside current gesture
     for (let finger in detectedCurls) {
-      const { fingerCurled, zIndex } = detectedCurls[finger];
+      const { fingerCurled, palmOrback } = detectedCurls[finger];
       let detectedCurl = fingerCurled;
       let expectedCurls = this.curls?.[detectedHandedness]?.[finger];
 
@@ -59,9 +62,13 @@ export default class GestureDescription {
       // compare to each possible curl of this specific finger
       let matchingCurlFound = false;
       let highestCurlContrib = 0;
-      for (const [expectedCurl, contrib, exptectedZindex] of expectedCurls) {
-        // zIndex 계산법
-        if (exptectedZindex && zIndex !== exptectedZindex) {
+      for (const [
+        expectedCurl,
+        contrib,
+        exptectedPalmOrback,
+      ] of expectedCurls) {
+        // exptectedPalmOrback 계산법
+        if (exptectedPalmOrback && palmOrback !== exptectedPalmOrback) {
           continue;
         }
         if (detectedCurl == expectedCurl) {

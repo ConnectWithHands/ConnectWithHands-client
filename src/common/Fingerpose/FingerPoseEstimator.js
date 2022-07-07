@@ -1,6 +1,11 @@
 /* eslint-disable no-unused-expressions */
 
-import { Finger, FingerCurl, FingerDirection } from "./FingerDescription";
+import {
+  Finger,
+  FingerCurl,
+  FingerDirection,
+  Sample,
+} from "./FingerDescription";
 
 export default class FingerPoseEstimator {
   constructor(options) {
@@ -25,6 +30,10 @@ export default class FingerPoseEstimator {
     let slopesXY = [];
     let slopesYZ = [];
 
+    console.log("landmarks", landmarks);
+
+    const isPalmOrBack = landmarks[2].x > 0 ? "palm" : "back";
+
     for (let finger of Finger.all) {
       let points = Finger.getPoints(finger);
       let slopeAtXY = [];
@@ -38,6 +47,7 @@ export default class FingerPoseEstimator {
         let slopes = this.getSlopes(point1, point2);
         let slopeXY = slopes[0];
         let slopeYZ = slopes[1];
+
         slopeAtXY.push(slopeXY);
         slopeAtYZ.push(slopeYZ);
       }
@@ -56,12 +66,9 @@ export default class FingerPoseEstimator {
       let pointIndexAt = finger == Finger.Thumb ? 1 : 0;
 
       let fingerPointsAt = Finger.getPoints(finger);
-
       let startPoint = landmarks[fingerPointsAt[pointIndexAt][0]];
       let midPoint = landmarks[fingerPointsAt[pointIndexAt + 1][1]];
       let endPoint = landmarks[fingerPointsAt[3][1]];
-
-      const endPointOfZindex = endPoint.z < 0 ? "front" : "back";
 
       // check if finger is curled
       let fingerCurled = this.estimateFingerCurl(
@@ -70,22 +77,36 @@ export default class FingerPoseEstimator {
         endPoint,
       );
 
-      //여기 단계에서 각 끝 손가락의 zIndex가 양수인지 음수인지 파악해야 함
-
-      let fingerPosition = this.calculateFingerDirection(
+      let fingerXYposition = this.calculateFingerDirection(
+        "xy",
         startPoint,
         midPoint,
         endPoint,
         slopesXY[finger].slice(pointIndexAt),
       );
 
+      let fingerYZposition = this.calculateFingerDirection(
+        "yz",
+        startPoint,
+        midPoint,
+        endPoint,
+        slopesYZ[finger].slice(pointIndexAt),
+        isPalmOrBack,
+      );
+
+      if (finger === 1) {
+        console.log("fingerXYposition", Sample.getName("xy", fingerXYposition));
+        console.log("fingerYZposition", Sample.getName("yz", fingerYZposition));
+      }
+
       //객체 안의 객체 버전
 
       fingerCurls[finger] = {
         fingerCurled,
-        zIndex: endPointOfZindex,
+        palmOrBack: isPalmOrBack,
       };
-      fingerDirections[finger] = fingerPosition;
+      fingerDirections[finger] = { xy: fingerXYposition, yz: fingerYZposition };
+      // fingerDirections[finger] = fingerXYposition;
     }
 
     return { curls: fingerCurls, directions: fingerDirections };
@@ -183,29 +204,87 @@ export default class FingerPoseEstimator {
   }
 
   estimateHorizontalDirection(
+    axis,
     start_end_x_dist,
     start_mid_x_dist,
     mid_end_x_dist,
     max_dist_x,
+    isPalmOrBack,
   ) {
     let estimatedDirection;
-    if (max_dist_x == Math.abs(start_end_x_dist)) {
-      if (start_end_x_dist > 0) {
-        estimatedDirection = FingerDirection.HorizontalLeft;
+
+    if (axis === "yz") {
+      console.log(isPalmOrBack);
+    }
+
+    if (axis === "xy") {
+      if (max_dist_x == Math.abs(start_end_x_dist)) {
+        if (start_end_x_dist > 0) {
+          estimatedDirection = Sample[axis].HorizontalLeft; // 2
+        } else {
+          estimatedDirection = Sample[axis].HorizontalRight; // 3
+        }
+      } else if (max_dist_x == Math.abs(start_mid_x_dist)) {
+        if (start_mid_x_dist > 0) {
+          estimatedDirection = Sample[axis].HorizontalLeft;
+        } else {
+          estimatedDirection = Sample[axis].HorizontalRight;
+        }
       } else {
-        estimatedDirection = FingerDirection.HorizontalRight;
-      }
-    } else if (max_dist_x == Math.abs(start_mid_x_dist)) {
-      if (start_mid_x_dist > 0) {
-        estimatedDirection = FingerDirection.HorizontalLeft;
-      } else {
-        estimatedDirection = FingerDirection.HorizontalRight;
+        if (mid_end_x_dist > 0) {
+          estimatedDirection = Sample[axis].HorizontalLeft;
+        } else {
+          estimatedDirection = Sample[axis].HorizontalRight;
+        }
       }
     } else {
-      if (mid_end_x_dist > 0) {
-        estimatedDirection = FingerDirection.HorizontalLeft;
+      if (max_dist_x == Math.abs(start_end_x_dist)) {
+        if (start_end_x_dist > 0) {
+          console.log("end 기준 1 ");
+          estimatedDirection =
+            isPalmOrBack === "palm"
+              ? Sample[axis].VerticalDown
+              : Sample[axis].VerticalUp;
+        } else {
+          console.log("end 기준 2 ");
+
+          estimatedDirection =
+            isPalmOrBack === "palm"
+              ? Sample[axis].VerticalUp
+              : Sample[axis].VerticalDown;
+        }
+      } else if (max_dist_x == Math.abs(start_mid_x_dist)) {
+        if (start_mid_x_dist > 0) {
+          console.log("mid 기준 1 ");
+
+          estimatedDirection =
+            isPalmOrBack === "palm"
+              ? Sample[axis].VerticalDown
+              : Sample[axis].VerticalUp;
+        } else {
+          console.log("mid 기준 1 ");
+
+          estimatedDirection =
+            isPalmOrBack === "palm"
+              ? Sample[axis].VerticalUp
+              : Sample[axis].VerticalDown;
+        }
       } else {
-        estimatedDirection = FingerDirection.HorizontalRight;
+        if (mid_end_x_dist > 0) {
+          console.log("그 외 기준 1 ");
+
+          estimatedDirection =
+            isPalmOrBack === "palm"
+              ? Sample[axis].VerticalDown
+              : Sample[axis].VerticalUp;
+        } else {
+          console.log("그 외 기준 2");
+
+          estimatedDirection =
+            isPalmOrBack === "palm"
+              ? Sample[axis].VerticalUp
+              : Sample[axis].VerticalDown;
+        }
       }
     }
 
@@ -213,29 +292,75 @@ export default class FingerPoseEstimator {
   }
 
   estimateVerticalDirection(
+    axis,
     start_end_y_dist,
     start_mid_y_dist,
     mid_end_y_dist,
     max_dist_y,
+    isPalmOrBack,
   ) {
     let estimatedDirection;
-    if (max_dist_y == Math.abs(start_end_y_dist)) {
-      if (start_end_y_dist < 0) {
-        estimatedDirection = FingerDirection.VerticalDown;
+
+    if (axis === "xy") {
+      if (max_dist_y == Math.abs(start_end_y_dist)) {
+        if (start_end_y_dist < 0) {
+          estimatedDirection = Sample[axis].VerticalDown;
+        } else {
+          estimatedDirection = Sample[axis].VerticalUp;
+        }
+      } else if (max_dist_y == Math.abs(start_mid_y_dist)) {
+        if (start_mid_y_dist < 0) {
+          estimatedDirection = Sample[axis].VerticalDown;
+        } else {
+          estimatedDirection = Sample[axis].VerticalUp;
+        }
       } else {
-        estimatedDirection = FingerDirection.VerticalUp;
-      }
-    } else if (max_dist_y == Math.abs(start_mid_y_dist)) {
-      if (start_mid_y_dist < 0) {
-        estimatedDirection = FingerDirection.VerticalDown;
-      } else {
-        estimatedDirection = FingerDirection.VerticalUp;
+        if (mid_end_y_dist < 0) {
+          estimatedDirection = Sample[axis].VerticalDown;
+        } else {
+          estimatedDirection = Sample[axis].VerticalUp;
+        }
       }
     } else {
-      if (mid_end_y_dist < 0) {
-        estimatedDirection = FingerDirection.VerticalDown;
+      if (max_dist_y == Math.abs(start_end_y_dist)) {
+        console.log("start_end_y_dist", start_end_y_dist);
+        if (start_end_y_dist < 0) {
+          estimatedDirection =
+            isPalmOrBack === "palm"
+              ? Sample[axis].BackwardMiddle
+              : Sample[axis].ForwardMiddle;
+        } else {
+          estimatedDirection =
+            isPalmOrBack === "palm"
+              ? Sample[axis].ForwardMiddle
+              : Sample[axis].BackwardMiddle;
+        }
+      } else if (max_dist_y == Math.abs(start_mid_y_dist)) {
+        console.log("start_mid_y_dist", max_dist_y);
+        if (start_mid_y_dist < 0) {
+          estimatedDirection =
+            isPalmOrBack === "palm"
+              ? Sample[axis].BackwardMiddle
+              : Sample[axis].ForwardMiddle;
+        } else {
+          estimatedDirection =
+            isPalmOrBack === "palm"
+              ? Sample[axis].ForwardMiddle
+              : Sample[axis].BackwardMiddle;
+        }
       } else {
-        estimatedDirection = FingerDirection.VerticalUp;
+        console.log("mid_end_y_dist", mid_end_y_dist);
+        if (mid_end_y_dist < 0) {
+          estimatedDirection =
+            isPalmOrBack === "palm"
+              ? Sample[axis].BackwardMiddle
+              : Sample[axis].ForwardMiddle;
+        } else {
+          estimatedDirection =
+            isPalmOrBack === "palm"
+              ? Sample[axis].ForwardMiddle
+              : Sample[axis].BackwardMiddle;
+        }
       }
     }
 
@@ -243,6 +368,7 @@ export default class FingerPoseEstimator {
   }
 
   estimateDiagonalDirection(
+    axis,
     start_end_y_dist,
     start_mid_y_dist,
     mid_end_y_dist,
@@ -251,39 +377,75 @@ export default class FingerPoseEstimator {
     start_mid_x_dist,
     mid_end_x_dist,
     max_dist_x,
+    isPalmOrBack,
   ) {
+    if (axis === "yz") {
+      console.log("dig", axis, isPalmOrBack);
+    }
     let estimatedDirection;
     let reqd_vertical_direction = this.estimateVerticalDirection(
+      axis,
       start_end_y_dist,
       start_mid_y_dist,
       mid_end_y_dist,
       max_dist_y,
+      isPalmOrBack,
     );
     let reqd_horizontal_direction = this.estimateHorizontalDirection(
+      axis,
       start_end_x_dist,
       start_mid_x_dist,
       mid_end_x_dist,
       max_dist_x,
+      isPalmOrBack,
     );
 
-    if (reqd_vertical_direction == FingerDirection.VerticalUp) {
-      if (reqd_horizontal_direction == FingerDirection.HorizontalLeft) {
-        estimatedDirection = FingerDirection.DiagonalUpLeft;
+    if (axis === "yz") {
+      console.log("reqd_vertical_direction", reqd_vertical_direction); // 4 Foward Middle
+      console.log("reqd_horizontal_direction", reqd_horizontal_direction); // 0 Vertical Up
+    }
+
+    if (axis === "xy") {
+      if (reqd_vertical_direction == Sample[axis].VerticalUp) {
+        if (reqd_horizontal_direction == Sample[axis].HorizontalLeft) {
+          estimatedDirection = Sample[axis].DiagonalUpLeft;
+        } else {
+          estimatedDirection = Sample[axis].DiagonalUpRight;
+        }
       } else {
-        estimatedDirection = FingerDirection.DiagonalUpRight;
+        if (reqd_horizontal_direction == Sample[axis].HorizontalLeft) {
+          estimatedDirection = Sample[axis].DiagonalDownLeft;
+        } else {
+          estimatedDirection = Sample[axis].DiagonalDownRight;
+        }
       }
     } else {
-      if (reqd_horizontal_direction == FingerDirection.HorizontalLeft) {
-        estimatedDirection = FingerDirection.DiagonalDownLeft;
+      if (reqd_vertical_direction == Sample[axis].ForwardMiddle) {
+        if (reqd_horizontal_direction == Sample[axis].VerticalUp) {
+          estimatedDirection = Sample[axis].ForwardUp;
+        } else {
+          estimatedDirection = Sample[axis].ForwardDown;
+        }
       } else {
-        estimatedDirection = FingerDirection.DiagonalDownRight;
+        if (reqd_horizontal_direction == Sample[axis].VerticalUp) {
+          estimatedDirection = Sample[axis].BackwardUp;
+        } else {
+          estimatedDirection = Sample[axis].BackwardDown;
+        }
       }
     }
 
     return estimatedDirection;
   }
 
-  calculateFingerDirection(startPoint, midPoint, endPoint, fingerSlopes) {
+  calculateFingerDirection(
+    axis,
+    startPoint,
+    midPoint,
+    endPoint,
+    fingerSlopes,
+    isPalmOrBack,
+  ) {
     let start_mid_x_dist = startPoint.x - midPoint.x;
     let start_end_x_dist = startPoint.x - endPoint.x;
     let mid_end_x_dist = midPoint.x - endPoint.x;
@@ -311,6 +473,7 @@ export default class FingerPoseEstimator {
 
     let start_end_x_y_dist_ratio = max_dist_y / (max_dist_x + 0.00001);
     if (start_end_x_y_dist_ratio > 1.5) {
+      // 최대 y 거리 나누기 최대 x 거리가 클 수록 비율 대비 y 거리가 x보다 더 큼
       voteVertical += this.options.DISTANCE_VOTE_POWER;
     } else if (start_end_x_y_dist_ratio > 0.66) {
       voteDiagonal += this.options.DISTANCE_VOTE_POWER;
@@ -319,6 +482,7 @@ export default class FingerPoseEstimator {
     }
 
     let start_mid_dist = Math.sqrt(
+      // start mid 거리
       start_mid_x_dist * start_mid_x_dist + start_mid_y_dist * start_mid_y_dist,
     );
     let start_end_dist = Math.sqrt(
@@ -328,7 +492,7 @@ export default class FingerPoseEstimator {
       mid_end_x_dist * mid_end_x_dist + mid_end_y_dist * mid_end_y_dist,
     );
 
-    let max_dist = Math.max(start_mid_dist, start_end_dist, mid_end_dist);
+    let max_dist = Math.max(start_mid_dist, start_end_dist, mid_end_dist); // 빗변의 길이
     let calc_start_point_x = startPoint[0];
     let calc_start_point_y = startPoint[1];
     let calc_end_point_x = endPoint[0];
@@ -353,6 +517,7 @@ export default class FingerPoseEstimator {
     voteHorizontal += votes[2];
 
     for (let fingerSlope of fingerSlopes) {
+      // 손가락 0-5 제외 나머지 slopeXY들
       let votes = this.angleOrientationAt(
         fingerSlope,
         this.options.SINGLE_ANGLE_VOTE_POWER,
@@ -366,21 +531,35 @@ export default class FingerPoseEstimator {
     // followed by horizontal and then diagonal
     let estimatedDirection;
     if (voteVertical == Math.max(voteVertical, voteDiagonal, voteHorizontal)) {
+      if (axis === "yz") {
+        console.log("vertical 계산");
+      }
       estimatedDirection = this.estimateVerticalDirection(
+        axis,
         start_end_y_dist,
         start_mid_y_dist,
         mid_end_y_dist,
         max_dist_y,
+        isPalmOrBack,
       );
     } else if (voteHorizontal == Math.max(voteDiagonal, voteHorizontal)) {
+      if (axis === "yz") {
+        console.log("voteHorizontal 계산");
+      }
       estimatedDirection = this.estimateHorizontalDirection(
+        axis,
         start_end_x_dist,
         start_mid_x_dist,
         mid_end_x_dist,
         max_dist_x,
+        isPalmOrBack,
       );
     } else {
+      if (axis === "yz") {
+        console.log("diag 계산");
+      }
       estimatedDirection = this.estimateDiagonalDirection(
+        axis,
         start_end_y_dist,
         start_mid_y_dist,
         mid_end_y_dist,
@@ -389,15 +568,20 @@ export default class FingerPoseEstimator {
         start_mid_x_dist,
         mid_end_x_dist,
         max_dist_x,
+        isPalmOrBack,
       );
     }
 
     return estimatedDirection;
   }
 
+  //직각 삼각형의 높이와 밑변의 길이를 알 때 빗변과 밑변 사이의 끼인 값
+
   calculateSlope(point1x, point1y, point2x, point2y) {
-    let value = (point1y - point2y) / (point1x - point2x); // tan 구하기
-    let slope = (Math.atan(value) * 180) / Math.PI; // arc tan을 이용하여 각도 구하고 radian을 구함
+    const value = (point1y - point2y) / (point1x - point2x); // 밑변 나누기 높이
+    const radian = Math.atan(value); // 아크 탄젠트로 라디안 값 구하기
+    let slope = (radian * 180) / Math.PI;
+    // arc tan은 angel의 radian을 반환, 여기서180/PI를 하면 degree로 변환
 
     if (slope <= 0) {
       // 음수면 양수로 변경 (절대값)

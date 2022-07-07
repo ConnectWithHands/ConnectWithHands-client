@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import "@tensorflow/tfjs-core";
+import "@tensorflow/tfjs-converter";
 import "@tensorflow/tfjs-backend-webgl";
 
 import { setHandDetector, drawHandKeypoints } from "../../common/utilities";
@@ -49,45 +50,58 @@ function PracticeDetail() {
 
       try {
         const hand = await detector.estimateHands(video);
+        console.log(
+          "hand",
+          hand[0]?.keypoints3D.filter((points, index) => {
+            if (
+              index === 0 ||
+              index === 5 ||
+              index === 6 ||
+              index === 7 ||
+              index === 8
+            ) {
+              return points;
+            }
+          }),
+        );
         const GE = new GestureEstimator(Gestures[params.id]);
 
         if (hand.length > 0) {
           const gesture = GE.estimate(hand, 7);
-          console.log(gesture);
 
-          const bestGesture = gesture.map((hand) => {
-            const score = hand.gestures.map((prediction) => prediction.score);
-            const maxScore = score.indexOf(Math.max(...score));
+          //   const bestGesture = gesture.map((hand) => {
+          //     const score = hand.gestures.map((prediction) => prediction.score);
+          //     const maxScore = score.indexOf(Math.max(...score));
 
-            return hand.gestures[maxScore];
-          });
+          //     return hand.gestures.length ? hand.gestures[maxScore] : false;
+          //   });
 
-          let gestureName = "";
+          //   let gestureName = "";
 
-          if (gesture.length > 1) {
-            // 양손일 때
+          //   if (!bestGesture[0]) {
+          //     gestureName = "감지된 제스처가 없어";
+          //   } else {
+          //     if (gesture.length > 1) {
+          //       // 양손일 때
 
-            if (bestGesture[0]?.name === bestGesture[1]?.name) {
-              gestureName = bestGesture[0]?.name;
-            }
-          } else if (gesture.length === 1) {
-            // 한손 일 때
-            if (bestGesture.length) {
-              if (bestGesture[0]?.numberOfHands !== 1) {
-                gestureName = "두 손이 필요해";
-              } else {
-                gestureName = bestGesture[0].name;
-              }
-            } else {
-              gestureName = "감지된 제스처가 없어";
-            }
-          }
-          console.log("최종", gestureName);
+          //       if (bestGesture[0]?.name === bestGesture[1]?.name) {
+          //         gestureName = bestGesture[0]?.name;
+          //       }
+          //     } else if (gesture.length === 1) {
+          //       // 한손 일 때
+          //       if (bestGesture[0]?.numberOfHands !== 1) {
+          //         gestureName = "두 손이 필요해";
+          //       } else {
+          //         gestureName = bestGesture[0].name;
+          //       }
+          //     }
+          //   }
         }
 
         const ctx = canvasRef.current.getContext("2d");
         drawHandKeypoints(hand, ctx);
       } catch (error) {
+        console.log("error", error);
         detector.dispose();
       }
     }
@@ -101,7 +115,7 @@ function PracticeDetail() {
 
       timerId = setInterval(() => {
         detectHands(detector);
-      }, 1000);
+      }, 2000);
     };
 
     runHandpose();

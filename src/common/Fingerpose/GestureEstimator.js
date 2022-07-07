@@ -1,6 +1,5 @@
 import FingerPoseEstimator from "./FingerPoseEstimator";
 import { Finger, FingerCurl, FingerDirection } from "./FingerDescription";
-import { copyModel } from "@tensorflow/tfjs-core/dist/io/model_management";
 
 export default class GestureEstimator {
   constructor(knownGestures, estimatorOptions = {}) {
@@ -34,7 +33,7 @@ export default class GestureEstimator {
         poseData.push([
           Finger.getName(fingerIdx),
           FingerCurl.getName(hand.curls[fingerIdx].fingerCurled),
-          FingerDirection.getName(hand.directions[fingerIdx]),
+          FingerDirection.getName(hand.directions[fingerIdx]), // 중첩 배열 or 객체
         ]);
       }
 
