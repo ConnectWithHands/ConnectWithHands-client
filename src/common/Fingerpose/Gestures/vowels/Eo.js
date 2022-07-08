@@ -32,6 +32,7 @@ eo.addDirection(
   Finger.Index,
   FingerDirection[FingerAxis.YZ].ForwardMiddle,
   0.8,
+  FingerAxis.YZ,
 );
 
 eo.addCurl(Handedness.Left, Finger.Middle, FingerCurl.FullCurl, 1.0);
