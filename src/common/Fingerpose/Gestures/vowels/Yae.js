@@ -16,7 +16,7 @@ yae.addCurl(
   Finger.Index,
   FingerCurl.NoCurl,
   1.0,
-  FingerPosition.Front,
+  FingerPosition.Palm,
 );
 yae.addDirection(
   Handedness.Left,
@@ -30,7 +30,7 @@ yae.addCurl(
   Finger.Middle,
   FingerCurl.NoCurl,
   1.0,
-  FingerPosition.Front,
+  FingerPosition.Palm,
 );
 yae.addDirection(
   Handedness.Left,

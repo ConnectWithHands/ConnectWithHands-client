@@ -16,7 +16,7 @@ ae.addCurl(
   Finger.Index,
   FingerCurl.NoCurl,
   1.0,
-  FingerPosition.Front,
+  FingerPosition.Palm,
 );
 ae.addDirection(Handedness.Left, Finger.Index, FingerDirection.VerticalUp, 1.0);
 
@@ -25,14 +25,14 @@ ae.addCurl(
   Finger.Middle,
   FingerCurl.FullCurl,
   1.0,
-  FingerPosition.Front,
+  FingerPosition.Palm,
 );
 ae.addCurl(
   Handedness.Left,
   Finger.Middle,
   FingerCurl.HalfCurl,
   0.9,
-  FingerPosition.Front,
+  FingerPosition.Palm,
 );
 
 ae.addCurl(Handedness.Left, Finger.Ring, FingerCurl.FullCurl, 1.0);

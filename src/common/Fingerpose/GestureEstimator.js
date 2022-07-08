@@ -1,6 +1,10 @@
 import FingerPoseEstimator from "./FingerPoseEstimator";
-import { Finger, FingerCurl, FingerDirection } from "./FingerDescription";
-import { copyModel } from "@tensorflow/tfjs-core/dist/io/model_management";
+import {
+  Finger,
+  FingerCurl,
+  FingerDirection,
+  FingerAxis,
+} from "./FingerDescription";
 
 export default class GestureEstimator {
   constructor(knownGestures, estimatorOptions = {}) {
@@ -15,7 +19,7 @@ export default class GestureEstimator {
     const hands = [];
 
     for (let landmark of landmarks) {
-      const estimation = this.estimator.estimate(landmark.keypoints3D);
+      const estimation = this.estimator.estimate(landmark);
       const handData = {
         handedness: landmark.handedness,
         curls: estimation.curls,
@@ -34,7 +38,14 @@ export default class GestureEstimator {
         poseData.push([
           Finger.getName(fingerIdx),
           FingerCurl.getName(hand.curls[fingerIdx].fingerCurled),
-          FingerDirection.getName(hand.directions[fingerIdx]),
+          FingerDirection.getName(
+            FingerAxis.XY,
+            hand.directions[fingerIdx][FingerAxis.XY],
+          ),
+          FingerDirection.getName(
+            FingerAxis.YZ,
+            hand.directions[fingerIdx][FingerAxis.YZ],
+          ),
         ]);
       }
 

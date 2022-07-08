@@ -14,6 +14,7 @@ import oe from "./Oe";
 import wi from "./Wi";
 import ui from "./Ui";
 
-const vowels = [a, ya, eo, yeo, o, yo, u, yu, eu, i, ae, yae, oe, wi, ui];
+const vowels = [a, eo, o];
+// const vowels = [a, ya, eo, yeo, o, yo, u, yu, eu, i, ae, yae, oe, wi, ui];
 
 export default vowels;

@@ -1,3 +1,5 @@
+import { FingerAxis } from "./FingerDescription";
+
 export default class GestureDescription {
   constructor(name) {
     // name (should be unique)
@@ -8,31 +10,50 @@ export default class GestureDescription {
     this.directions = {};
   }
 
-  addCurl(handedness, finger, curl, contrib = 1.0, zIndex = "") {
+  addCurl(handedness, finger, curl, contrib = 1.0, palmOrback = "") {
     if (!this.curls[handedness]?.[finger]) {
       this.curls[handedness] = {
         ...this.curls[handedness],
-        [finger]: [[curl, contrib, zIndex]],
+        [finger]: [[curl, contrib, palmOrback]],
       };
     } else {
       this.curls[handedness] = {
         ...this.curls[handedness],
-        [finger]: [...this.curls[handedness][finger], [curl, contrib, zIndex]],
+        [finger]: [
+          ...this.curls[handedness][finger],
+          [curl, contrib, palmOrback],
+        ],
       };
     }
   }
 
-  addDirection(handedness, finger, position, contrib = 1.0) {
+  addDirection(
+    handedness,
+    finger,
+    direction,
+    contrib = 1.0,
+    axis = FingerAxis.XY,
+  ) {
     if (!this.directions[handedness]?.[finger]) {
       this.directions[handedness] = {
         ...this.directions[handedness],
-        [finger]: [[position, contrib]],
+        [finger]: { [axis]: [[direction, contrib]] },
       };
     } else {
-      this.directions[handedness] = {
-        ...this.directions[handedness],
-        [finger]: [...this.directions[handedness][finger], [position, contrib]],
-      };
+      if (this.directions[handedness][finger]?.[axis]) {
+        this.directions[handedness][finger] = {
+          ...this.directions[handedness][finger],
+          [axis]: [
+            ...this.directions[handedness][finger][axis],
+            [direction, contrib],
+          ],
+        };
+      } else {
+        this.directions[handedness][finger] = {
+          ...this.directions[handedness][finger],
+          [axis]: [[direction, contrib]],
+        };
+      }
     }
   }
 
@@ -43,7 +64,7 @@ export default class GestureDescription {
     // look at the detected curl of each finger and compare with
     // the expected curl of this finger inside current gesture
     for (let finger in detectedCurls) {
-      const { fingerCurled, zIndex } = detectedCurls[finger];
+      const { fingerCurled, palmOrBack } = detectedCurls[finger];
       let detectedCurl = fingerCurled;
       let expectedCurls = this.curls?.[detectedHandedness]?.[finger];
 
@@ -59,9 +80,13 @@ export default class GestureDescription {
       // compare to each possible curl of this specific finger
       let matchingCurlFound = false;
       let highestCurlContrib = 0;
-      for (const [expectedCurl, contrib, exptectedZindex] of expectedCurls) {
-        // zIndex 계산법
-        if (exptectedZindex && zIndex !== exptectedZindex) {
+      for (const [
+        expectedCurl,
+        contrib,
+        exptectedPalmOrBack,
+      ] of expectedCurls) {
+        // exptectedPalmOrback 계산법
+        if (exptectedPalmOrBack && palmOrBack !== exptectedPalmOrBack) {
           continue;
         }
         if (detectedCurl == expectedCurl) {
@@ -80,7 +105,8 @@ export default class GestureDescription {
 
     // same for detected direction of each finger
     for (let fingerIdx in detectedDirections) {
-      let detectedDirection = detectedDirections[fingerIdx];
+      let detectedXYDirection = detectedDirections[fingerIdx]?.[FingerAxis.XY];
+      let detectedYZDirection = detectedDirections[fingerIdx]?.[FingerAxis.YZ];
       let expectedDirections =
         this.directions?.[detectedHandedness]?.[fingerIdx];
 
@@ -96,12 +122,20 @@ export default class GestureDescription {
       // compare to each possible direction of this specific finger
       let matchingDirectionFound = false;
       let highestDirectionContrib = 0;
-      for (const [expectedDirection, contrib] of expectedDirections) {
-        if (detectedDirection == expectedDirection) {
-          score += contrib;
-          highestDirectionContrib = Math.max(highestDirectionContrib, contrib);
-          matchingDirectionFound = true;
-          break;
+      for (const axis in expectedDirections) {
+        const detectedDirection =
+          axis === FingerAxis.XY ? detectedXYDirection : detectedYZDirection;
+
+        for (const [expectedDirection, contrib] of expectedDirections[axis]) {
+          if (detectedDirection == expectedDirection) {
+            score += contrib;
+            highestDirectionContrib = Math.max(
+              highestDirectionContrib,
+              contrib,
+            );
+            matchingDirectionFound = true;
+            break;
+          }
         }
       }
 
