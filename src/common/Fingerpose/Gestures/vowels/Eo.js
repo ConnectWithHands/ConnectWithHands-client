@@ -4,6 +4,7 @@ import {
   FingerCurl,
   FingerDirection,
   FingerPosition,
+  FingerAxis,
 } from "../../FingerDescription";
 import GestureDescription from "../../GestureDescription";
 
@@ -15,7 +16,7 @@ eo.addCurl(Handedness.Left, Finger.Thumb, FingerCurl.NoCurl, 0.8);
 eo.addCurl(
   Handedness.Left,
   Finger.Index,
-  FingerCurl.FullCurl,
+  FingerCurl.NoCurl,
   1.0,
   FingerPosition.Palm,
 );
@@ -29,13 +30,7 @@ eo.addCurl(
 eo.addDirection(
   Handedness.Left,
   Finger.Index,
-  FingerDirection.HorizontalRight,
-  1.0,
-);
-eo.addDirection(
-  Handedness.Left,
-  Finger.Index,
-  FingerDirection.DiagonalUpRight,
+  FingerDirection[FingerAxis.YZ].ForwardMiddle,
   0.8,
 );
 
@@ -43,12 +38,6 @@ eo.addCurl(Handedness.Left, Finger.Middle, FingerCurl.FullCurl, 1.0);
 eo.addCurl(Handedness.Left, Finger.Middle, FingerCurl.HalfCurl, 1.0);
 
 eo.addCurl(Handedness.Left, Finger.Ring, FingerCurl.FullCurl, 1.0);
-eo.addDirection(
-  Handedness.Left,
-  Finger.Ring,
-  FingerDirection.HorizontalRight,
-  1.0,
-);
 
 eo.addCurl(Handedness.Left, Finger.Pinky, FingerCurl.FullCurl, 1.0);
 
