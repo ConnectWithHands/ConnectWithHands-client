@@ -50,52 +50,39 @@ function PracticeDetail() {
 
       try {
         const hand = await detector.estimateHands(video);
-        console.log(
-          "hand",
-          hand[0]?.keypoints3D.filter((points, index) => {
-            if (
-              index === 0 ||
-              index === 5 ||
-              index === 6 ||
-              index === 7 ||
-              index === 8
-            ) {
-              return points;
-            }
-          }),
-        );
         const GE = new GestureEstimator(Gestures[params.id]);
 
         if (hand.length > 0) {
           const gesture = GE.estimate(hand, 7);
+          console.log("gesture", gesture);
 
-          //   const bestGesture = gesture.map((hand) => {
-          //     const score = hand.gestures.map((prediction) => prediction.score);
-          //     const maxScore = score.indexOf(Math.max(...score));
+          const bestGesture = gesture.map((hand) => {
+            const score = hand.gestures.map((prediction) => prediction.score);
+            const maxScore = score.indexOf(Math.max(...score));
 
-          //     return hand.gestures.length ? hand.gestures[maxScore] : false;
-          //   });
+            return hand.gestures.length ? hand.gestures[maxScore] : false;
+          });
 
-          //   let gestureName = "";
+          let gestureName = "";
 
-          //   if (!bestGesture[0]) {
-          //     gestureName = "감지된 제스처가 없어";
-          //   } else {
-          //     if (gesture.length > 1) {
-          //       // 양손일 때
+          if (!bestGesture[0]) {
+            gestureName = "감지된 제스처가 없어";
+          } else {
+            if (gesture.length > 1) {
+              // 양손일 때
 
-          //       if (bestGesture[0]?.name === bestGesture[1]?.name) {
-          //         gestureName = bestGesture[0]?.name;
-          //       }
-          //     } else if (gesture.length === 1) {
-          //       // 한손 일 때
-          //       if (bestGesture[0]?.numberOfHands !== 1) {
-          //         gestureName = "두 손이 필요해";
-          //       } else {
-          //         gestureName = bestGesture[0].name;
-          //       }
-          //     }
-          //   }
+              if (bestGesture[0]?.name === bestGesture[1]?.name) {
+                gestureName = bestGesture[0]?.name;
+              }
+            } else if (gesture.length === 1) {
+              // 한손 일 때
+              if (bestGesture[0]?.numberOfHands !== 1) {
+                gestureName = "두 손이 필요해";
+              } else {
+                gestureName = bestGesture[0].name;
+              }
+            }
+          }
         }
 
         const ctx = canvasRef.current.getContext("2d");
