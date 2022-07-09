@@ -1,44 +1,30 @@
 import { atom } from "jotai";
 import { lengthOfLetter } from "../constants/index";
 
-const increaseIndex = (indexList, gesture) => ({
+const changeIndex = (indexList, letter, newIndex) => ({
   ...indexList,
-  [gesture]: indexList[gesture] + 1,
+  [letter]: newIndex,
 });
 
-const initailizeIndex = (indexList, gesture) => ({
+const initailizeIndex = (indexList, letter) => ({
   ...indexList,
-  [gesture]: 0,
+  [letter]: 0,
 });
 
-const indexOfGestures = atom({
+const indexOfLetters = atom({
   consonants: 0,
   vowels: 0,
   alphabet: 0,
 });
 
-const increaseIndexOfGesture = atom(null, (get, set, gesture) => {
-  if (lengthOfLetter[gesture] - 1 === get(indexOfGestures)[gesture]) {
-    set(indexOfGestures, initailizeIndex(get(indexOfGestures), gesture));
+const changeIndexOfGesture = atom(null, (get, set, gesture) => {
+  const { letter, index } = gesture;
+  if (lengthOfLetter[letter] - 1 === get(indexOfLetters)[letter]) {
+    set(indexOfLetters, initailizeIndex(get(indexOfLetters), letter));
     return;
   }
 
-  set(indexOfGestures, increaseIndex(get(indexOfGestures), gesture));
+  set(indexOfLetters, changeIndex(get(indexOfLetters), letter, index));
 });
 
-export { indexOfGestures, increaseIndexOfGesture };
-
-// export const addAlphabet = atom(
-//   null,
-//   (get, set) => {
-//     set(alphabet, addToalphabet(get(alphabet), get(count))); //update 함수
-//     set(count, 0); // 카운트 초기화
-//   }
-// )
-
-// export const updateAlphabet = atom(
-//   null,
-//   (get, set, text) => {
-//     set(alphabet, updateAlphabetList(get(alphabet), text))
-//   }
-// )
+export { indexOfLetters, changeIndexOfGesture };
