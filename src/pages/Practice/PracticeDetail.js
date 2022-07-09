@@ -1,26 +1,38 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { useAtom, useAtomValue } from "jotai";
 import "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-converter";
 import "@tensorflow/tfjs-backend-webgl";
 
 import { setHandDetector, drawHandKeypoints } from "../../common/utilities";
 import { GestureEstimator, Gestures } from "../../common/Fingerpose";
+import { indexOfLetters, changeIndexOfGesture } from "../../store";
 
 import VideoContent from "../../components/organisms/VideoContent";
 import Image from "../../components/atoms/Image";
 import Text from "../../components/atoms/Text";
 import Button from "../../components/atoms/Button";
 
-import language from "../../assets/language";
-import { FACING_MODE } from "../../constants/webcam";
+import ImageOfLetters from "../../assets/image";
+import { PRACTICE_DETECTED, FACING_MODE, Letter } from "../../constants";
 
 function PracticeDetail() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
-  const [facingMode, setFacingMode] = useState(FACING_MODE.user);
   const params = useParams();
+  const [facingMode, setFacingMode] = useState(FACING_MODE.user);
+  const [score, setScore] = useState(0);
+  const [result, setResult] = useState(PRACTICE_DETECTED.NONE);
+  const [, increaseIndex] = useAtom(changeIndexOfGesture);
+  const indexGestures = useAtomValue(indexOfLetters);
+  const typeOfLetter = params.id;
+  const indexOfLetter = indexGestures[typeOfLetter];
+  const engNameOfCurrentLetter = Letter[typeOfLetter][indexOfLetter];
+  const koreanNameOfCurrentLetter = Letter[typeOfLetter].getName(
+    engNameOfCurrentLetter,
+  );
 
   const handleFacingModeChange = () => {
     switch (facingMode) {
@@ -31,6 +43,12 @@ function PracticeDetail() {
         setFacingMode(FACING_MODE.user);
         break;
     }
+  };
+
+  const handleIndexChange = (typeOfLetter, currentSign) => {
+    increaseIndex({ letter: typeOfLetter, index: currentSign });
+    setScore(0);
+    setResult(PRACTICE_DETECTED.NONE);
   };
 
   const detectHands = async (detector) => {
@@ -50,7 +68,7 @@ function PracticeDetail() {
 
       try {
         const hand = await detector.estimateHands(video);
-        const GE = new GestureEstimator(Gestures[params.id]);
+        const GE = new GestureEstimator(Gestures[typeOfLetter]);
 
         if (hand.length > 0) {
           const gesture = GE.estimate(hand, 7);
@@ -63,25 +81,17 @@ function PracticeDetail() {
             return hand.gestures.length ? hand.gestures[maxScore] : false;
           });
 
-          let gestureName = "";
-
-          if (!bestGesture[0]) {
-            gestureName = "감지된 제스처가 없어";
+          if (
+            bestGesture[0]?.name === Gestures[typeOfLetter][indexOfLetter]?.name
+          ) {
+            console.log("일치");
+            const scoreToString = (bestGesture[0].score + "").substring(0, 4);
+            console.log(scoreToString);
+            setScore(scoreToString);
+            setResult(PRACTICE_DETECTED.MATCHED);
           } else {
-            if (gesture.length > 1) {
-              // 양손일 때
-
-              if (bestGesture[0]?.name === bestGesture[1]?.name) {
-                gestureName = bestGesture[0]?.name;
-              }
-            } else if (gesture.length === 1) {
-              // 한손 일 때
-              if (bestGesture[0]?.numberOfHands !== 1) {
-                gestureName = "두 손이 필요해";
-              } else {
-                gestureName = bestGesture[0].name;
-              }
-            }
+            setScore(0);
+            setResult(PRACTICE_DETECTED.UNMATCHED);
           }
         }
 
@@ -102,19 +112,32 @@ function PracticeDetail() {
 
       timerId = setInterval(() => {
         detectHands(detector);
-      }, 2000);
+      }, 1000);
     };
 
-    runHandpose();
+    if (webcamRef.current) {
+      runHandpose();
+    }
 
     return () => clearInterval(timerId);
-  }, []);
+  }, [indexGestures]);
 
   return (
     <Container>
-      <Button className="small" onClick={handleFacingModeChange}>
-        카메라 전환
-      </Button>
+      <Wrapper>
+        <Button
+          className="small"
+          onClick={() => handleIndexChange(typeOfLetter, indexOfLetter - 1)}
+        >
+          이전 글자
+        </Button>
+        <Button
+          className="small"
+          onClick={() => handleIndexChange(typeOfLetter, indexOfLetter + 1)}
+        >
+          다음 글자
+        </Button>
+      </Wrapper>
       <VideoContent
         onClick={handleFacingModeChange}
         facingMode={facingMode}
@@ -123,15 +146,19 @@ function PracticeDetail() {
       />
       <Wrapper>
         <ImageBox>
-          <Image width="90%" alt="example" src={language.alphabet} />
+          <Image
+            width="90%"
+            alt="example"
+            src={ImageOfLetters[typeOfLetter][engNameOfCurrentLetter]}
+          />
         </ImageBox>
         <TextBox>
           <Text className="small">자음</Text>
-          <Text className="super">ㄱ</Text>
+          <Text className="super">{koreanNameOfCurrentLetter}</Text>
         </TextBox>
       </Wrapper>
       <TextWrapper>
-        <Text className="normal">정확도</Text>
+        <Text className="normal">{`결과: ${result} /  정확도 : ${score}`}</Text>
       </TextWrapper>
     </Container>
   );

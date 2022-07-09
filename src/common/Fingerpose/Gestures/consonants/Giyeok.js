@@ -17,7 +17,7 @@ giyeok.addDirection(
   FingerDirection[FingerAxis.XY].HorizontalLeft,
   0.8,
 );
-// giyeok.addDirection(Finger.Index, FingerDirection.HorizontalRight, 0.8);
+
 giyeok.addDirection(
   Handedness.Left,
   Finger.Index,
