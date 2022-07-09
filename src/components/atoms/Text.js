@@ -68,5 +68,8 @@ Text.propTypes = {
   size: PropTypes.string,
   blockWidth: PropTypes.bool,
   className: PropTypes.string,
-  children: PropTypes.string,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 };
