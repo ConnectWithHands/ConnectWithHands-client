@@ -13,7 +13,7 @@ export default class FingerPoseEstimator {
       ...{
         // curl estimation
         HALF_CURL_START_LIMIT: 60.0,
-        NO_CURL_START_LIMIT: 130.0,
+        NO_CURL_START_LIMIT: 125.0, // 원래 130
 
         // direction estimation
         DISTANCE_VOTE_POWER: 1.1,
@@ -77,12 +77,16 @@ export default class FingerPoseEstimator {
 
       // check if finger is curled
       let fingerCurled = this.estimateFingerCurl(
+        finger,
         startPoint,
         midPoint,
         endPoint,
       );
 
       let fingerXYposition = this.calculateFingerDirection(
+        finger,
+        handedness,
+        isPalmOrBack,
         FingerAxis.XY,
         startPoint,
         midPoint,
@@ -91,12 +95,14 @@ export default class FingerPoseEstimator {
       );
 
       let fingerYZposition = this.calculateFingerDirection(
+        finger,
+        handedness,
+        isPalmOrBack,
         FingerAxis.YZ,
         startPoint,
         midPoint,
         endPoint,
         slopesZY[finger].slice(pointIndexAt),
-        isPalmOrBack,
       );
 
       fingerCurls[finger] = {
@@ -123,7 +129,7 @@ export default class FingerPoseEstimator {
     let isDiagonal = 0;
     let isHorizontal = 0;
 
-    if (angle >= 75.0 && angle <= 105.0) {
+    if (angle >= 72.0 && angle <= 108.0) {
       isVertical = 1 * weightageAt;
     } else if (angle >= 25.0 && angle <= 155.0) {
       isDiagonal = 1 * weightageAt;
@@ -134,7 +140,7 @@ export default class FingerPoseEstimator {
     return [isVertical, isDiagonal, isHorizontal];
   }
 
-  estimateFingerCurl(startPoint, midPoint, endPoint) {
+  estimateFingerCurl(finger, startPoint, midPoint, endPoint) {
     // startPoint - 0 & wrist, midPoint - 6 & pip, endPoint - 8 & tip
     let start_mid_x_dist = startPoint.x - midPoint.x;
     let start_end_x_dist = startPoint.x - endPoint.x;
@@ -370,12 +376,14 @@ export default class FingerPoseEstimator {
   }
 
   calculateFingerDirection(
+    finger,
+    handedness,
+    isPalmOrBack,
     axis,
     startPoint,
     midPoint,
     endPoint,
     fingerSlopes,
-    isPalmOrBack,
   ) {
     let start_mid_x_dist = startPoint.x - midPoint.x;
     let start_end_x_dist = startPoint.x - endPoint.x;
@@ -418,8 +426,8 @@ export default class FingerPoseEstimator {
         ? start_end_x_y_dist_ratio
         : start_end_z_y_dist_ratio;
 
+    // 최대 y 거리 나누기 최대 x 거리가 클 수록 비율 대비 y 거리가 x보다 더 큼
     if (start_end_dist_ratio > 1.5) {
-      // 최대 y 거리 나누기 최대 x 거리가 클 수록 비율 대비 y 거리가 x보다 더 큼
       voteVertical += this.options.DISTANCE_VOTE_POWER;
     } else if (start_end_dist_ratio > 0.66) {
       voteDiagonal += this.options.DISTANCE_VOTE_POWER;
@@ -468,15 +476,19 @@ export default class FingerPoseEstimator {
 
     if (axis === FingerAxis.XY) {
       if (max_dist === start_mid_dist) {
-        (calc_end_point_x = endPoint.x), (calc_end_point_y = endPoint.y);
+        calc_end_point_x = endPoint.x;
+        calc_end_point_y = endPoint.y;
       } else if (max_dist === mid_end_dist) {
-        (calc_start_point_x = midPoint.x), (calc_start_point_y = midPoint.y);
+        calc_start_point_x = midPoint.x;
+        calc_start_point_y = midPoint.y;
       }
     } else {
       if (max_dist === start_mid_dist) {
-        (calc_end_point_y = endPoint.y), (calc_end_point_z = endPoint.z);
+        calc_end_point_y = endPoint.y;
+        calc_end_point_z = endPoint.z;
       } else if (max_dist === mid_end_dist) {
-        (calc_start_point_y = midPoint.y), (calc_start_point_z = midPoint.z);
+        calc_start_point_y = midPoint.y;
+        calc_start_point_z = midPoint.z;
       }
     }
 
@@ -555,7 +567,6 @@ export default class FingerPoseEstimator {
           start_mid_x_dist,
           mid_end_x_dist,
           max_dist_x,
-          isPalmOrBack,
         );
       } else {
         estimatedDirection = this.estimateDiagonalDirection(
@@ -568,7 +579,6 @@ export default class FingerPoseEstimator {
           start_mid_z_dist,
           mid_end_z_dist,
           max_dist_z,
-          isPalmOrBack,
         );
       }
     }
