@@ -3,6 +3,8 @@ import {
   Finger,
   FingerCurl,
   FingerDirection,
+  FingerPosition,
+  FingerAxis,
 } from "../../FingerDescription";
 import GestureDescription from "../../GestureDescription";
 
@@ -12,8 +14,8 @@ kiuek.addCurl(Handedness.Left, Finger.Thumb, FingerCurl.NoCurl, 1.0);
 kiuek.addDirection(
   Handedness.Left,
   Finger.Thumb,
-  FingerDirection.HorizontalRight,
-  1.0,
+  FingerDirection[FingerAxis.XY].HorizontalRight,
+  0.8,
 );
 
 kiuek.addCurl(Handedness.Left, Finger.Index, FingerCurl.FullCurl, 1.0);
@@ -23,8 +25,8 @@ kiuek.addCurl(Handedness.Left, Finger.Middle, FingerCurl.HalfCurl, 0.8);
 kiuek.addDirection(
   Handedness.Left,
   Finger.Middle,
-  FingerDirection.VerticalDown,
-  1.0,
+  FingerDirection[FingerAxis.XY].VerticalDown,
+  0.8,
 );
 
 kiuek.addCurl(Handedness.Left, Finger.Ring, FingerCurl.FullCurl, 1);

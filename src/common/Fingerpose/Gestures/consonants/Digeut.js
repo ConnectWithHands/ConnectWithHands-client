@@ -3,6 +3,8 @@ import {
   Finger,
   FingerCurl,
   FingerDirection,
+  FingerPosition,
+  FingerAxis,
 } from "../../FingerDescription";
 import GestureDescription from "../../GestureDescription";
 
@@ -14,16 +16,16 @@ diguet.addCurl(Handedness.Left, Finger.Index, FingerCurl.NoCurl, 1.0);
 diguet.addDirection(
   Handedness.Left,
   Finger.Index,
-  FingerDirection.HorizontalRight,
-  1.0,
+  FingerDirection[FingerAxis.XY].HorizontalRight,
+  0.8,
 );
 
 diguet.addCurl(Handedness.Left, Finger.Middle, FingerCurl.NoCurl, 1.0);
 diguet.addDirection(
   Handedness.Left,
   Finger.Middle,
-  FingerDirection.HorizontalRight,
-  1.0,
+  FingerDirection[FingerAxis.XY].HorizontalRight,
+  0.8,
 );
 
 diguet.addCurl(Handedness.Left, Finger.Ring, FingerCurl.FullCurl, 1);
