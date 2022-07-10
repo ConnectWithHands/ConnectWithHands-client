@@ -3,6 +3,11 @@ const Handedness = {
   Right: "Right",
 };
 
+const HandSide = {
+  Palm: "palm",
+  Back: "back",
+};
+
 const Finger = {
   Thumb: 0,
   Index: 1,
@@ -147,11 +152,6 @@ const FingerDirection = {
   },
 };
 
-const FingerPosition = {
-  Palm: "palm",
-  Back: "back",
-};
-
 const FingerAxis = {
   XY: "xy",
   YZ: "yz",
@@ -159,9 +159,9 @@ const FingerAxis = {
 
 export {
   Handedness,
+  HandSide,
   Finger,
   FingerCurl,
   FingerDirection,
-  FingerPosition,
   FingerAxis,
 };
