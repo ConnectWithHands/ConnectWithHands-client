@@ -3,7 +3,7 @@ import {
   Finger,
   FingerCurl,
   FingerDirection,
-  FingerPosition,
+  HandSide,
   FingerAxis,
 } from "../../FingerDescription";
 import GestureDescription from "../../GestureDescription";
@@ -23,7 +23,7 @@ siot.addCurl(
   Finger.Index,
   FingerCurl.NoCurl,
   1.0,
-  FingerPosition.Back,
+  HandSide.Back,
 );
 siot.addDirection(
   Handedness.Left,

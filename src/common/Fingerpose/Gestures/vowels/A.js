@@ -3,7 +3,7 @@ import {
   Finger,
   FingerCurl,
   FingerDirection,
-  FingerPosition,
+  HandSide,
   FingerAxis,
 } from "../../FingerDescription";
 import GestureDescription from "../../GestureDescription";
@@ -25,13 +25,7 @@ a.addDirection(
   0.8,
 );
 
-a.addCurl(
-  Handedness.Left,
-  Finger.Index,
-  FingerCurl.NoCurl,
-  1.0,
-  FingerPosition.Palm,
-);
+a.addCurl(Handedness.Left, Finger.Index, FingerCurl.NoCurl, 1.0, HandSide.Palm);
 a.addDirection(
   Handedness.Left,
   Finger.Index,

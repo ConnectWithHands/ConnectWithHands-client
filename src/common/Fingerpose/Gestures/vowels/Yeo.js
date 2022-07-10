@@ -3,7 +3,8 @@ import {
   Finger,
   FingerCurl,
   FingerDirection,
-  FingerPosition,
+  HandSide,
+  FingerAxis,
 } from "../../FingerDescription";
 import GestureDescription from "../../GestureDescription";
 
@@ -17,16 +18,25 @@ yeo.addCurl(Handedness.Left, Finger.Index, FingerCurl.HalfCurl, 0.8);
 yeo.addDirection(
   Handedness.Left,
   Finger.Index,
-  FingerDirection.HorizontalRight,
-  1.0,
+  FingerDirection[FingerAxis.YZ].ForwardMiddle,
+  0.8,
+  FingerAxis.YZ,
 );
 
-yeo.addCurl(Handedness.Left, Finger.Middle, FingerCurl.HalfCurl, 1);
+yeo.addCurl(Handedness.Left, Finger.Middle, FingerCurl.NoCurl, 1);
+yeo.addCurl(
+  Handedness.Left,
+  Finger.Middle,
+  FingerCurl.HalfCurl,
+  0.8,
+  HandSide.Palm,
+);
 yeo.addDirection(
   Handedness.Left,
-  Finger.Index,
-  FingerDirection.HorizontalRight,
-  1.0,
+  Finger.Middle,
+  FingerDirection[FingerAxis.YZ].ForwardMiddle,
+  0.8,
+  FingerAxis.YZ,
 );
 
 yeo.addCurl(Handedness.Left, Finger.Ring, FingerCurl.FullCurl, 1);

@@ -3,25 +3,20 @@ import {
   Finger,
   FingerCurl,
   FingerDirection,
-  FingerPosition,
+  HandSide,
+  FingerAxis,
 } from "../../FingerDescription";
 import GestureDescription from "../../GestureDescription";
 
 const yo = new GestureDescription("yo");
 
-yo.addCurl(Handedness.Left, Finger.Thumb, FingerCurl.HalfCurl, 1.0);
-yo.addCurl(Handedness.Left, Finger.Thumb, FingerCurl.NoCurl, 0.8);
+yo.addCurl(Handedness.Left, Finger.Thumb, FingerCurl.NoCurl, 1.0);
+yo.addCurl(Handedness.Left, Finger.Thumb, FingerCurl.HalfCurl, 0.8);
 yo.addDirection(
   Handedness.Left,
   Finger.Thumb,
-  FingerDirection.DiagonalUpRight,
+  FingerDirection[FingerAxis.XY].DiagonalUpRight,
   1.0,
-);
-yo.addDirection(
-  Handedness.Left,
-  Finger.Thumb,
-  FingerDirection.HorizontalRight,
-  0.8,
 );
 
 yo.addCurl(
@@ -29,28 +24,21 @@ yo.addCurl(
   Finger.Index,
   FingerCurl.NoCurl,
   1.0,
-  FingerPosition.Back,
+  HandSide.Back,
 );
-yo.addDirection(Handedness.Left, Finger.Index, FingerDirection.VerticalUp, 1.0);
 yo.addDirection(
   Handedness.Left,
   Finger.Index,
-  FingerDirection.DiagonalUpRight,
+  FingerDirection[FingerAxis.XY].VerticalUp,
   0.8,
 );
 
-yo.addCurl(
-  Handedness.Left,
-  Finger.Middle,
-  FingerCurl.NoCurl,
-  1,
-  FingerPosition.Back,
-);
+yo.addCurl(Handedness.Left, Finger.Middle, FingerCurl.NoCurl, 1, HandSide.Back);
 yo.addDirection(
   Handedness.Left,
   Finger.Middle,
-  FingerDirection.VerticalUp,
-  1.0,
+  FingerDirection[FingerAxis.XY].VerticalUp,
+  0.8,
 );
 
 yo.addCurl(Handedness.Left, Finger.Ring, FingerCurl.FullCurl, 1);
