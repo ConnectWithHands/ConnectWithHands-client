@@ -8,7 +8,11 @@ import "@tensorflow/tfjs-backend-webgl";
 
 import { setHandDetector, drawHandKeypoints } from "../../common/utilities";
 import { GestureEstimator, Gestures } from "../../common/Fingerpose";
-import { indexOfLetters, changeIndexOfGesture } from "../../store";
+import {
+  indexOfLetters,
+  increaseIndexOfGesture,
+  decreaseIndexOfGesture,
+} from "../../store";
 
 import VideoContent from "../../components/organisms/VideoContent";
 import Image from "../../components/atoms/Image";
@@ -25,7 +29,10 @@ function PracticeDetail() {
   const [facingMode, setFacingMode] = useState(FACING_MODE.user);
   const [score, setScore] = useState(0);
   const [result, setResult] = useState(PRACTICE_DETECTED.NONE);
-  const [, increaseIndex] = useAtom(changeIndexOfGesture);
+  const [page, setPage] = useState(false);
+  const [detector, setDetector] = useState(false);
+  const [, increaseIndex] = useAtom(increaseIndexOfGesture);
+  const [, decreaseIndex] = useAtom(decreaseIndexOfGesture);
   const indexGestures = useAtomValue(indexOfLetters);
   const typeOfLetter = params.id;
   const indexOfLetter = indexGestures[typeOfLetter];
@@ -45,10 +52,18 @@ function PracticeDetail() {
     }
   };
 
-  const handleIndexChange = (typeOfLetter, currentSign) => {
-    increaseIndex({ letter: typeOfLetter, index: currentSign });
+  const handleIndexIncrease = () => {
+    increaseIndex(typeOfLetter);
     setScore(0);
     setResult(PRACTICE_DETECTED.NONE);
+    setPage(!page);
+  };
+
+  const handleIndexDecrease = () => {
+    decreaseIndex(typeOfLetter);
+    setScore(0);
+    setResult(PRACTICE_DETECTED.NONE);
+    setPage(!page);
   };
 
   const detectHands = async (detector) => {
@@ -86,7 +101,6 @@ function PracticeDetail() {
           ) {
             console.log("일치");
             const scoreToString = (bestGesture[0].score + "").substring(0, 4);
-            console.log(scoreToString);
             setScore(scoreToString);
             setResult(PRACTICE_DETECTED.MATCHED);
           } else {
@@ -105,36 +119,35 @@ function PracticeDetail() {
   };
 
   useEffect(() => {
-    let timerId;
-
     const runHandpose = async () => {
       const detector = await setHandDetector();
+      console.log("detector ready");
+      setDetector(detector);
+    };
 
+    runHandpose();
+  }, []);
+
+  useEffect(() => {
+    let timerId;
+
+    if (detector) {
       timerId = setInterval(() => {
         detectHands(detector);
       }, 1000);
-    };
-
-    if (webcamRef.current) {
-      runHandpose();
+      console.log(timerId);
     }
 
     return () => clearInterval(timerId);
-  }, [indexGestures]);
+  }, [detector, page]);
 
   return (
     <Container>
       <Wrapper>
-        <Button
-          className="small"
-          onClick={() => handleIndexChange(typeOfLetter, indexOfLetter - 1)}
-        >
+        <Button className="small" onClick={handleIndexDecrease}>
           이전 글자
         </Button>
-        <Button
-          className="small"
-          onClick={() => handleIndexChange(typeOfLetter, indexOfLetter + 1)}
-        >
+        <Button className="small" onClick={handleIndexIncrease}>
           다음 글자
         </Button>
       </Wrapper>
