@@ -3,7 +3,7 @@ import {
   Finger,
   FingerCurl,
   FingerDirection,
-  FingerPosition,
+  HandSide,
   FingerAxis,
 } from "../../FingerDescription";
 import GestureDescription from "../../GestureDescription";
@@ -15,7 +15,7 @@ jieut.addDirection(
   Handedness.Left,
   Finger.Thumb,
   FingerDirection[FingerAxis.XY].HorizontalRight,
-  1.0,
+  0.8,
 );
 jieut.addDirection(
   Handedness.Left,
@@ -24,7 +24,13 @@ jieut.addDirection(
   0.8,
 );
 
-jieut.addCurl(Handedness.Left, Finger.Index, FingerCurl.NoCurl, 1.0);
+jieut.addCurl(
+  Handedness.Left,
+  Finger.Index,
+  FingerCurl.NoCurl,
+  1.0,
+  HandSide.Back,
+);
 jieut.addDirection(
   Handedness.Left,
   Finger.Index,

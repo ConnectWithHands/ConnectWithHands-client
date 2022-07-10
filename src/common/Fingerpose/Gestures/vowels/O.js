@@ -3,7 +3,7 @@ import {
   Finger,
   FingerCurl,
   FingerDirection,
-  FingerPosition,
+  HandSide,
   FingerAxis,
 } from "../../FingerDescription";
 import GestureDescription from "../../GestureDescription";
@@ -19,13 +19,7 @@ o.addDirection(
   0.8,
 );
 
-o.addCurl(
-  Handedness.Left,
-  Finger.Index,
-  FingerCurl.NoCurl,
-  1.0,
-  FingerPosition.Back,
-);
+o.addCurl(Handedness.Left, Finger.Index, FingerCurl.NoCurl, 1.0, HandSide.Back);
 o.addDirection(
   Handedness.Left,
   Finger.Index,
@@ -45,14 +39,14 @@ o.addCurl(
   Finger.Middle,
   FingerCurl.FullCurl,
   1,
-  FingerPosition.Back,
+  HandSide.Back,
 );
 o.addCurl(
   Handedness.Left,
   Finger.Middle,
   FingerCurl.HalfCurl,
   0.8,
-  FingerPosition.Back,
+  HandSide.Back,
 );
 
 o.addCurl(Handedness.Left, Finger.Ring, FingerCurl.FullCurl, 1);

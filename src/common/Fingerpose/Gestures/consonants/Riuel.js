@@ -3,7 +3,7 @@ import {
   Finger,
   FingerCurl,
   FingerDirection,
-  FingerPosition,
+  HandSide,
   FingerAxis,
 } from "../../FingerDescription";
 import GestureDescription from "../../GestureDescription";

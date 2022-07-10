@@ -3,7 +3,8 @@ import {
   Finger,
   FingerCurl,
   FingerDirection,
-  FingerPosition,
+  HandSide,
+  FingerAxis,
 } from "../../FingerDescription";
 import GestureDescription from "../../GestureDescription";
 
@@ -16,22 +17,27 @@ ya.addCurl(
   Finger.Index,
   FingerCurl.NoCurl,
   1.0,
-  FingerPosition.Palm,
+  HandSide.Palm,
 );
-ya.addDirection(Handedness.Left, Finger.Index, FingerDirection.VerticalUp, 1.0);
+ya.addDirection(
+  Handedness.Left,
+  Finger.Index,
+  FingerDirection[FingerAxis.XY].VerticalUp,
+  0.8,
+);
 
 ya.addCurl(
   Handedness.Left,
   Finger.Middle,
   FingerCurl.NoCurl,
   1.0,
-  FingerPosition.Palm,
+  HandSide.Palm,
 );
 ya.addDirection(
   Handedness.Left,
   Finger.Middle,
-  FingerDirection.VerticalUp,
-  1.0,
+  FingerDirection[FingerAxis.XY].VerticalUp,
+  0.8,
 );
 
 ya.addCurl(Handedness.Left, Finger.Ring, FingerCurl.FullCurl, 1.0);

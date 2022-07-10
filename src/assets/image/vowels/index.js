@@ -8,7 +8,7 @@ import u from "./vowels_u.PNG";
 import yu from "./vowels_yu.PNG";
 import eu from "./vowels_eu.PNG";
 import i from "./vowels_i.PNG";
-import ae from "./vowels_yae.PNG";
+import ae from "./vowels_ae.PNG";
 import yae from "./vowels_yae.PNG";
 import e from "./vowels_e.PNG";
 import ye from "./vowels_ye.PNG";
