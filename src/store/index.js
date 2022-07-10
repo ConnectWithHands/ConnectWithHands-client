@@ -1,14 +1,14 @@
 import { atom } from "jotai";
 import { lengthOfLetter } from "../constants/index";
 
-const changeIndex = (indexList, letter, newIndex) => ({
+const increaseIndex = (indexList, letter, initialValue) => ({
   ...indexList,
-  [letter]: newIndex,
+  [letter]: initialValue === 0 ? 0 : ++indexList[letter],
 });
 
-const initailizeIndex = (indexList, letter) => ({
+const decreaseIndex = (indexList, letter, initialValue) => ({
   ...indexList,
-  [letter]: 0,
+  [letter]: initialValue || --indexList[letter],
 });
 
 const indexOfLetters = atom({
@@ -17,14 +17,25 @@ const indexOfLetters = atom({
   alphabet: 0,
 });
 
-const changeIndexOfGesture = atom(null, (get, set, gesture) => {
-  const { letter, index } = gesture;
+const increaseIndexOfGesture = atom(null, (get, set, letter) => {
   if (lengthOfLetter[letter] - 1 === get(indexOfLetters)[letter]) {
-    set(indexOfLetters, initailizeIndex(get(indexOfLetters), letter));
+    set(indexOfLetters, increaseIndex(get(indexOfLetters), letter, 0));
     return;
   }
 
-  set(indexOfLetters, changeIndex(get(indexOfLetters), letter, index));
+  set(indexOfLetters, increaseIndex(get(indexOfLetters), letter));
 });
 
-export { indexOfLetters, changeIndexOfGesture };
+const decreaseIndexOfGesture = atom(null, (get, set, letter) => {
+  if (!get(indexOfLetters)[letter]) {
+    set(
+      indexOfLetters,
+      decreaseIndex(get(indexOfLetters), letter, lengthOfLetter[letter] - 1),
+    );
+    return;
+  }
+
+  set(indexOfLetters, decreaseIndex(get(indexOfLetters), letter));
+});
+
+export { indexOfLetters, increaseIndexOfGesture, decreaseIndexOfGesture };
