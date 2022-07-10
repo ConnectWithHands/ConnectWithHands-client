@@ -3,6 +3,8 @@ import {
   Finger,
   FingerCurl,
   FingerDirection,
+  FingerPosition,
+  FingerAxis,
 } from "../../FingerDescription";
 import GestureDescription from "../../GestureDescription";
 
@@ -12,42 +14,36 @@ jieut.addCurl(Handedness.Left, Finger.Thumb, FingerCurl.NoCurl, 1.0);
 jieut.addDirection(
   Handedness.Left,
   Finger.Thumb,
-  FingerDirection.HorizontalRight,
+  FingerDirection[FingerAxis.XY].HorizontalRight,
   1.0,
+);
+jieut.addDirection(
+  Handedness.Left,
+  Finger.Thumb,
+  FingerDirection[FingerAxis.XY].DiagonalDownRight,
+  0.8,
 );
 
 jieut.addCurl(Handedness.Left, Finger.Index, FingerCurl.NoCurl, 1.0);
-jieut.addCurl(Handedness.Left, Finger.Index, FingerCurl.HalfCurl, 0.8);
 jieut.addDirection(
   Handedness.Left,
   Finger.Index,
-  FingerDirection.VerticalDown,
-  1.0,
-);
-jieut.addDirection(
-  Handedness.Left,
-  Finger.Index,
-  FingerDirection.DiagonalDownRight,
+  FingerDirection[FingerAxis.XY].VerticalDown,
   0.8,
 );
 
 jieut.addCurl(Handedness.Left, Finger.Middle, FingerCurl.NoCurl, 1.0);
-jieut.addCurl(Handedness.Left, Finger.Middle, FingerCurl.HalfCurl, 0.8);
 jieut.addDirection(
   Handedness.Left,
   Finger.Middle,
-  FingerDirection.VerticalDown,
-  1.0,
-);
-jieut.addDirection(
-  Handedness.Left,
-  Finger.Middle,
-  FingerDirection.DiagonalDownLeft,
-  1.0,
+  FingerDirection[FingerAxis.XY].VerticalDown,
+  0.8,
 );
 
 jieut.addCurl(Handedness.Left, Finger.Ring, FingerCurl.FullCurl, 1);
+jieut.addCurl(Handedness.Left, Finger.Ring, FingerCurl.HalfCurl, 0.8);
 
 jieut.addCurl(Handedness.Left, Finger.Pinky, FingerCurl.FullCurl, 1);
+jieut.addCurl(Handedness.Left, Finger.Pinky, FingerCurl.HalfCurl, 0.8);
 
 export default jieut;

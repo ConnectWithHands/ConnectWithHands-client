@@ -3,6 +3,8 @@ import {
   Finger,
   FingerCurl,
   FingerDirection,
+  FingerPosition,
+  FingerAxis,
 } from "../../FingerDescription";
 import GestureDescription from "../../GestureDescription";
 
@@ -12,49 +14,47 @@ chieut.addCurl(Handedness.Left, Finger.Thumb, FingerCurl.NoCurl, 1.0);
 chieut.addDirection(
   Handedness.Left,
   Finger.Thumb,
-  FingerDirection.HorizontalRight,
-  1.0,
+  FingerDirection[FingerAxis.XY].DiagonalDownRight,
+  0.8,
 );
 
 chieut.addCurl(Handedness.Left, Finger.Index, FingerCurl.NoCurl, 1.0);
-chieut.addCurl(Handedness.Left, Finger.Index, FingerCurl.HalfCurl, 0.8);
 chieut.addDirection(
   Handedness.Left,
   Finger.Index,
-  FingerDirection.VerticalDown,
-  1.0,
-);
-chieut.addDirection(
-  Handedness.Left,
-  Finger.Index,
-  FingerDirection.DiagonalDownRight,
+  FingerDirection[FingerAxis.XY].VerticalDown,
   0.8,
 );
 
 chieut.addCurl(Handedness.Left, Finger.Middle, FingerCurl.NoCurl, 1.0);
-chieut.addCurl(Handedness.Left, Finger.Middle, FingerCurl.HalfCurl, 0.8);
 chieut.addDirection(
   Handedness.Left,
   Finger.Middle,
-  FingerDirection.VerticalDown,
-  1.0,
-);
-chieut.addDirection(
-  Handedness.Left,
-  Finger.Middle,
-  FingerDirection.DiagonalDownLeft,
-  1.0,
+  FingerDirection[FingerAxis.XY].VerticalDown,
+  0.8,
 );
 
-chieut.addCurl(Handedness.Left, Finger.Ring, FingerCurl.FullCurl, 1);
-chieut.addCurl(Handedness.Left, Finger.Ring, FingerCurl.HalfCurl, 0.8);
+chieut.addCurl(Handedness.Left, Finger.Ring, FingerCurl.NoCurl, 1);
 chieut.addDirection(
   Handedness.Left,
-  Finger.Middle,
-  FingerDirection.DiagonalDownLeft,
-  1.0,
+  Finger.Ring,
+  FingerDirection[FingerAxis.XY].DiagonalDownLeft,
+  0.8,
+);
+chieut.addDirection(
+  Handedness.Left,
+  Finger.Ring,
+  FingerDirection[FingerAxis.XY].VerticalDown,
+  0.8,
 );
 
-chieut.addCurl(Handedness.Left, Finger.Pinky, FingerCurl.FullCurl, 1);
+chieut.addCurl(Handedness.Left, Finger.Pinky, FingerCurl.HalfCurl, 1);
+chieut.addCurl(Handedness.Left, Finger.Pinky, FingerCurl.NoCurl, 0.8);
+chieut.addDirection(
+  Handedness.Left,
+  Finger.Ring,
+  FingerDirection[FingerAxis.XY].VerticalDown,
+  0.8,
+);
 
 export default chieut;

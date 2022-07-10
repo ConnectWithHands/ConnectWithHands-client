@@ -3,6 +3,8 @@ import {
   Finger,
   FingerCurl,
   FingerDirection,
+  FingerPosition,
+  FingerAxis,
 } from "../../FingerDescription";
 import GestureDescription from "../../GestureDescription";
 
@@ -16,13 +18,13 @@ hieut.addCurl(Handedness.Left, Finger.Thumb, FingerCurl.NoCurl, 1.0);
 hieut.addDirection(
   Handedness.Left,
   Finger.Thumb,
-  FingerDirection.VerticalUp,
+  FingerDirection[FingerAxis.XY].VerticalUp,
   1.0,
 );
 hieut.addDirection(
   Handedness.Left,
   Finger.Thumb,
-  FingerDirection.DiagonalUpRight,
+  FingerDirection[FingerAxis.XY].DiagonalUpRight,
   0.9,
 );
 
@@ -40,25 +42,13 @@ for (let finger of [Finger.Index, Finger.Middle, Finger.Ring, Finger.Pinky]) {
 hieut.addDirection(
   Handedness.Left,
   Finger.Index,
-  FingerDirection.DiagonalUpLeft,
+  FingerDirection[FingerAxis.XY].HorizontalRight,
   1.0,
 );
 hieut.addDirection(
   Handedness.Left,
   Finger.Index,
-  FingerDirection.HorizontalLeft,
-  1.0,
-);
-hieut.addDirection(
-  Handedness.Left,
-  Finger.Index,
-  FingerDirection.HorizontalRight,
-  1.0,
-);
-hieut.addDirection(
-  Handedness.Left,
-  Finger.Index,
-  FingerDirection.DiagonalUpRight,
+  FingerDirection[FingerAxis.XY].DiagonalUpRight,
   1.0,
 );
 

@@ -1,16 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-// import "./index.css";
+import { Provider as JotaiProvider } from "jotai";
+
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+    <JotaiProvider>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </JotaiProvider>
   </BrowserRouter>,
 );
 

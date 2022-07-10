@@ -25,17 +25,15 @@ const Container = styled.div`
   position: relative;
 `;
 
-const Wrapper = styled.div``;
-
 VideoContent.propTypes = {
   onClick: PropTypes.func,
   facingMode: PropTypes.string,
   webcamRef: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.shape({ current: PropTypes.elementType }),
+    PropTypes.shape({ current: PropTypes.any }),
   ]),
   canvasRef: PropTypes.oneOfType([
     PropTypes.func,
-    PropTypes.shape({ current: PropTypes.elementType }),
+    PropTypes.shape({ current: PropTypes.any }),
   ]),
 };
