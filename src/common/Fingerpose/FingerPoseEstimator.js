@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-expressions */
 
 import {
+  Handedness,
   Finger,
   FingerCurl,
   FingerDirection,
   FingerAxis,
+  HandSide,
 } from "./FingerDescription";
 
 export default class FingerPoseEstimator {
@@ -31,13 +33,7 @@ export default class FingerPoseEstimator {
     let slopesXY = [];
     let slopesZY = [];
 
-    let isPalmOrBack = "";
-
-    if (handedness === "Left") {
-      isPalmOrBack = keypoints3D[2].x > 0 ? "palm" : "back";
-    } else {
-      isPalmOrBack = keypoints3D[2].x < 0 ? "palm" : "back";
-    }
+    let isPalmOrBack = this.estimateHandSide(handedness, keypoints3D);
 
     for (let finger of Finger.all) {
       let points = Finger.getPoints(finger);
@@ -113,6 +109,110 @@ export default class FingerPoseEstimator {
     }
 
     return { curls: fingerCurls, directions: fingerDirections };
+  }
+
+  estimateHandSide(handedness, keypoints) {
+    const wrist = keypoints[0];
+    const thumb_mcp = keypoints[2];
+    const pinky_tip = keypoints[20];
+
+    const { x: wirst_x, y: wirst_y } = wrist;
+    const { x: thumb_mcp_x, y: thumb_mcp_y } = thumb_mcp;
+    const { x: pinky_tip_x, y: pinky_tip_y } = pinky_tip;
+
+    let expectedHandSide;
+
+    if (
+      wirst_x < thumb_mcp_x &&
+      thumb_mcp_x > pinky_tip_x &&
+      wirst_y > thumb_mcp_y &&
+      thumb_mcp_y > pinky_tip_y
+    ) {
+      if (handedness === Handedness.Left) {
+        expectedHandSide = HandSide.Palm;
+      } else {
+        expectedHandSide = HandSide.Back;
+      }
+    } else if (
+      wirst_x < thumb_mcp_x &&
+      thumb_mcp_x < pinky_tip_x &&
+      wirst_y < thumb_mcp_y &&
+      thumb_mcp_y > pinky_tip_y
+    ) {
+      if (handedness === Handedness.Left) {
+        expectedHandSide = HandSide.Palm;
+      } else {
+        expectedHandSide = HandSide.Back;
+      }
+    } else if (
+      wirst_x > thumb_mcp_x &&
+      thumb_mcp_x > pinky_tip_x &&
+      wirst_y > thumb_mcp_y &&
+      thumb_mcp_y < pinky_tip_y
+    ) {
+      if (handedness === Handedness.Left) {
+        expectedHandSide = HandSide.Palm;
+      } else {
+        expectedHandSide = HandSide.Back;
+      }
+    } else if (
+      wirst_x > thumb_mcp_x &&
+      thumb_mcp_x < pinky_tip_x &&
+      wirst_y < thumb_mcp_y &&
+      thumb_mcp_y < pinky_tip_y
+    ) {
+      if (handedness === Handedness.Left) {
+        expectedHandSide = HandSide.Palm;
+      } else {
+        expectedHandSide = HandSide.Back;
+      }
+    } else if (
+      wirst_x > thumb_mcp_x &&
+      thumb_mcp_x < pinky_tip_x &&
+      wirst_y > thumb_mcp_y &&
+      thumb_mcp_y > pinky_tip_y
+    ) {
+      if (handedness === Handedness.Left) {
+        expectedHandSide = HandSide.Back;
+      } else {
+        expectedHandSide = HandSide.Palm;
+      }
+    } else if (
+      wirst_x < thumb_mcp_x &&
+      thumb_mcp_x < pinky_tip_x &&
+      wirst_y > thumb_mcp_y &&
+      thumb_mcp_y < pinky_tip_y
+    ) {
+      if (handedness === Handedness.Left) {
+        expectedHandSide = HandSide.Back;
+      } else {
+        expectedHandSide = HandSide.Palm;
+      }
+    } else if (
+      wirst_x > thumb_mcp_x &&
+      thumb_mcp_x > pinky_tip_x &&
+      wirst_y < thumb_mcp_y &&
+      thumb_mcp_y > pinky_tip_y
+    ) {
+      if (handedness === Handedness.Left) {
+        expectedHandSide = HandSide.Back;
+      } else {
+        expectedHandSide = HandSide.Palm;
+      }
+    } else if (
+      wirst_x < thumb_mcp_x &&
+      thumb_mcp_x > pinky_tip_x &&
+      wirst_y < thumb_mcp_y &&
+      thumb_mcp_y < pinky_tip_y
+    ) {
+      if (handedness === Handedness.Left) {
+        expectedHandSide = HandSide.Back;
+      } else {
+        expectedHandSide = HandSide.Palm;
+      }
+    }
+
+    return expectedHandSide;
   }
 
   // point1, point2 are 2d or 3d point arrays (xy[z])
