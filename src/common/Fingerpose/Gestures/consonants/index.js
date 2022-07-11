@@ -1,30 +1,30 @@
 import giyeok from "./Giyeok";
-import niuen from "./Nieun";
-import diguet from "./Digeut";
-import riuel from "./Riuel";
+import nieun from "./Nieun";
+import digeut from "./Digeut";
+import rieul from "./Rieul";
 import miuem from "./Mieum";
 import bieup from "./Bieup";
 import siot from "./Siot";
 import ieung from "./Ieung";
 import jieut from "./Jieut";
 import chieut from "./Chieut";
-import kiuek from "./Kieuk";
+import kieuk from "./Kieuk";
 import tieut from "./Tieut";
 import pieup from "./Pieup";
 import hieut from "./Hieut";
 
 const consonants = [
   giyeok,
-  niuen,
-  diguet,
-  riuel,
+  nieun,
+  digeut,
+  rieul,
   miuem,
   bieup,
   siot,
   ieung,
   jieut,
   chieut,
-  kiuek,
+  kieuk,
   tieut,
   pieup,
   hieut,
