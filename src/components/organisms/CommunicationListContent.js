@@ -6,24 +6,21 @@ import PropTypes from "prop-types";
 import Text from "../atoms/Text";
 import Button from "../atoms/Button";
 
-function CommunicationContent({ title, description, buttonTitle }) {
-  const navigate = useNavigate();
-
-  const moveToPage = (pageName) => {
-    navigate(`/communication/${pageName}`);
-  };
-
+function CommunicationContent({
+  title,
+  description,
+  buttonTitle,
+  page,
+  onClick,
+}) {
+  console.log();
   return (
     <StyledContainer>
       <Wrapper>
         <Text className="big">{title}</Text>
         <Text className="small">{description}</Text>
       </Wrapper>
-      <Button
-        width="50vw"
-        className="small"
-        onClick={() => moveToPage("practice")}
-      >
+      <Button width="50vw" className="small" onClick={() => onClick(page)}>
         {buttonTitle}
       </Button>
     </StyledContainer>
@@ -51,6 +48,8 @@ const Wrapper = styled.div`
 
 CommunicationContent.propTypes = {
   title: PropTypes.string,
+  onClick: PropTypes.func,
   description: PropTypes.string,
+  page: PropTypes.string,
   buttonTitle: PropTypes.string,
 };

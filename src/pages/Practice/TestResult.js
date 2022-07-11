@@ -30,7 +30,7 @@ function TestResult() {
 
   return (
     <Container>
-      <HeaderContent title="수어 연습" onClick={moveToTestPage} />
+      <HeaderContent title="테스트 결과" onClick={moveToTestPage} />
       <Wrapper>
         <Image width="50vw" height="30vh" alt="congrats" src={congrats} />
       </Wrapper>

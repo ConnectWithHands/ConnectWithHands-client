@@ -9,6 +9,7 @@ function Button({
   color,
   outline = "none",
   bgColor,
+  margin,
   className,
   onClick,
   children,
@@ -20,6 +21,7 @@ function Button({
     color,
     outline,
     bgColor,
+    margin,
   };
   return (
     <StyledButton {...cssStyle} className={className} onClick={onClick}>
@@ -38,7 +40,7 @@ const StyledButton = styled.button`
   text-align: center;
   width: ${(props) => props.width || "auto"};
   height: ${(props) => props.height || "auto"};
-  margin: 0.5em;
+  margin: ${(props) => props.margin || "0.5em"};
   border-radius: 3.7px;
   border: ${(props) =>
     props.outline === "none" ? "none" : `0.7px solid ${props.outline}`};
@@ -67,6 +69,7 @@ Button.propTypes = {
   color: PropTypes.string,
   outline: PropTypes.string,
   bgColor: PropTypes.string,
+  margin: PropTypes.string,
   blockWidth: PropTypes.bool,
   className: PropTypes.string,
   onClick: PropTypes.func,

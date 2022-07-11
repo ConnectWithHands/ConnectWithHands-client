@@ -2,12 +2,9 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 
-import HeaderContent from "../../components/organisms/HeaderContent";
-
 function Communication() {
   return (
     <Container>
-      <HeaderContent title="대화하기" />
       <Outlet />
     </Container>
   );

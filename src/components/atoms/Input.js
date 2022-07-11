@@ -2,15 +2,29 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-function Input(className, type = "text", name, value, placeholder, onChange) {
+function Input({
+  className,
+  type = "text",
+  name,
+  value,
+  placeholder,
+  onChange,
+}) {
   const props = {
     type,
     name,
     value,
-    placeholder,
   };
 
-  return <StyledInput {...props} className={className} onChange={onChange} />;
+  return (
+    <StyledInput
+      {...props}
+      value={value}
+      placeholder={placeholder}
+      className={className}
+      onChange={onChange}
+    />
+  );
 }
 
 export default Input;
@@ -18,9 +32,8 @@ export default Input;
 const StyledInput = styled.input`
   display: inline-block;
   border: 0.3px solid lightgray;
-  width: 180pxl;
-  height: 40px;
   padding: 0 1rem;
+  margin: 1rem 0;
   &.small {
     min-height: 1.3em;
     font-size: 1rem;

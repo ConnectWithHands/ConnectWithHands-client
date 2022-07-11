@@ -42,7 +42,7 @@ function MainContent() {
           className="normal"
           onClick={() => moveToPage("practice")}
         >
-          수어 연습
+          수어 연습하기
         </Button>
         <Button
           width="80vw"
@@ -50,7 +50,7 @@ function MainContent() {
           className="normal"
           onClick={() => moveToPage("communication")}
         >
-          실시간 대화하기
+          수어 인식하기
         </Button>
       </ButtonList>
     </StyledMainContent>
