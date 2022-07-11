@@ -1,20 +1,13 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import Header from "../molecules/Header";
 
-function HeaderContent({ title }) {
-  const navigate = useNavigate();
-
-  const moveToPreviousPage = () => {
-    navigate(-1);
-  };
-
+function HeaderContent({ title, onClick }) {
   return (
     <StyledHeaderContent>
-      <Header onClick={moveToPreviousPage}>{title}</Header>
+      <Header onClick={onClick}>{title}</Header>
     </StyledHeaderContent>
   );
 }
@@ -28,4 +21,5 @@ const StyledHeaderContent = styled.div`
 
 HeaderContent.propTypes = {
   title: PropTypes.string,
+  onClick: PropTypes.func,
 };

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useAtom, useAtomValue } from "jotai";
 import "@tensorflow/tfjs-core";
@@ -14,18 +14,25 @@ import {
   decreaseIndexOfGesture,
 } from "../../store";
 
+import HeaderContent from "../../components/organisms/HeaderContent";
 import VideoContent from "../../components/organisms/VideoContent";
 import Image from "../../components/atoms/Image";
 import Text from "../../components/atoms/Text";
 import Button from "../../components/atoms/Button";
 
 import ImageOfLetters from "../../assets/image";
-import { PRACTICE_DETECTED, FACING_MODE, Letter } from "../../constants";
+import {
+  PRACTICE_TITLE,
+  PRACTICE_DETECTED,
+  FACING_MODE,
+  Letter,
+} from "../../constants";
 
 function PracticeDetail() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const params = useParams();
+  const navigate = useNavigate();
   const [facingMode, setFacingMode] = useState(FACING_MODE.user);
   const [score, setScore] = useState(0);
   const [result, setResult] = useState(PRACTICE_DETECTED.NONE);
@@ -40,6 +47,10 @@ function PracticeDetail() {
   const koreanNameOfCurrentLetter = Letter[typeOfLetter].getName(
     engNameOfCurrentLetter,
   );
+
+  const moveToPracticeMain = () => {
+    navigate("/practice");
+  };
 
   const handleFacingModeChange = () => {
     switch (facingMode) {
@@ -143,6 +154,7 @@ function PracticeDetail() {
 
   return (
     <Container>
+      <HeaderContent title="수어 연습" onClick={moveToPracticeMain} />
       <Wrapper>
         <Button className="small" onClick={handleIndexDecrease}>
           이전 글자
@@ -166,7 +178,7 @@ function PracticeDetail() {
           />
         </ImageBox>
         <TextBox>
-          <Text className="small">자음</Text>
+          <Text className="small">{PRACTICE_TITLE.getName(typeOfLetter)}</Text>
           <Text className="super">{koreanNameOfCurrentLetter}</Text>
         </TextBox>
       </Wrapper>
@@ -183,13 +195,14 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100vw;
 `;
 
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  width: 100vw;
+  width: 100%;
 `;
 
 const TextWrapper = styled.div`

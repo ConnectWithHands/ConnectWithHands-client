@@ -9,6 +9,7 @@ import Text from "../atoms/Text";
 import Button from "../atoms/Button";
 
 import logo from "../../assets/logo192.png";
+import congrats from "../../assets/congratulations.png";
 
 function MainContent() {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ function MainContent() {
 
   return (
     <StyledMainContent>
-      <Image width="40%" height="180px" alt="logo" src={logo} />
+      <Image width="40%" height="180px" alt="logo" src={congrats} />
       <Title color="black">수어지교(手語之交)</Title>
       <Wrapper>
         <Text color="black" className="normal">
@@ -36,7 +37,7 @@ function MainContent() {
       </Wrapper>
       <ButtonList flexDirection="column">
         <Button
-          width="250px"
+          width="80vw"
           height="50px"
           className="normal"
           onClick={() => moveToPage("practice")}
@@ -44,7 +45,7 @@ function MainContent() {
           수어 연습
         </Button>
         <Button
-          width="250px"
+          width="80vw"
           height="50px"
           className="normal"
           onClick={() => moveToPage("communication")}
