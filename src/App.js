@@ -10,7 +10,8 @@ import PracticeDetail from "./pages/Practice/PracticeDetail";
 import TestDetail from "./pages/Practice/TestDetail";
 import TestResult from "./pages/Practice/TestResult";
 import Communication from "./pages/Communication";
-import CommunicationList from "./pages/Communication/CommunicationList";
+import CommunicationMain from "./pages/Communication/CommunicationMain";
+import SelfGesture from "./pages/Communication/SelfGesture";
 
 function App() {
   return (
@@ -25,7 +26,8 @@ function App() {
           <Route path="detail/:id/test/result" element={<TestResult />} />
         </Route>
         <Route path="/communication" element={<Communication />}>
-          <Route index element={<CommunicationList />} />
+          <Route index element={<CommunicationMain />} />
+          <Route path="selfgesture" element={<SelfGesture />} />
         </Route>
       </Routes>
     </Wrapper>
