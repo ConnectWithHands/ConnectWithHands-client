@@ -8,6 +8,7 @@
   "dependencies": {
     "@tensorflow-models/hand-pose-detection": "^2.0.0",
     "@tensorflow-models/knn-classifier": "^1.2.4",
+    "@tensorflow-models/mobilenet": "^2.1.0",
     "@tensorflow/tfjs": "^3.18.0",
     "@tensorflow/tfjs-backend-webgl": "^3.18.0",
     "@tensorflow/tfjs-converter": "^3.18.0",
@@ -16,6 +17,7 @@
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
     "jotai": "^1.7.4",
+    "nanoid": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.3.0",
