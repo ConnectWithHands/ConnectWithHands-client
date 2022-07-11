@@ -154,7 +154,7 @@ function PracticeDetail() {
 
   return (
     <Container>
-      <HeaderContent title="수어 연습" onClick={moveToPracticeMain} />
+      <HeaderContent title="연습하기" onClick={moveToPracticeMain} />
       <Wrapper>
         <Button className="small" onClick={handleIndexDecrease}>
           이전 글자
@@ -178,7 +178,7 @@ function PracticeDetail() {
           />
         </ImageBox>
         <TextBox>
-          <Text className="small">{PRACTICE_TITLE.getName(typeOfLetter)}</Text>
+          <Text className="small">{PRACTICE_TITLE[typeOfLetter]}</Text>
           <Text className="super">{koreanNameOfCurrentLetter}</Text>
         </TextBox>
       </Wrapper>

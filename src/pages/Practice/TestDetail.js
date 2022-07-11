@@ -178,7 +178,7 @@ function TestDetail() {
 
   return (
     <Container>
-      <HeaderContent title="수어 연습" onClick={moveToPracticeMain} />
+      <HeaderContent title="테스트하기" onClick={moveToPracticeMain} />
       <Wrapper>
         <Button className="small" onClick={handleTestInitialize}>
           다시 하기
@@ -204,7 +204,7 @@ function TestDetail() {
           ) : null}
         </ImageBox>
         <TextBox>
-          <Text className="small">{PRACTICE_TITLE.getName(typeOfLetter)}</Text>
+          <Text className="small">{PRACTICE_TITLE[typeOfLetter]}</Text>
           {koreanNameOfCurrentLetter && (
             <Text className="super">{koreanNameOfCurrentLetter}</Text>
           )}

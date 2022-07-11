@@ -1,29 +1,28 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import PracticeListContent from "../../components/organisms/PracticeListContent";
 import HeaderContent from "../../components/organisms/HeaderContent";
+import CommunicationContent from "../../components/organisms/CommunicationListContent";
+import { COMMUNICATION_LIST } from "../../constants/communication";
 
-import { PRACTICE_LIST } from "../../constants/practice";
-
-function PracticeMain() {
+function CommunicationMain() {
   const navigate = useNavigate();
 
   const moveToHome = () => {
     navigate("/");
   };
 
-  const moveToSubPage = (subPage, test = "") => {
-    navigate(`/practice/detail/${subPage}/${test}`);
+  const moveToSubPage = (subPage) => {
+    navigate(`/communication/${subPage}`);
   };
 
   return (
     <Container>
-      <HeaderContent title="수어 연습" onClick={moveToHome} />
+      <HeaderContent title="수어 인식하기" onClick={moveToHome} />
       <Wrapper>
-        {PRACTICE_LIST.map((data) => (
-          <PracticeListContent
+        {COMMUNICATION_LIST.map((data) => (
+          <CommunicationContent
             key={data.id}
             onClick={moveToSubPage}
             {...data}
@@ -34,7 +33,7 @@ function PracticeMain() {
   );
 }
 
-export default PracticeMain;
+export default CommunicationMain;
 
 const Container = styled.div`
   display: flex;
@@ -47,5 +46,6 @@ const Container = styled.div`
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   margin: auto;
 `;

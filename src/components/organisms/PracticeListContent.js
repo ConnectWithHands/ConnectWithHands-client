@@ -7,22 +7,20 @@ import Text from "../atoms/Text";
 import Button from "../atoms/Button";
 import ButtonList from "../molecules/ButtonList";
 
-import { PRACTICE_TITLE } from "../../constants/practice";
-
-function PracticeListContent({ data, onClick }) {
+function PracticeListContent({ title, image, description, page, onClick }) {
   return (
     <StyledContainer>
-      <Image width="25%" height="70px" alt="logo" src={data.image} />
+      <Image width="25%" height="70px" alt="logo" src={image} />
       <Wrapper>
-        <Text className="big">{data.title}</Text>
-        <Text className="small">{data.description}</Text>
+        <Text className="big">{title}</Text>
+        <Text className="small">{description}</Text>
       </Wrapper>
       <ButtonList flexDirection="column">
         <Button
           width="100px"
           height="40px"
           className="small"
-          onClick={() => onClick(PRACTICE_TITLE[data.id])}
+          onClick={() => onClick(page)}
         >
           연습하기
         </Button>
@@ -30,7 +28,7 @@ function PracticeListContent({ data, onClick }) {
           width="100px"
           height="40px"
           className="small"
-          onClick={() => onClick(PRACTICE_TITLE[data.id], "test")}
+          onClick={() => onClick(page, "test")}
         >
           테스트하기
         </Button>
@@ -57,6 +55,9 @@ const Wrapper = styled.div`
 `;
 
 PracticeListContent.propTypes = {
-  data: PropTypes.object,
+  title: PropTypes.string,
+  image: PropTypes.string,
+  description: PropTypes.string,
+  page: PropTypes.string,
   onClick: PropTypes.func,
 };
