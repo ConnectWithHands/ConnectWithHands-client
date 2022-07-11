@@ -25,6 +25,15 @@ export const PRACTICE_TITLE = {
   0: "consonants",
   1: "vowels",
   2: "alphabet",
+
+  name: {
+    consonants: "자음",
+    vowels: "모음",
+  },
+
+  getName: function (value) {
+    return this.name[value];
+  },
 };
 
 export const PRACTICE_DETECTED = {

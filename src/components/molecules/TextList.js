@@ -2,22 +2,22 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-function ButtonList({ flexDirection, children }) {
+function TextList({ children, flexDirection }) {
   const cssStyle = {
     flexDirection,
   };
 
-  return <StyledButtonList {...cssStyle}>{children}</StyledButtonList>;
+  return <StyledTextList {...cssStyle}>{children}</StyledTextList>;
 }
 
-export default ButtonList;
+export default TextList;
 
-const StyledButtonList = styled.div`
+const StyledTextList = styled.div`
   display: flex;
   flex-direction: ${(props) => props.flexDirection};
 `;
 
-ButtonList.propTypes = {
+TextList.propTypes = {
   flexDirection: PropTypes.string,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
