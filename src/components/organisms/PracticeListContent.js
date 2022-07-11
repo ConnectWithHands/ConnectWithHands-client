@@ -22,7 +22,7 @@ function PracticeListContent({ data, onClick }) {
           width="100px"
           height="40px"
           className="small"
-          onClick={() => onClick("detail", PRACTICE_TITLE[data.id])}
+          onClick={() => onClick(PRACTICE_TITLE[data.id])}
         >
           연습하기
         </Button>
@@ -30,7 +30,7 @@ function PracticeListContent({ data, onClick }) {
           width="100px"
           height="40px"
           className="small"
-          onClick={() => onClick("test", PRACTICE_TITLE[data.id])}
+          onClick={() => onClick(PRACTICE_TITLE[data.id], "test")}
         >
           테스트하기
         </Button>

@@ -16,6 +16,6 @@ export default Main;
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  width: 360px;
-  height: 640px;
+  width: 100vw;
+  height: 100vh;
 `;

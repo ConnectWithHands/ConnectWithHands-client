@@ -17,6 +17,12 @@ chieut.addDirection(
   FingerDirection[FingerAxis.XY].DiagonalDownRight,
   0.8,
 );
+chieut.addDirection(
+  Handedness.Left,
+  Finger.Thumb,
+  FingerDirection[FingerAxis.XY].HorizontalRight,
+  0.8,
+);
 
 chieut.addCurl(Handedness.Left, Finger.Index, FingerCurl.NoCurl, 1.0);
 chieut.addDirection(

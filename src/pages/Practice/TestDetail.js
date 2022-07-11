@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-converter";
 import "@tensorflow/tfjs-backend-webgl";
@@ -9,9 +9,10 @@ import "@tensorflow/tfjs-backend-webgl";
 import { setHandDetector, drawHandKeypoints } from "../../common/utilities";
 import { GestureEstimator, Gestures } from "../../common/Fingerpose";
 import {
-  indexOfLetters,
-  increaseIndexOfGesture,
-  decreaseIndexOfGesture,
+  randomLetters,
+  handleIndexOfRandom,
+  handleCorrectAnswers,
+  initializeResult,
 } from "../../store";
 
 import HeaderContent from "../../components/organisms/HeaderContent";
@@ -23,33 +24,65 @@ import Button from "../../components/atoms/Button";
 import ImageOfLetters from "../../assets/image";
 import {
   PRACTICE_TITLE,
-  PRACTICE_DETECTED,
   FACING_MODE,
+  lengthOfLetter,
   Letter,
 } from "../../constants";
 
-function PracticeDetail() {
+function TestDetail() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const params = useParams();
   const navigate = useNavigate();
   const [facingMode, setFacingMode] = useState(FACING_MODE.user);
-  const [score, setScore] = useState(0);
-  const [result, setResult] = useState(PRACTICE_DETECTED.NONE);
-  const [page, setPage] = useState(false);
   const [detector, setDetector] = useState(false);
-  const [, increaseIndex] = useAtom(increaseIndexOfGesture);
-  const [, decreaseIndex] = useAtom(decreaseIndexOfGesture);
-  const indexGestures = useAtomValue(indexOfLetters);
+  const [indexOfRandom, increaseIndexOfRandom] = useAtom(handleIndexOfRandom);
+  const [numOfCorrectAnswers, increaseNumOfCorrect] =
+    useAtom(handleCorrectAnswers);
+  const [random, setRandom] = useAtom(randomLetters);
+  const [, initailizeTest] = useAtom(initializeResult);
   const typeOfLetter = params.id;
-  const indexOfLetter = indexGestures[typeOfLetter];
-  const engNameOfCurrentLetter = Letter[typeOfLetter][indexOfLetter];
+  const engNameOfCurrentLetter = random[indexOfRandom]?.name;
   const koreanNameOfCurrentLetter = Letter[typeOfLetter].getName(
     engNameOfCurrentLetter,
   );
 
+  const moveToResultPage = (subPage) => {
+    navigate(`/practice/detail/${subPage}/test/result`, {
+      state: subPage,
+    });
+  };
+
   const moveToPracticeMain = () => {
     navigate("/practice");
+  };
+
+  const shuffleGestures = (data) => {
+    const length = lengthOfLetter[data];
+    const gestures = Gestures[data];
+    const result = [];
+    const randomGestures = [];
+
+    for (let i = 0; i < 5; i++) {
+      const random = Math.floor(Math.random() * length);
+
+      if (result.includes(random)) {
+        i--;
+      } else {
+        result.push(random);
+      }
+    }
+
+    result.forEach((index) => {
+      randomGestures.push(gestures[index]);
+    });
+
+    setRandom([...randomGestures]);
+  };
+
+  const handleTestInitialize = () => {
+    initailizeTest();
+    shuffleGestures(typeOfLetter);
   };
 
   const handleFacingModeChange = () => {
@@ -61,20 +94,6 @@ function PracticeDetail() {
         setFacingMode(FACING_MODE.user);
         break;
     }
-  };
-
-  const handleIndexIncrease = () => {
-    increaseIndex(typeOfLetter);
-    setScore(0);
-    setResult(PRACTICE_DETECTED.NONE);
-    setPage(!page);
-  };
-
-  const handleIndexDecrease = () => {
-    decreaseIndex(typeOfLetter);
-    setScore(0);
-    setResult(PRACTICE_DETECTED.NONE);
-    setPage(!page);
   };
 
   const detectHands = async (detector) => {
@@ -94,7 +113,7 @@ function PracticeDetail() {
 
       try {
         const hand = await detector.estimateHands(video);
-        const GE = new GestureEstimator(Gestures[typeOfLetter]);
+        const GE = new GestureEstimator(random);
 
         if (hand.length > 0) {
           const gesture = GE.estimate(hand, 7);
@@ -108,15 +127,12 @@ function PracticeDetail() {
           });
 
           if (
-            bestGesture[0]?.name === Gestures[typeOfLetter][indexOfLetter]?.name
+            bestGesture.length &&
+            bestGesture[0]?.name === random[indexOfRandom]?.name
           ) {
             console.log("일치");
-            const scoreToString = (bestGesture[0].score + "").substring(0, 4);
-            setScore(scoreToString);
-            setResult(PRACTICE_DETECTED.MATCHED);
-          } else {
-            setScore(0);
-            setResult(PRACTICE_DETECTED.UNMATCHED);
+            increaseIndexOfRandom();
+            increaseNumOfCorrect();
           }
         }
 
@@ -136,31 +152,39 @@ function PracticeDetail() {
       setDetector(detector);
     };
 
+    shuffleGestures(typeOfLetter);
+
     runHandpose();
   }, []);
 
   useEffect(() => {
+    if (indexOfRandom === 5) {
+      moveToResultPage(typeOfLetter);
+      return;
+    }
+
+    console.log("다시 타이머 셋");
+
     let timerId;
 
     if (detector) {
       timerId = setInterval(() => {
         detectHands(detector);
       }, 1000);
-      console.log(timerId);
     }
 
     return () => clearInterval(timerId);
-  }, [detector, page]);
+  }, [detector, indexOfRandom]);
 
   return (
     <Container>
       <HeaderContent title="수어 연습" onClick={moveToPracticeMain} />
       <Wrapper>
-        <Button className="small" onClick={handleIndexDecrease}>
-          이전 글자
+        <Button className="small" onClick={handleTestInitialize}>
+          다시 하기
         </Button>
-        <Button className="small" onClick={handleIndexIncrease}>
-          다음 글자
+        <Button className="small" onClick={increaseIndexOfRandom}>
+          넘어가기
         </Button>
       </Wrapper>
       <VideoContent
@@ -171,38 +195,43 @@ function PracticeDetail() {
       />
       <Wrapper>
         <ImageBox>
-          <Image
-            width="90%"
-            alt="example"
-            src={ImageOfLetters[typeOfLetter][engNameOfCurrentLetter]}
-          />
+          {engNameOfCurrentLetter ? (
+            <Image
+              width="90%"
+              alt="example"
+              src={ImageOfLetters[typeOfLetter]?.[engNameOfCurrentLetter]}
+            />
+          ) : null}
         </ImageBox>
         <TextBox>
           <Text className="small">{PRACTICE_TITLE.getName(typeOfLetter)}</Text>
-          <Text className="super">{koreanNameOfCurrentLetter}</Text>
+          {koreanNameOfCurrentLetter && (
+            <Text className="super">{koreanNameOfCurrentLetter}</Text>
+          )}
         </TextBox>
       </Wrapper>
       <TextWrapper>
-        <Text className="normal">{`결과: ${result} /  정확도 : ${score}`}</Text>
+        <Text className="normal">{`문제: ${
+          indexOfRandom + 1
+        }번,  정답: ${numOfCorrectAnswers} / 5 `}</Text>
       </TextWrapper>
     </Container>
   );
 }
 
-export default PracticeDetail;
+export default TestDetail;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100vw;
 `;
 
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  width: 100%;
+  width: 100vw;
 `;
 
 const TextWrapper = styled.div`
