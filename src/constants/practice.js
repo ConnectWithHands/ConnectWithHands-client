@@ -3,37 +3,23 @@ import ImageOfLetters from "../assets/image";
 export const PRACTICE_LIST = [
   {
     id: 0,
-    title: "한글 자음",
+    title: "자음",
     description: "총 14개",
     image: ImageOfLetters.list.consonant,
+    page: "consonants",
   },
   {
     id: 1,
-    title: "한글 모음",
+    title: "모음",
     description: "총 17개",
     image: ImageOfLetters.list.vowel,
-  },
-  {
-    id: 2,
-    title: "알파벳",
-    description: "총 26개",
-    image: ImageOfLetters.list.alphabet,
+    page: "vowels",
   },
 ];
 
 export const PRACTICE_TITLE = {
-  0: "consonants",
-  1: "vowels",
-  2: "alphabet",
-
-  name: {
-    consonants: "자음",
-    vowels: "모음",
-  },
-
-  getName: function (value) {
-    return this.name[value];
-  },
+  consonants: "자음",
+  vowels: "모음",
 };
 
 export const PRACTICE_DETECTED = {
