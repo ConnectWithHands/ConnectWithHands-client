@@ -1,10 +1,10 @@
-import hello from "./Hello";
+import words from "./words";
 import consonants from "./consonants";
 import vowels from "./vowels";
 import alphabet from "./alphabet";
 
 const Gestures = {
-  hello,
+  words,
   consonants,
   vowels,
   alphabet,
