@@ -7,7 +7,6 @@ import { FACING_MODE } from "../../constants/webcam";
 
 function Video(props, ref) {
   const videoConfig = {
-    width: 360,
     facingMode: FACING_MODE.user,
   };
 
@@ -16,6 +15,7 @@ function Video(props, ref) {
       autoPlay
       muted
       playsInline
+      webkit-playsinline="true"
       videoConstraints={videoConfig}
       ref={ref}
     />
@@ -30,7 +30,7 @@ const StyledVideo = styled(Webcam)`
   right: 0;
   text-align: center;
   z-index: 2;
-  width: auto;
+  width: 360px;
   height: auto;
 `;
 
