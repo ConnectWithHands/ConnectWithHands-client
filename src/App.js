@@ -12,6 +12,7 @@ import TestResult from "./pages/Practice/TestResult";
 import Communication from "./pages/Communication";
 import CommunicationMain from "./pages/Communication/CommunicationMain";
 import SelfGesture from "./pages/Communication/SelfGesture";
+import HandGesture from "./pages/Communication/HandGesture";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/communication" element={<Communication />}>
           <Route index element={<CommunicationMain />} />
           <Route path="selfgesture" element={<SelfGesture />} />
+          <Route path="handgesture" element={<HandGesture />} />
         </Route>
       </Routes>
     </Wrapper>
