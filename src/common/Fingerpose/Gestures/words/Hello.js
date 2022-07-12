@@ -3,8 +3,10 @@ import {
   Finger,
   FingerCurl,
   FingerDirection,
-} from "../FingerDescription";
-import GestureDescription from "../GestureDescription";
+  HandSide,
+  FingerAxis,
+} from "../../FingerDescription";
+import GestureDescription from "../../GestureDescription";
 
 // describe victory gesture ✌️
 const hello = new GestureDescription("hello");
@@ -13,14 +15,14 @@ const hello = new GestureDescription("hello");
 hello.addDirection(
   Handedness.Left,
   Finger.Thumb,
-  FingerDirection.VerticalUp,
-  1.0,
+  FingerDirection[FingerAxis.XY].VerticalUp,
+  0.8,
 );
 hello.addDirection(
   Handedness.Left,
   Finger.Thumb,
-  FingerDirection.DiagonalUpRight,
-  1.0,
+  FingerDirection[FingerAxis.XY].DiagonalUpRight,
+  0.8,
 );
 
 // index:
@@ -29,14 +31,14 @@ hello.addCurl(Handedness.Left, Finger.Index, FingerCurl.HalfCurl, 0.8);
 hello.addDirection(
   Handedness.Left,
   Finger.Index,
-  FingerDirection.VerticalUp,
-  1.0,
+  FingerDirection[FingerAxis.XY].VerticalUp,
+  0.8,
 );
 hello.addDirection(
   Handedness.Left,
   Finger.Index,
-  FingerDirection.DiagonalUpRight,
-  1.0,
+  FingerDirection[FingerAxis.XY].DiagonalUpRight,
+  0.8,
 );
 
 // middle:
@@ -45,14 +47,14 @@ hello.addCurl(Handedness.Left, Finger.Middle, FingerCurl.HalfCurl, 0.8);
 hello.addDirection(
   Handedness.Left,
   Finger.Middle,
-  FingerDirection.VerticalUp,
-  1.0,
+  FingerDirection[FingerAxis.XY].VerticalUp,
+  0.8,
 );
 hello.addDirection(
   Handedness.Left,
   Finger.Middle,
-  FingerDirection.HorizontalRight,
-  1.0,
+  FingerDirection[FingerAxis.XY].HorizontalRight,
+  0.8,
 );
 
 // ring:
@@ -61,14 +63,14 @@ hello.addCurl(Handedness.Left, Finger.Ring, FingerCurl.HalfCurl, 0.9);
 hello.addDirection(
   Handedness.Left,
   Finger.Ring,
-  FingerDirection.VerticalUp,
-  1.0,
+  FingerDirection[FingerAxis.XY].VerticalUp,
+  0.8,
 );
 hello.addDirection(
   Handedness.Left,
   Finger.Ring,
-  FingerDirection.DiagonalUpRight,
-  0.9,
+  FingerDirection[FingerAxis.XY].DiagonalUpRight,
+  0.8,
 );
 
 // pinky:
@@ -77,14 +79,14 @@ hello.addCurl(Handedness.Left, Finger.Pinky, FingerCurl.HalfCurl, 0.9);
 hello.addDirection(
   Handedness.Left,
   Finger.Pinky,
-  FingerDirection.VerticalUp,
-  1.0,
+  FingerDirection[FingerAxis.XY].VerticalUp,
+  0.8,
 );
 hello.addDirection(
   Handedness.Left,
   Finger.Pinky,
-  FingerDirection.DiagonalUpLeft,
-  0.9,
+  FingerDirection[FingerAxis.XY].DiagonalUpLeft,
+  0.8,
 );
 
 // thumb:
@@ -92,13 +94,13 @@ hello.addDirection(
   Handedness.Right,
   Finger.Thumb,
   FingerDirection.VerticalUp,
-  1.0,
+  0.8,
 );
 hello.addDirection(
   Handedness.Right,
   Finger.Thumb,
-  FingerDirection.DiagonalUpLeft,
-  1.0,
+  FingerDirection[FingerAxis.XY].DiagonalUpLeft,
+  0.8,
 );
 
 // index:
@@ -107,14 +109,14 @@ hello.addCurl(Handedness.Right, Finger.Index, FingerCurl.HalfCurl, 0.8);
 hello.addDirection(
   Handedness.Right,
   Finger.Index,
-  FingerDirection.VerticalUp,
-  1.0,
+  FingerDirection[FingerAxis.XY].VerticalUp,
+  0.8,
 );
 hello.addDirection(
   Handedness.Right,
   Finger.Index,
-  FingerDirection.DiagonalUpLeft,
-  1.0,
+  FingerDirection[FingerAxis.XY].DiagonalUpLeft,
+  0.8,
 );
 
 // middle:
@@ -123,14 +125,14 @@ hello.addCurl(Handedness.Right, Finger.Middle, FingerCurl.HalfCurl, 0.8);
 hello.addDirection(
   Handedness.Right,
   Finger.Middle,
-  FingerDirection.VerticalUp,
-  1.0,
+  FingerDirection[FingerAxis.XY].VerticalUp,
+  0.8,
 );
 hello.addDirection(
   Handedness.Right,
   Finger.Middle,
-  FingerDirection.HorizontalRight,
-  1.0,
+  FingerDirection[FingerAxis.XY].HorizontalRight,
+  0.8,
 );
 
 // ring:
@@ -139,14 +141,14 @@ hello.addCurl(Handedness.Right, Finger.Ring, FingerCurl.HalfCurl, 0.9);
 hello.addDirection(
   Handedness.Right,
   Finger.Ring,
-  FingerDirection.VerticalUp,
-  1.0,
+  FingerDirection[FingerAxis.XY].VerticalUp,
+  0.8,
 );
 hello.addDirection(
   Handedness.Right,
   Finger.Ring,
-  FingerDirection.DiagonalUpRight,
-  0.9,
+  FingerDirection[FingerAxis.XY].DiagonalUpRight,
+  0.8,
 );
 
 // pinky:
@@ -155,14 +157,14 @@ hello.addCurl(Handedness.Right, Finger.Pinky, FingerCurl.HalfCurl, 0.9);
 hello.addDirection(
   Handedness.Right,
   Finger.Pinky,
-  FingerDirection.VerticalUp,
-  1.0,
+  FingerDirection[FingerAxis.XY].VerticalUp,
+  0.8,
 );
 hello.addDirection(
   Handedness.Right,
   Finger.Pinky,
-  FingerDirection.DiagonalUpRight,
-  0.9,
+  FingerDirection[FingerAxis.XY].DiagonalUpRight,
+  0.8,
 );
 
 export default hello;
