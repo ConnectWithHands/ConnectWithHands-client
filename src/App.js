@@ -9,10 +9,10 @@ import PracticeMain from "./pages/Practice/PracticeMain";
 import PracticeDetail from "./pages/Practice/PracticeDetail";
 import TestDetail from "./pages/Practice/TestDetail";
 import TestResult from "./pages/Practice/TestResult";
-import Communication from "./pages/Communication";
-import CommunicationMain from "./pages/Communication/CommunicationMain";
-import SelfGesture from "./pages/Communication/SelfGesture";
-import HandGesture from "./pages/Communication/HandGesture";
+import Gesture from "./pages/Gesture";
+import GestureMain from "./pages/Gesture/GestureMain";
+import SelfGesture from "./pages/Gesture/SelfGesture";
+import HandGesture from "./pages/Gesture/HandGesture";
 
 function App() {
   return (
@@ -26,10 +26,10 @@ function App() {
           <Route path="detail/:id/test" element={<TestDetail />} />
           <Route path="detail/:id/test/result" element={<TestResult />} />
         </Route>
-        <Route path="/communication" element={<Communication />}>
-          <Route index element={<CommunicationMain />} />
-          <Route path="selfgesture" element={<SelfGesture />} />
+        <Route path="/gesture" element={<Gesture />}>
+          <Route index element={<GestureMain />} />
           <Route path="handgesture" element={<HandGesture />} />
+          <Route path="selfgesture" element={<SelfGesture />} />
         </Route>
       </Routes>
     </Wrapper>

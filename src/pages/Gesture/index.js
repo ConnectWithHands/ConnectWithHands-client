@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 
-function Communication() {
+function Gesture() {
   return (
     <Container>
       <Outlet />
@@ -10,7 +10,7 @@ function Communication() {
   );
 }
 
-export default Communication;
+export default Gesture;
 
 const Container = styled.div`
   display: flex;

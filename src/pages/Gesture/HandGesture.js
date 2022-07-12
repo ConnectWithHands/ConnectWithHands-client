@@ -1,8 +1,15 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import { nanoid } from "nanoid";
+import { throttle } from "lodash";
 import "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-converter";
 import "@tensorflow/tfjs-backend-webgl";
@@ -33,8 +40,8 @@ function HandGesture() {
     setWords([]);
   };
 
-  const moveToCommunicationMain = () => {
-    navigate("/communication");
+  const moveToSubMain = () => {
+    navigate("/gesture");
   };
 
   const handleWordsSpeech = (words) => {
@@ -43,6 +50,12 @@ function HandGesture() {
       window.speechSynthesis.speak(speech);
     }
   };
+
+  const throttleHandler = useMemo(
+    () =>
+      throttle((value) => setWords((previous) => [...previous, value]), 3000),
+    [setWords],
+  );
 
   const detectHands = async (detector) => {
     if (
@@ -78,6 +91,8 @@ function HandGesture() {
             return hand.gestures[maxScore];
           });
 
+          console.log("bestGesture", bestGesture);
+
           if (bestGesture.length > 1 && bestGesture[0] && bestGesture[1]) {
             const [hand1, hand2] = bestGesture;
             console.log(hand1, hand2);
@@ -86,13 +101,7 @@ function HandGesture() {
               const averageScore = (hand1.score + hand2.score) / 2;
               const scoreToString = (averageScore + "").substring(0, 4);
 
-              setWords((previous) => {
-                if (previous.includes(WORD[hand1.name])) {
-                  return [...previous];
-                } else {
-                  return [...previous, WORD[hand1.name]];
-                }
-              });
+              throttleHandler(WORD[hand1.name]);
               setScore(scoreToString);
             }
           } else if (
@@ -114,7 +123,7 @@ function HandGesture() {
               const scoreToString = (bestGesture[0].score + "").substring(0, 4);
 
               setScore(scoreToString);
-              setWords((previous) => [...previous, WORD[bestGesture[0].name]]);
+              throttleHandler(WORD[bestGesture[0].name]);
             }
           }
         } else {
@@ -151,16 +160,22 @@ function HandGesture() {
     if (detector) {
       timerId = setInterval(() => {
         detectHands(detector);
-      }, 1000);
+      }, 500);
       console.log(timerId);
     }
 
     return () => clearInterval(timerId);
   }, [detector]);
 
+  useEffect(() => {
+    return () => {
+      throttleHandler.cancel();
+    };
+  }, []);
+
   return (
     <Container>
-      <HeaderContent title="연습하기" onClick={moveToCommunicationMain} />
+      <HeaderContent title="수어 인식하기" onClick={moveToSubMain} />
       <VideoContent webcamRef={webcamRef} canvasRef={canvasRef} />
       <ContentWrapper>
         <TextBox>

@@ -129,11 +129,11 @@ function SelfGesture() {
     console.log("Uploaded");
   };
 
-  const moveToCommunicationMain = async () => {
+  const moveToSubMain = async () => {
     await classifier.clearAllClasses();
 
     await classifier.dispose();
-    navigate("/communication");
+    navigate("/gesture");
   };
 
   useEffect(() => {
@@ -163,6 +163,7 @@ function SelfGesture() {
       timerId = setInterval(() => {
         runEstimator();
       }, 1000);
+
       console.log(timerId);
     }
 
@@ -171,7 +172,7 @@ function SelfGesture() {
 
   return (
     <Container>
-      <HeaderContent title="나만의 제스처" onClick={moveToCommunicationMain} />
+      <HeaderContent title="나만의 제스처" onClick={moveToSubMain} />
       <VideoWrapper>
         <Video ref={webcamRef} />
       </VideoWrapper>
@@ -181,7 +182,7 @@ function SelfGesture() {
           <StyledText ref={figures}></StyledText>
           <StyledText ref={probability}></StyledText>
         </TextWrapper>
-        <FormContent title="학습 제스처" onClick={addGesture} />
+        <FormContent onClick={addGesture} />
         <ListContainer>
           {gestureList.map((gesture) => (
             <ListWrapper key={gesture.id}>

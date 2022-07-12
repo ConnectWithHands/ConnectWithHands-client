@@ -21,19 +21,13 @@ import Text from "../../components/atoms/Text";
 import Button from "../../components/atoms/Button";
 
 import ImageOfLetters from "../../assets/image";
-import {
-  PRACTICE_TITLE,
-  PRACTICE_DETECTED,
-  FACING_MODE,
-  Letter,
-} from "../../constants";
+import { PRACTICE_TITLE, PRACTICE_DETECTED, Letter } from "../../constants";
 
 function PracticeDetail() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const params = useParams();
   const navigate = useNavigate();
-  const [facingMode, setFacingMode] = useState(FACING_MODE.user);
   const [score, setScore] = useState(0);
   const [result, setResult] = useState(PRACTICE_DETECTED.NONE);
   const [page, setPage] = useState(false);
@@ -48,19 +42,8 @@ function PracticeDetail() {
     engNameOfCurrentLetter,
   );
 
-  const moveToPracticeMain = () => {
+  const moveToSubMain = () => {
     navigate("/practice");
-  };
-
-  const handleFacingModeChange = () => {
-    switch (facingMode) {
-      case FACING_MODE.user:
-        setFacingMode(FACING_MODE.environment);
-        break;
-      case FACING_MODE.environment:
-        setFacingMode(FACING_MODE.user);
-        break;
-    }
   };
 
   const handleIndexIncrease = () => {
@@ -154,7 +137,7 @@ function PracticeDetail() {
 
   return (
     <Container>
-      <HeaderContent title="연습하기" onClick={moveToPracticeMain} />
+      <HeaderContent title="연습하기" onClick={moveToSubMain} />
       <Wrapper>
         <Button className="small" onClick={handleIndexDecrease}>
           이전 글자
@@ -163,12 +146,7 @@ function PracticeDetail() {
           다음 글자
         </Button>
       </Wrapper>
-      <VideoContent
-        onClick={handleFacingModeChange}
-        facingMode={facingMode}
-        webcamRef={webcamRef}
-        canvasRef={canvasRef}
-      />
+      <VideoContent webcamRef={webcamRef} canvasRef={canvasRef} />
       <Wrapper>
         <ImageBox>
           <Image

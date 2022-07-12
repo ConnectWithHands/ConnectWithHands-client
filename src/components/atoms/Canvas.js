@@ -15,7 +15,7 @@ const StyledCanvas = styled.canvas`
   right: 0;
   text-align: center;
   z-index: 4;
-  width: auto;
+  width: 360px;
   height: auto;
 `;
 

@@ -22,19 +22,13 @@ import Text from "../../components/atoms/Text";
 import Button from "../../components/atoms/Button";
 
 import ImageOfLetters from "../../assets/image";
-import {
-  PRACTICE_TITLE,
-  FACING_MODE,
-  lengthOfLetter,
-  Letter,
-} from "../../constants";
+import { PRACTICE_TITLE, lengthOfLetter, Letter } from "../../constants";
 
 function TestDetail() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const params = useParams();
   const navigate = useNavigate();
-  const [facingMode, setFacingMode] = useState(FACING_MODE.user);
   const [detector, setDetector] = useState(false);
   const [indexOfRandom, increaseIndexOfRandom] = useAtom(handleIndexOfRandom);
   const [numOfCorrectAnswers, increaseNumOfCorrect] =
@@ -53,7 +47,7 @@ function TestDetail() {
     });
   };
 
-  const moveToPracticeMain = () => {
+  const moveToSubMain = () => {
     navigate("/practice");
   };
 
@@ -83,17 +77,6 @@ function TestDetail() {
   const handleTestInitialize = () => {
     initailizeTest();
     shuffleGestures(typeOfLetter);
-  };
-
-  const handleFacingModeChange = () => {
-    switch (facingMode) {
-      case FACING_MODE.user:
-        setFacingMode(FACING_MODE.environment);
-        break;
-      case FACING_MODE.environment:
-        setFacingMode(FACING_MODE.user);
-        break;
-    }
   };
 
   const detectHands = async (detector) => {
@@ -178,7 +161,7 @@ function TestDetail() {
 
   return (
     <Container>
-      <HeaderContent title="테스트하기" onClick={moveToPracticeMain} />
+      <HeaderContent title="테스트하기" onClick={moveToSubMain} />
       <Wrapper>
         <Button className="small" onClick={handleTestInitialize}>
           다시 하기
@@ -187,12 +170,7 @@ function TestDetail() {
           넘어가기
         </Button>
       </Wrapper>
-      <VideoContent
-        onClick={handleFacingModeChange}
-        facingMode={facingMode}
-        webcamRef={webcamRef}
-        canvasRef={canvasRef}
-      />
+      <VideoContent webcamRef={webcamRef} canvasRef={canvasRef} />
       <Wrapper>
         <ImageBox>
           {engNameOfCurrentLetter ? (

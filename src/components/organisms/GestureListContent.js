@@ -1,19 +1,11 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import Text from "../atoms/Text";
 import Button from "../atoms/Button";
 
-function CommunicationContent({
-  title,
-  description,
-  buttonTitle,
-  page,
-  onClick,
-}) {
-  console.log();
+function GestureContent({ title, description, buttonTitle, page, onClick }) {
   return (
     <StyledContainer>
       <Wrapper>
@@ -27,7 +19,7 @@ function CommunicationContent({
   );
 }
 
-export default CommunicationContent;
+export default GestureContent;
 
 const StyledContainer = styled.div`
   display: flex;
@@ -46,7 +38,7 @@ const Wrapper = styled.div`
   height: 20vh;
 `;
 
-CommunicationContent.propTypes = {
+GestureContent.propTypes = {
   title: PropTypes.string,
   onClick: PropTypes.func,
   description: PropTypes.string,

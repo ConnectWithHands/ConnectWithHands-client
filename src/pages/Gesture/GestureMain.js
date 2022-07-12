@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import HeaderContent from "../../components/organisms/HeaderContent";
-import CommunicationContent from "../../components/organisms/GestureListContent";
+import GestureContent from "../../components/organisms/GestureListContent";
 import { COMMUNICATION_LIST } from "../../constants/communication";
 
-function CommunicationMain() {
+function GestureMain() {
   const navigate = useNavigate();
 
   const moveToHome = () => {
@@ -14,7 +14,7 @@ function CommunicationMain() {
   };
 
   const moveToSubPage = (subPage) => {
-    navigate(`/communication/${subPage}`);
+    navigate(`/gesture/${subPage}`);
   };
 
   return (
@@ -22,18 +22,14 @@ function CommunicationMain() {
       <HeaderContent title="수어 인식하기" onClick={moveToHome} />
       <Wrapper>
         {COMMUNICATION_LIST.map((data) => (
-          <CommunicationContent
-            key={data.id}
-            onClick={moveToSubPage}
-            {...data}
-          />
+          <GestureContent key={data.id} onClick={moveToSubPage} {...data} />
         ))}
       </Wrapper>
     </Container>
   );
 }
 
-export default CommunicationMain;
+export default GestureMain;
 
 const Container = styled.div`
   display: flex;

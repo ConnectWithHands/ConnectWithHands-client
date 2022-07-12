@@ -1,15 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import Video from "../atoms/Video";
 import Canvas from "../atoms/Canvas";
-import Button from "../atoms/Button";
 
-function VideoContent({ facingMode, webcamRef, canvasRef }) {
+function VideoContent({ webcamRef, canvasRef }) {
   return (
     <Container>
-      <Video facingMode={facingMode} ref={webcamRef} />
+      <Video ref={webcamRef} />
       <Canvas ref={canvasRef} />
     </Container>
   );
@@ -26,8 +25,6 @@ const Container = styled.div`
 `;
 
 VideoContent.propTypes = {
-  onClick: PropTypes.func,
-  facingMode: PropTypes.string,
   webcamRef: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.any }),
