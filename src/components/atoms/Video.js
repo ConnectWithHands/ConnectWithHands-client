@@ -5,13 +5,10 @@ import PropTypes from "prop-types";
 
 import { FACING_MODE } from "../../constants/webcam";
 
-function Video({ facingMode }, ref) {
+function Video(props, ref) {
   const videoConfig = {
     width: 360,
-    facingMode:
-      facingMode === FACING_MODE.user
-        ? FACING_MODE.user
-        : { exact: FACING_MODE.environment },
+    facingMode: FACING_MODE.user,
   };
 
   return (
@@ -38,7 +35,6 @@ const StyledVideo = styled(Webcam)`
 `;
 
 Video.propTypes = {
-  facingMode: PropTypes.string,
   ref: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.elementType }),
