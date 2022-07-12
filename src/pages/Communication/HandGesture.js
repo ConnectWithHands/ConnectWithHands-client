@@ -28,11 +28,6 @@ function HandGesture() {
   const [detector, setDetector] = useState(false);
   const wordsRef = useRef(words);
   wordsRef.current = words;
-  // const indexOfLetter = indexGestures[typeOfLetter];
-  // const engNameOfCurrentLetter = Letter[typeOfLetter][indexOfLetter];
-  // const koreanNameOfCurrentLetter = Letter[typeOfLetter].getName(
-  //   engNameOfCurrentLetter,
-  // );
 
   const handleWordsInitialize = () => {
     setWords([]);
@@ -91,9 +86,6 @@ function HandGesture() {
               const averageScore = (hand1.score + hand2.score) / 2;
               const scoreToString = (averageScore + "").substring(0, 4);
 
-              // setWords((previous) => {
-              //   return [...previous, hand1.name];
-              // });
               setWords((previous) => {
                 if (previous.includes(WORD[hand1.name])) {
                   return [...previous];
