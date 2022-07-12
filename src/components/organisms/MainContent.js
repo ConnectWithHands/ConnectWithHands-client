@@ -9,7 +9,6 @@ import Text from "../atoms/Text";
 import Button from "../atoms/Button";
 
 import logo from "../../assets/logo192.png";
-import congrats from "../../assets/congratulations.png";
 
 function MainContent() {
   const navigate = useNavigate();
@@ -25,7 +24,7 @@ function MainContent() {
 
   return (
     <StyledMainContent>
-      <Image width="40%" height="180px" alt="logo" src={congrats} />
+      <Image width="40%" height="180px" alt="logo" src={logo} />
       <Title color="black">수어지교(手語之交)</Title>
       <Wrapper>
         <Text color="black" className="normal">
@@ -48,7 +47,7 @@ function MainContent() {
           width="80vw"
           height="50px"
           className="normal"
-          onClick={() => moveToPage("communication")}
+          onClick={() => moveToPage("gesture")}
         >
           수어 인식하기
         </Button>
