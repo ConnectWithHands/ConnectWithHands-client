@@ -11,7 +11,6 @@ import GestureDescription from "../../GestureDescription";
 const speech = new GestureDescription("speech");
 
 speech.addCurl(Handedness.Right, Finger.Thumb, FingerCurl.NoCurl, 1.0);
-speech.addCurl(Handedness.Right, Finger.Thumb, FingerCurl.HalfCurl, 0.8);
 speech.addDirection(
   Handedness.Right,
   Finger.Thumb,
@@ -34,12 +33,6 @@ speech.addDirection(
 );
 
 speech.addCurl(Handedness.Right, Finger.Middle, FingerCurl.NoCurl, 1.0);
-speech.addDirection(
-  Handedness.Right,
-  Finger.Middle,
-  FingerDirection[FingerAxis.XY].VerticalUp,
-  0.8,
-);
 
 speech.addCurl(Handedness.Right, Finger.Ring, FingerCurl.NoCurl, 1.0);
 

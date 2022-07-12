@@ -27,7 +27,6 @@ hello.addDirection(
 
 // index:
 hello.addCurl(Handedness.Left, Finger.Index, FingerCurl.FullCurl, 1.0);
-hello.addCurl(Handedness.Left, Finger.Index, FingerCurl.HalfCurl, 0.8);
 hello.addDirection(
   Handedness.Left,
   Finger.Index,
@@ -43,7 +42,6 @@ hello.addDirection(
 
 // middle:
 hello.addCurl(Handedness.Left, Finger.Middle, FingerCurl.FullCurl, 1.0);
-hello.addCurl(Handedness.Left, Finger.Middle, FingerCurl.HalfCurl, 0.8);
 hello.addDirection(
   Handedness.Left,
   Finger.Middle,
@@ -59,7 +57,6 @@ hello.addDirection(
 
 // ring:
 hello.addCurl(Handedness.Left, Finger.Ring, FingerCurl.FullCurl, 1.0);
-hello.addCurl(Handedness.Left, Finger.Ring, FingerCurl.HalfCurl, 0.9);
 hello.addDirection(
   Handedness.Left,
   Finger.Ring,
@@ -75,7 +72,6 @@ hello.addDirection(
 
 // pinky:
 hello.addCurl(Handedness.Left, Finger.Pinky, FingerCurl.FullCurl, 1.0);
-hello.addCurl(Handedness.Left, Finger.Pinky, FingerCurl.HalfCurl, 0.9);
 hello.addDirection(
   Handedness.Left,
   Finger.Pinky,
@@ -105,7 +101,6 @@ hello.addDirection(
 
 // index:
 hello.addCurl(Handedness.Right, Finger.Index, FingerCurl.FullCurl, 1.0);
-hello.addCurl(Handedness.Right, Finger.Index, FingerCurl.HalfCurl, 0.8);
 hello.addDirection(
   Handedness.Right,
   Finger.Index,
@@ -121,7 +116,6 @@ hello.addDirection(
 
 // middle:
 hello.addCurl(Handedness.Right, Finger.Middle, FingerCurl.FullCurl, 1.0);
-hello.addCurl(Handedness.Right, Finger.Middle, FingerCurl.HalfCurl, 0.8);
 hello.addDirection(
   Handedness.Right,
   Finger.Middle,
@@ -137,7 +131,6 @@ hello.addDirection(
 
 // ring:
 hello.addCurl(Handedness.Right, Finger.Ring, FingerCurl.FullCurl, 1.0);
-hello.addCurl(Handedness.Right, Finger.Ring, FingerCurl.HalfCurl, 0.9);
 hello.addDirection(
   Handedness.Right,
   Finger.Ring,
@@ -153,7 +146,6 @@ hello.addDirection(
 
 // pinky:
 hello.addCurl(Handedness.Right, Finger.Pinky, FingerCurl.FullCurl, 1.0);
-hello.addCurl(Handedness.Right, Finger.Pinky, FingerCurl.HalfCurl, 0.9);
 hello.addDirection(
   Handedness.Right,
   Finger.Pinky,
