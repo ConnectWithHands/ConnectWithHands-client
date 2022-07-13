@@ -9,7 +9,6 @@ function FormContent({ title = "", onClick }) {
   const [gestureName, setGesturenName] = useState("");
 
   const handleNameChange = (event) => {
-    console.log(event.target.value);
     setGesturenName(event.target.value);
   };
 
