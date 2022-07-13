@@ -11,11 +11,16 @@ import * as knnClassifier from "@tensorflow-models/knn-classifier";
 
 import HeaderContent from "../../components/organisms/HeaderContent";
 import FormContent from "../../components/organisms/FormContent";
-import Text from "../../components/atoms/Text";
+import ErrorContent from "../../components/organisms/ErrorContent";
 import ButtonList from "../../components/molecules/ButtonList";
+import Text from "../../components/atoms/Text";
 import Button from "../../components/atoms/Button";
 import Input from "../../components/atoms/Input";
 import Video from "../../components/atoms/Video";
+import { isMobile } from "../../common/utilities";
+import { ERROR } from "../../constants";
+
+import MobileError from "../../assets/desktop.png";
 
 function SelfGesture() {
   const navigate = useNavigate();
@@ -27,6 +32,8 @@ function SelfGesture() {
   const [tfWebcam, setTfWebcam] = useState(null);
   const [initialMode, setInitialMode] = useState(false);
   const [gestureList, setGestureList] = useState([]);
+
+  console.log(isMobile());
 
   const runEstimator = async () => {
     if (classifier && model && tfWebcam) {
@@ -142,10 +149,12 @@ function SelfGesture() {
       const webcam = await tf.data.webcam(webcamRef.current.video);
       setTfWebcam(webcam);
       setInitialMode(true);
+      console.log("model loaded");
     };
 
-    runModel();
-    console.log("model loaded");
+    if (!isMobile()) {
+      runModel();
+    }
   }, []);
 
   useEffect(() => {
@@ -170,56 +179,62 @@ function SelfGesture() {
 
   return (
     <Container>
-      <HeaderContent title="나만의 제스처" onClick={moveToSubMain} />
-      <ContentWrapper>
-        <SubWrapper>
-          <Video ref={webcamRef} setWidth={true} />
-        </SubWrapper>
-        <SubWrapper>
-          <TextWrapper>
-            <StyledText>탐지된 제스처 : </StyledText>
-            <StyledText ref={figures}></StyledText>
-            <StyledText ref={probability}></StyledText>
-          </TextWrapper>
-          <FormContent onClick={addGesture} />
-          <ListContainer>
-            {gestureList.map((gesture) => (
-              <ListWrapper key={gesture.id}>
-                <Text width="65%">{gesture.name}</Text>
+      {isMobile() ? (
+        <ErrorContent image={MobileError} text={ERROR.MOBILE_FORBIDDEN} />
+      ) : (
+        <>
+          <HeaderContent title="나만의 제스처" onClick={moveToSubMain} />
+          <ContentWrapper>
+            <SubWrapper>
+              <Video ref={webcamRef} setWidth={true} />
+            </SubWrapper>
+            <SubWrapper>
+              <TextWrapper>
+                <StyledText>탐지된 제스처 : </StyledText>
+                <StyledText ref={figures}></StyledText>
+                <StyledText ref={probability}></StyledText>
+              </TextWrapper>
+              <FormContent onClick={addGesture} />
+              <ListContainer>
+                {gestureList.map((gesture) => (
+                  <ListWrapper key={gesture.id}>
+                    <Text width="65%">{gesture.name}</Text>
+                    <Button
+                      className="small"
+                      onClick={() => trainGesture(gesture.name)}
+                    >
+                      학습
+                    </Button>
+                  </ListWrapper>
+                ))}
+              </ListContainer>
+              <Input
+                type="file"
+                className="small"
+                onChange={() => uploadModel(event)}
+              />
+              <ButtonList width="90%">
                 <Button
-                  className="small"
-                  onClick={() => trainGesture(gesture.name)}
+                  width="80%"
+                  height="50px"
+                  className="normal"
+                  onClick={initializeGesture}
                 >
-                  학습
+                  초기화
                 </Button>
-              </ListWrapper>
-            ))}
-          </ListContainer>
-          <Input
-            type="file"
-            className="small"
-            onChange={() => uploadModel(event)}
-          />
-          <ButtonList width="90%">
-            <Button
-              width="80%"
-              height="50px"
-              className="normal"
-              onClick={initializeGesture}
-            >
-              초기화
-            </Button>
-            <Button
-              width="80%"
-              height="50px"
-              className="normal"
-              onClick={saveModel}
-            >
-              저장하기
-            </Button>
-          </ButtonList>
-        </SubWrapper>
-      </ContentWrapper>
+                <Button
+                  width="80%"
+                  height="50px"
+                  className="normal"
+                  onClick={saveModel}
+                >
+                  저장하기
+                </Button>
+              </ButtonList>
+            </SubWrapper>
+          </ContentWrapper>
+        </>
+      )}
     </Container>
   );
 }

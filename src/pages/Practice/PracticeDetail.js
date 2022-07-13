@@ -27,7 +27,6 @@ import { PRACTICE_TITLE, PRACTICE_DETECTED, Letter } from "../../constants";
 function PracticeDetail() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
-  const indexRef = useRef();
   const params = useParams();
   const navigate = useNavigate();
   const [score, setScore] = useState(0);
@@ -37,7 +36,6 @@ function PracticeDetail() {
   const [, increaseIndex] = useAtom(increaseIndexOfGesture);
   const [, decreaseIndex] = useAtom(decreaseIndexOfGesture);
   const indexGestures = useAtomValue(indexOfLetters);
-  indexRef.current = indexGestures;
   const typeOfLetter = params.id;
   const indexOfLetter = indexGestures[typeOfLetter];
   const engNameOfCurrentLetter = Letter[typeOfLetter][indexOfLetter];
@@ -93,10 +91,8 @@ function PracticeDetail() {
             return hand.gestures.length ? hand.gestures[maxScore] : false;
           });
 
-          const currentIndex = indexRef.current[typeOfLetter];
-
           if (
-            bestGesture[0]?.name === Gestures[typeOfLetter][currentIndex]?.name
+            bestGesture[0]?.name === Gestures[typeOfLetter][indexOfLetter]?.name
           ) {
             console.log("일치");
             const scoreToString = (bestGesture[0].score + "").substring(0, 4);
@@ -133,12 +129,12 @@ function PracticeDetail() {
     if (detector) {
       timerId = setInterval(() => {
         detectHands(detector);
-      }, 500);
+      }, 1000);
       console.log(timerId);
     }
 
     return () => clearInterval(timerId);
-  }, [detector]);
+  }, [detector, page]);
 
   return (
     <Container>
