@@ -38,11 +38,16 @@ function HandGesture() {
     navigate("/gesture");
   };
 
-  const handleWordsSpeech = (words) => {
+  const handleSpeechStart = (words) => {
     if (words.length) {
       speech.text = words;
       window.speechSynthesis.speak(speech);
     }
+  };
+
+  const handleSpeechStop = () => {
+    window.speechSynthesis.pause();
+    window.speechSynthesis.cancel();
   };
 
   const throttleHandler = useMemo(
@@ -89,7 +94,6 @@ function HandGesture() {
 
           if (bestGesture.length > 1 && bestGesture[0] && bestGesture[1]) {
             const [hand1, hand2] = bestGesture;
-            console.log(hand1, hand2);
 
             if (hand1.name === hand2.name) {
               const averageScore = (hand1.score + hand2.score) / 2;
@@ -111,8 +115,7 @@ function HandGesture() {
                 return [...copy];
               });
             } else if (bestGesture[0].name === "speech") {
-              console.log(wordsRef.current);
-              handleWordsSpeech(wordsRef.current);
+              handleSpeechStart(wordsRef.current);
             } else {
               const scoreToString = (bestGesture[0].score + "").substring(0, 4);
 
@@ -154,7 +157,7 @@ function HandGesture() {
     if (detector) {
       timerId = setInterval(() => {
         detectHands(detector);
-      }, 500);
+      }, 1000);
       console.log(timerId);
     }
 
@@ -175,6 +178,9 @@ function HandGesture() {
           <VideoContent webcamRef={webcamRef} canvasRef={canvasRef} />
         </SubWrapper>
         <SubWrapper>
+          <Button className="normal" onClick={handleSpeechStop}>
+            소리끄기
+          </Button>
           <TextBox>
             {words.map((word) => (
               <Text key={nanoid()} className="big">
@@ -198,7 +204,7 @@ function HandGesture() {
               width="80%"
               height="50px"
               className="normal"
-              onClick={() => handleWordsSpeech(words)}
+              onClick={() => handleSpeechStart(words)}
             >
               텍스트 읽기
             </Button>
@@ -237,7 +243,7 @@ const SubWrapper = styled.div`
 
   align-items: center;
   width: 100%;
-  margin: 0 1rem;
+  margin: 1rem;
 `;
 
 const TextBox = styled.div`
@@ -249,6 +255,7 @@ const TextBox = styled.div`
   justify-content: center;
   border: 1px solid black;
   width: 80%;
+  overflow-y: scroll;
 
   @media screen and (max-width: 480px) {
     width: 90%;

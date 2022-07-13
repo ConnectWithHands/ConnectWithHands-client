@@ -65,10 +65,8 @@ function SelfGesture() {
   };
 
   const initializeGesture = async () => {
-    console.log(figures.current.innerText);
     figures.current.innerText = "";
     probability.current.innerText = "";
-    console.log(figures.current.innerText);
 
     await classifier.clearAllClasses();
     setGestureList([]);
@@ -115,7 +113,6 @@ function SelfGesture() {
             tf.tensor(data, shape),
           ]),
         );
-        console.log("tensorObj", tensorObj);
 
         tempModel.setClassifierDataset(tensorObj);
         setClassifier(tempModel);
@@ -148,6 +145,7 @@ function SelfGesture() {
     };
 
     runModel();
+    console.log("model loaded");
   }, []);
 
   useEffect(() => {
@@ -175,7 +173,7 @@ function SelfGesture() {
       <HeaderContent title="나만의 제스처" onClick={moveToSubMain} />
       <ContentWrapper>
         <SubWrapper>
-          <Video ref={webcamRef} />
+          <Video ref={webcamRef} setWidth={true} />
         </SubWrapper>
         <SubWrapper>
           <TextWrapper>
@@ -250,7 +248,7 @@ const ContentWrapper = styled.div`
 const SubWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 1rem;
+  margin: 1rem;
   align-items: center;
   width: 100%;
 `;
