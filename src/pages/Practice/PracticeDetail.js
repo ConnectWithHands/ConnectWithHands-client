@@ -19,6 +19,7 @@ import VideoContent from "../../components/organisms/VideoContent";
 import Image from "../../components/atoms/Image";
 import Text from "../../components/atoms/Text";
 import Button from "../../components/atoms/Button";
+import ButtonList from "../../components/molecules/ButtonList";
 
 import ImageOfLetters from "../../assets/image";
 import { PRACTICE_TITLE, PRACTICE_DETECTED, Letter } from "../../constants";
@@ -68,12 +69,14 @@ function PracticeDetail() {
     ) {
       const video = webcamRef.current.video;
       const { videoWidth, videoHeight } = video;
+      console.log(video);
 
       webcamRef.current.video.width = videoWidth;
       webcamRef.current.video.height = videoHeight;
 
       canvasRef.current.width = videoWidth;
       canvasRef.current.height = videoHeight;
+      console.log(canvasRef.current);
 
       try {
         const hand = await detector.estimateHands(video);
@@ -138,31 +141,45 @@ function PracticeDetail() {
   return (
     <Container>
       <HeaderContent title="연습하기" onClick={moveToSubMain} />
-      <Wrapper>
-        <Button className="small" onClick={handleIndexDecrease}>
-          이전 글자
-        </Button>
-        <Button className="small" onClick={handleIndexIncrease}>
-          다음 글자
-        </Button>
-      </Wrapper>
-      <VideoContent webcamRef={webcamRef} canvasRef={canvasRef} />
-      <Wrapper>
-        <ImageBox>
-          <Image
-            width="90%"
-            alt="example"
-            src={ImageOfLetters[typeOfLetter][engNameOfCurrentLetter]}
-          />
-        </ImageBox>
-        <TextBox>
-          <Text className="small">{PRACTICE_TITLE[typeOfLetter]}</Text>
-          <Text className="super">{koreanNameOfCurrentLetter}</Text>
-        </TextBox>
-      </Wrapper>
-      <TextWrapper>
-        <Text className="normal">{`결과: ${result} /  정확도 : ${score}`}</Text>
-      </TextWrapper>
+      <ContentWrapper>
+        <SubWrapper>
+          <ButtonList width="100%">
+            <Button
+              height="50px"
+              className="small"
+              onClick={handleIndexDecrease}
+            >
+              이전 글자
+            </Button>
+            <Button
+              height="50px"
+              className="small"
+              onClick={handleIndexIncrease}
+            >
+              다음 글자
+            </Button>
+          </ButtonList>
+          <VideoContent webcamRef={webcamRef} canvasRef={canvasRef} />
+        </SubWrapper>
+        <SubWrapper>
+          <Wrapper>
+            <ImageBox>
+              <Image
+                width="50%"
+                alt="example"
+                src={ImageOfLetters[typeOfLetter][engNameOfCurrentLetter]}
+              />
+            </ImageBox>
+            <TextBox>
+              <Text className="small">{PRACTICE_TITLE[typeOfLetter]}</Text>
+              <Text className="super">{koreanNameOfCurrentLetter}</Text>
+            </TextBox>
+          </Wrapper>
+          <TextWrapper>
+            <Text className="normal">{`결과: ${result} /  정확도 : ${score}`}</Text>
+          </TextWrapper>
+        </SubWrapper>
+      </ContentWrapper>
     </Container>
   );
 }
@@ -173,31 +190,64 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100vw;
+  width: 100%;
+  height: 100%;
+`;
+
+const ContentWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+
+  @media screen and (max-width: 480px) {
+    flex-direction: column;
+  }
+`;
+
+const SubWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 0 1rem;
 `;
 
 const Wrapper = styled.div`
   display: flex;
-  justify-content: space-evenly;
+  flex-direction: column;
   align-items: center;
-  width: 100%;
+  width: 70%;
+
+  @media screen and (max-width: 480px) {
+    flex-direction: row;
+    width: 90%;
+  }
 `;
 
 const TextWrapper = styled.div`
-  width: 86vw;
-  height: 8vh;
-  line-height: 8vh;
-  text-align: center;
+  display: flex;
+  justify-content: center;
   border: 1px solid black;
+  width: 70%;
+
+  @media screen and (max-width: 480px) {
+    width: 90%;
+  }
 `;
 
 const ImageBox = styled.div`
   display: flex;
   justify-content: center;
-  width: 40vw;
-  height: 20vh;
-  margin: 1.2em 0;
+  width: 100%;
+  height: 15vh;
+  margin: 1.25rem 0.25rem;
   border: 1px solid black;
+
+  @media screen and (max-width: 480px) {
+    flex-direction: row;
+    width: 100%;
+  }
 `;
 
 const TextBox = styled(ImageBox)`

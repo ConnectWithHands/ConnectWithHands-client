@@ -40,12 +40,12 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100vw;
-  height: 100vh;
+  height: 100%;
 `;
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin: auto;
+  width: 90%;
 `;

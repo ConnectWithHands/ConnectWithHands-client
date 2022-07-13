@@ -173,42 +173,54 @@ function SelfGesture() {
   return (
     <Container>
       <HeaderContent title="나만의 제스처" onClick={moveToSubMain} />
-      <VideoWrapper>
-        <Video ref={webcamRef} />
-      </VideoWrapper>
       <ContentWrapper>
-        <TextWrapper>
-          <StyledText>탐지된 제스처 : </StyledText>
-          <StyledText ref={figures}></StyledText>
-          <StyledText ref={probability}></StyledText>
-        </TextWrapper>
-        <FormContent onClick={addGesture} />
-        <ListContainer>
-          {gestureList.map((gesture) => (
-            <ListWrapper key={gesture.id}>
-              <Text width="65%">{gesture.name}</Text>
-              <Button
-                className="small"
-                onClick={() => trainGesture(gesture.name)}
-              >
-                학습
-              </Button>
-            </ListWrapper>
-          ))}
-        </ListContainer>
-        <Input
-          type="file"
-          className="small"
-          onChange={() => uploadModel(event)}
-        />
-        <ButtonList>
-          <Button className="normal" onClick={initializeGesture}>
-            초기화
-          </Button>
-          <Button className="normal" onClick={saveModel}>
-            저장하기
-          </Button>
-        </ButtonList>
+        <SubWrapper>
+          <Video ref={webcamRef} />
+        </SubWrapper>
+        <SubWrapper>
+          <TextWrapper>
+            <StyledText>탐지된 제스처 : </StyledText>
+            <StyledText ref={figures}></StyledText>
+            <StyledText ref={probability}></StyledText>
+          </TextWrapper>
+          <FormContent onClick={addGesture} />
+          <ListContainer>
+            {gestureList.map((gesture) => (
+              <ListWrapper key={gesture.id}>
+                <Text width="65%">{gesture.name}</Text>
+                <Button
+                  className="small"
+                  onClick={() => trainGesture(gesture.name)}
+                >
+                  학습
+                </Button>
+              </ListWrapper>
+            ))}
+          </ListContainer>
+          <Input
+            type="file"
+            className="small"
+            onChange={() => uploadModel(event)}
+          />
+          <ButtonList width="90%">
+            <Button
+              width="80%"
+              height="50px"
+              className="normal"
+              onClick={initializeGesture}
+            >
+              초기화
+            </Button>
+            <Button
+              width="80%"
+              height="50px"
+              className="normal"
+              onClick={saveModel}
+            >
+              저장하기
+            </Button>
+          </ButtonList>
+        </SubWrapper>
       </ContentWrapper>
     </Container>
   );
@@ -224,12 +236,23 @@ const Container = styled.div`
   height: 100%;
 `;
 
-const VideoWrapper = styled.div`
+const ContentWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+
+  @media screen and (max-width: 480px) {
+    flex-direction: column;
+  }
+`;
+
+const SubWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: black;
+  margin: 0 1rem;
+  align-items: center;
   width: 100%;
-  position: relative;
 `;
 
 const StyledText = styled.div`
@@ -239,20 +262,13 @@ const StyledText = styled.div`
 
 const TextWrapper = styled.div`
   display: flex;
-  width: 100%;
-`;
-
-const ContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  width: 90vw;
+  width: 90%;
 `;
 
 const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 90%;
   height: 15vh;
   border: 1px solid #808080;
   overflow-y: scroll;
@@ -261,6 +277,6 @@ const ListContainer = styled.div`
 const ListWrapper = styled.div`
   display: flex;
   align-items: center;
-  width: 100%;
+  width: 90%;
   margin: 0.3rem 0;
 `;

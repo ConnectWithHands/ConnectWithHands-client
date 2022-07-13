@@ -20,7 +20,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   background-color: black;
-  width: 100vw;
+  width: 100%;
   position: relative;
 `;
 

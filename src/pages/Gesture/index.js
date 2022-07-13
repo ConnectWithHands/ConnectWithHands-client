@@ -15,6 +15,11 @@ export default Gesture;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100vw;
-  height: 100vh;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+
+  @media screen and (max-width: 480px) {
+    flex-direction: column;
+  }
 `;

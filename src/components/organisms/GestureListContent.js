@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 
 import Text from "../atoms/Text";
 import Button from "../atoms/Button";
+import ButtonList from "../molecules/ButtonList";
 
 function GestureContent({ title, description, buttonTitle, page, onClick }) {
   return (
@@ -12,9 +13,18 @@ function GestureContent({ title, description, buttonTitle, page, onClick }) {
         <Text className="big">{title}</Text>
         <Text className="small">{description}</Text>
       </Wrapper>
-      <Button width="50vw" className="small" onClick={() => onClick(page)}>
-        {buttonTitle}
-      </Button>
+      <Wrapper>
+        <ButtonList width="100%">
+          <Button
+            width="80%"
+            height="50px"
+            className="small"
+            onClick={() => onClick(page)}
+          >
+            {buttonTitle}
+          </Button>
+        </ButtonList>
+      </Wrapper>
     </StyledContainer>
   );
 }
@@ -24,18 +34,23 @@ export default GestureContent;
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
+
   align-items: center;
   justify-content: space-evenly;
-  width: 90vw;
-  margin: 1.5em 0;
+  height: 25vh;
+  margin: 1em 0;
   border: 1px solid black;
 `;
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  height: 20vh;
+  width: 50%;
+
+  @media screen and (max-width: 480px) {
+    width: 90%;
+    flex-direction: column;
+  }
 `;
 
 GestureContent.propTypes = {
