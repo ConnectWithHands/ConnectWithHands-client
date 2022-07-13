@@ -10,23 +10,23 @@ import ButtonList from "../molecules/ButtonList";
 function PracticeListContent({ title, image, description, page, onClick }) {
   return (
     <StyledContainer>
-      <Image width="25%" height="70px" alt="logo" src={image} />
+      <Image width="25%" height="200px" alt="logo" src={image} />
       <Wrapper>
         <Text className="big">{title}</Text>
         <Text className="small">{description}</Text>
       </Wrapper>
-      <ButtonList flexDirection="column">
+      <ButtonList width="40%" flexDirection="column">
         <Button
-          width="100px"
-          height="40px"
+          width="80%"
+          height="50px"
           className="small"
           onClick={() => onClick(page)}
         >
           연습하기
         </Button>
         <Button
-          width="100px"
-          height="40px"
+          width="80%"
+          height="50px"
           className="small"
           onClick={() => onClick(page, "test")}
         >
@@ -43,7 +43,6 @@ const StyledContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  width: 90vw;
   height: 25vh;
   margin: 1em 0;
   border: 1px solid black;

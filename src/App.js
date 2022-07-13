@@ -16,30 +16,51 @@ import HandGesture from "./pages/Gesture/HandGesture";
 
 function App() {
   return (
-    <Wrapper>
+    <Container>
       <GlobalStyle />
-      <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/practice" element={<Practice />}>
-          <Route index element={<PracticeMain />} />
-          <Route path="detail/:id" element={<PracticeDetail />} />
-          <Route path="detail/:id/test" element={<TestDetail />} />
-          <Route path="detail/:id/test/result" element={<TestResult />} />
-        </Route>
-        <Route path="/gesture" element={<Gesture />}>
-          <Route index element={<GestureMain />} />
-          <Route path="handgesture" element={<HandGesture />} />
-          <Route path="selfgesture" element={<SelfGesture />} />
-        </Route>
-      </Routes>
-    </Wrapper>
+      <Wrapper>
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/practice" element={<Practice />}>
+            <Route index element={<PracticeMain />} />
+            <Route path="detail/:id" element={<PracticeDetail />} />
+            <Route path="detail/:id/test" element={<TestDetail />} />
+            <Route path="detail/:id/test/result" element={<TestResult />} />
+          </Route>
+          <Route path="/gesture" element={<Gesture />}>
+            <Route index element={<GestureMain />} />
+            <Route path="handgesture" element={<HandGesture />} />
+            <Route path="selfgesture" element={<SelfGesture />} />
+          </Route>
+        </Routes>
+      </Wrapper>
+    </Container>
   );
 }
 
 export default App;
 
-const Wrapper = styled.div`
+const Container = styled.div`
   display: flex;
   flex: 1;
+  align-items: center;
   justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: #f2d7d9;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1280px;
+  height: 1000px;
+  background-color: white;
+  border-radius: 20px;
+
+  @media screen and (max-width: 480px) {
+    flex-direction: column;
+    height: 100%;
+  }
 `;

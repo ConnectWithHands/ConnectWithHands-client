@@ -20,6 +20,7 @@ import VideoContent from "../../components/organisms/VideoContent";
 import Image from "../../components/atoms/Image";
 import Text from "../../components/atoms/Text";
 import Button from "../../components/atoms/Button";
+import ButtonList from "../../components/molecules/ButtonList";
 
 import ImageOfLetters from "../../assets/image";
 import { PRACTICE_TITLE, lengthOfLetter, Letter } from "../../constants";
@@ -162,37 +163,43 @@ function TestDetail() {
   return (
     <Container>
       <HeaderContent title="테스트하기" onClick={moveToSubMain} />
-      <Wrapper>
-        <Button className="small" onClick={handleTestInitialize}>
-          다시 하기
-        </Button>
-        <Button className="small" onClick={increaseIndexOfRandom}>
-          넘어가기
-        </Button>
-      </Wrapper>
-      <VideoContent webcamRef={webcamRef} canvasRef={canvasRef} />
-      <Wrapper>
-        <ImageBox>
-          {engNameOfCurrentLetter ? (
-            <Image
-              width="90%"
-              alt="example"
-              src={ImageOfLetters[typeOfLetter]?.[engNameOfCurrentLetter]}
-            />
-          ) : null}
-        </ImageBox>
-        <TextBox>
-          <Text className="small">{PRACTICE_TITLE[typeOfLetter]}</Text>
-          {koreanNameOfCurrentLetter && (
-            <Text className="super">{koreanNameOfCurrentLetter}</Text>
-          )}
-        </TextBox>
-      </Wrapper>
-      <TextWrapper>
-        <Text className="normal">{`문제: ${
-          indexOfRandom + 1
-        }번,  정답: ${numOfCorrectAnswers} / 5 `}</Text>
-      </TextWrapper>
+      <ContentWrapper>
+        <SubWrapper>
+          <ButtonList width="100%">
+            <Button className="small" onClick={handleTestInitialize}>
+              다시 하기
+            </Button>
+            <Button className="small" onClick={increaseIndexOfRandom}>
+              넘어가기
+            </Button>
+          </ButtonList>
+          <VideoContent webcamRef={webcamRef} canvasRef={canvasRef} />
+        </SubWrapper>
+        <SubWrapper>
+          <Wrapper>
+            <ImageBox>
+              {engNameOfCurrentLetter ? (
+                <Image
+                  width="50%"
+                  alt="example"
+                  src={ImageOfLetters[typeOfLetter]?.[engNameOfCurrentLetter]}
+                />
+              ) : null}
+            </ImageBox>
+            <TextBox>
+              <Text className="small">{PRACTICE_TITLE[typeOfLetter]}</Text>
+              {koreanNameOfCurrentLetter && (
+                <Text className="super">{koreanNameOfCurrentLetter}</Text>
+              )}
+            </TextBox>
+          </Wrapper>
+          <TextWrapper>
+            <Text className="normal">{`문제: ${
+              indexOfRandom + 1
+            }번,  정답: ${numOfCorrectAnswers} / 5 `}</Text>
+          </TextWrapper>
+        </SubWrapper>
+      </ContentWrapper>
     </Container>
   );
 }
@@ -203,30 +210,64 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  height: 100%;
+`;
+
+const ContentWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+
+  @media screen and (max-width: 480px) {
+    flex-direction: column;
+  }
+`;
+
+const SubWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 0 1rem;
 `;
 
 const Wrapper = styled.div`
   display: flex;
-  justify-content: space-evenly;
+  flex-direction: column;
   align-items: center;
-  width: 100vw;
+  width: 70%;
+
+  @media screen and (max-width: 480px) {
+    flex-direction: row;
+    width: 90%;
+  }
 `;
 
 const TextWrapper = styled.div`
-  width: 86vw;
-  height: 8vh;
-  line-height: 8vh;
-  text-align: center;
+  display: flex;
+  justify-content: center;
   border: 1px solid black;
+  width: 70%;
+
+  @media screen and (max-width: 480px) {
+    width: 90%;
+  }
 `;
 
 const ImageBox = styled.div`
   display: flex;
   justify-content: center;
-  width: 40vw;
-  height: 20vh;
-  margin: 1.2em 0;
+  width: 100%;
+  height: 15vh;
+  margin: 1.25rem 0.25rem;
   border: 1px solid black;
+
+  @media screen and (max-width: 480px) {
+    flex-direction: row;
+    width: 100%;
+  }
 `;
 
 const TextBox = styled(ImageBox)`

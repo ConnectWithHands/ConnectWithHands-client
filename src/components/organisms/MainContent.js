@@ -24,9 +24,9 @@ function MainContent() {
 
   return (
     <StyledMainContent>
-      <Image width="40%" height="180px" alt="logo" src={logo} />
-      <Title color="black">수어지교(手語之交)</Title>
       <Wrapper>
+        <Image width="60%" height="400px" alt="logo" src={logo} />
+        <Title color="black">수어지교(手語之交)</Title>
         <Text color="black" className="normal">
           {subTitle}
         </Text>
@@ -34,24 +34,26 @@ function MainContent() {
           {descriptionText}
         </Text>
       </Wrapper>
-      <ButtonList flexDirection="column">
-        <Button
-          width="80vw"
-          height="50px"
-          className="normal"
-          onClick={() => moveToPage("practice")}
-        >
-          수어 연습하기
-        </Button>
-        <Button
-          width="80vw"
-          height="50px"
-          className="normal"
-          onClick={() => moveToPage("gesture")}
-        >
-          수어 인식하기
-        </Button>
-      </ButtonList>
+      <ButtonWrapper>
+        <ButtonList width="100%" flexDirection="column">
+          <Button
+            width="80%"
+            height="50px"
+            className="normal"
+            onClick={() => moveToPage("practice")}
+          >
+            수어 연습하기
+          </Button>
+          <Button
+            width="80%"
+            height="50px"
+            className="normal"
+            onClick={() => moveToPage("gesture")}
+          >
+            수어 인식하기
+          </Button>
+        </ButtonList>
+      </ButtonWrapper>
     </StyledMainContent>
   );
 }
@@ -60,14 +62,37 @@ export default MainContent;
 
 const StyledMainContent = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
+  width: 100%;
+
+  @media screen and (max-width: 480px) {
+    flex-direction: column;
+  }
 `;
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  width: 50%;
+
+  @media screen and (max-width: 480px) {
+    flex-direction: column;
+    width: 100%;
+  }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  width: 50%;
+
+  @media screen and (max-width: 480px) {
+    width: 100%;
+  }
 `;
 
 MainContent.propTypes = {};

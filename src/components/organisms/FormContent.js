@@ -3,8 +3,6 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import Text from "../atoms/Text";
-import ButtonList from "../molecules/ButtonList";
-import Button from "../atoms/Button";
 import Form from "../molecules/Form";
 
 function FormContent({ title = "", onClick }) {

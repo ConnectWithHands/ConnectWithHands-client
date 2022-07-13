@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -176,26 +170,40 @@ function HandGesture() {
   return (
     <Container>
       <HeaderContent title="수어 인식하기" onClick={moveToSubMain} />
-      <VideoContent webcamRef={webcamRef} canvasRef={canvasRef} />
       <ContentWrapper>
-        <TextBox>
-          {words.map((word) => (
-            <Text key={nanoid()} className="big">
-              {word}
-            </Text>
-          ))}
-        </TextBox>
-        <TextWrapper>
-          <Text className="normal">{`정확도 : ${score}`}</Text>
-        </TextWrapper>
-        <ButtonList>
-          <Button className="normal" onClick={handleWordsInitialize}>
-            초기화
-          </Button>
-          <Button className="normal" onClick={() => handleWordsSpeech(words)}>
-            텍스트 읽기
-          </Button>
-        </ButtonList>
+        <SubWrapper>
+          <VideoContent webcamRef={webcamRef} canvasRef={canvasRef} />
+        </SubWrapper>
+        <SubWrapper>
+          <TextBox>
+            {words.map((word) => (
+              <Text key={nanoid()} className="big">
+                {word}
+              </Text>
+            ))}
+          </TextBox>
+          <TextWrapper>
+            <Text className="normal">{`정확도 : ${score}`}</Text>
+          </TextWrapper>
+          <ButtonList width="90%">
+            <Button
+              width="80%"
+              height="50px"
+              className="normal"
+              onClick={handleWordsInitialize}
+            >
+              초기화
+            </Button>
+            <Button
+              width="80%"
+              height="50px"
+              className="normal"
+              onClick={() => handleWordsSpeech(words)}
+            >
+              텍스트 읽기
+            </Button>
+          </ButtonList>
+        </SubWrapper>
       </ContentWrapper>
     </Container>
   );
@@ -213,25 +221,47 @@ const Container = styled.div`
 
 const ContentWrapper = styled.div`
   display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+
+  @media screen and (max-width: 480px) {
+    flex-direction: column;
+  }
+`;
+
+const SubWrapper = styled.div`
+  display: flex;
   flex-direction: column;
-  margin: auto 0;
-  width: 90vw;
+  margin: auto;
+
+  align-items: center;
+  width: 100%;
+  margin: 0 1rem;
 `;
 
 const TextBox = styled.div`
-  display: flex;
   flex-wrap: wrap;
-  width: 86vw;
   height: 15vh;
   margin: 1rem 0;
+
+  display: flex;
+  justify-content: center;
   border: 1px solid black;
+  width: 80%;
+
+  @media screen and (max-width: 480px) {
+    width: 90%;
+  }
 `;
 
 const TextWrapper = styled.div`
-  width: 86vw;
-  height: 8vh;
-  line-height: 8vh;
-  text-align: center;
+  display: flex;
+  justify-content: center;
   border: 1px solid black;
-  margin: 0.5rem 0;
+  width: 80%;
+
+  @media screen and (max-width: 480px) {
+    width: 90%;
+  }
 `;
