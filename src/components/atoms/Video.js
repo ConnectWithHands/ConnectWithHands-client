@@ -18,9 +18,12 @@ function Video(props, ref) {
     return isAndroid() || isiOS();
   };
 
+  const widthClassifier = isMobile() && props.setWidth;
+  console.log(widthClassifier);
+
   const $size = { width: 640 };
   const $m_size = { width: 360 };
-  const videoConfig = {
+  const normalConfig = {
     facingMode: FACING_MODE.user,
     width: isMobile() ? $m_size.width : $size.width,
   };
@@ -30,8 +33,8 @@ function Video(props, ref) {
       autoPlay
       muted
       playsInline
-      webkit-playsinline="true"
-      videoConstraints={videoConfig}
+      videoConstraints={normalConfig}
+      isclassifier={widthClassifier?.toString()}
       ref={ref}
     />
   );
@@ -45,11 +48,12 @@ const StyledVideo = styled(Webcam)`
   right: 0;
   text-align: center;
   z-index: 2;
-  width: auto;
+  width: ${(props) => (props.isclassifier === "true" ? "360px" : "auto")};
   height: auto;
 `;
 
 Video.propTypes = {
+  setWidth: PropTypes.bool,
   ref: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.elementType }),

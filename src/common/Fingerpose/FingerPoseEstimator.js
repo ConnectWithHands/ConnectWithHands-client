@@ -15,7 +15,7 @@ export default class FingerPoseEstimator {
       ...{
         // curl estimation
         HALF_CURL_START_LIMIT: 60.0,
-        NO_CURL_START_LIMIT: 125.0, // 원래 130
+        NO_CURL_START_LIMIT: 120.0, // 원래 130
 
         // direction estimation
         DISTANCE_VOTE_POWER: 1.1,
@@ -242,6 +242,7 @@ export default class FingerPoseEstimator {
 
   estimateFingerCurl(finger, startPoint, midPoint, endPoint) {
     // startPoint - 0 & wrist, midPoint - 6 & pip, endPoint - 8 & tip
+
     let start_mid_x_dist = startPoint.x - midPoint.x;
     let start_end_x_dist = startPoint.x - endPoint.x;
     let mid_end_x_dist = midPoint.x - endPoint.x;

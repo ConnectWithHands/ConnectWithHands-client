@@ -13,13 +13,13 @@ const e = new GestureDescription("e");
 e.addCurl(Handedness.Left, Finger.Thumb, FingerCurl.HalfCurl, 1.0);
 e.addCurl(Handedness.Left, Finger.Thumb, FingerCurl.NoCurl, 0.8);
 
-e.addCurl(Handedness.Left, Finger.Index, FingerCurl.NoCurl, 1.0, HandSide.Palm);
+e.addCurl(Handedness.Left, Finger.Index, FingerCurl.NoCurl, 1.0, HandSide.Back);
 e.addCurl(
   Handedness.Left,
   Finger.Index,
   FingerCurl.HalfCurl,
   0.8,
-  HandSide.Palm,
+  HandSide.Back,
 );
 e.addDirection(
   Handedness.Left,

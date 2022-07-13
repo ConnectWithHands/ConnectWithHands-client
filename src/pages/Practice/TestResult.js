@@ -1,10 +1,7 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAtom } from "jotai";
 
 import styled from "styled-components";
-
-import { handleCorrectAnswers, initializeResult } from "../../store";
 
 import HeaderContent from "../../components/organisms/HeaderContent";
 import Button from "../../components/atoms/Button";
@@ -16,17 +13,14 @@ import ButtonList from "../../components/molecules/ButtonList";
 function TestResult() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [numOfCorrectAnswers] = useAtom(handleCorrectAnswers);
-  const [, initailizeTest] = useAtom(initializeResult);
+  const { subPage, result } = location.state;
 
   const moveToHome = () => {
-    initailizeTest();
     navigate(`/`);
   };
 
   const moveToTestPage = () => {
-    initailizeTest();
-    navigate(`/practice/detail/${location.state}/test`);
+    navigate(`/practice/detail/${subPage}/test`);
   };
 
   return (
@@ -40,7 +34,7 @@ function TestResult() {
               테스트 결과
             </Text>
             <Text color="black" className="normal">
-              {`총 5문제 중 ${numOfCorrectAnswers} 정답`}
+              {`총 5문제 중 ${result} 정답`}
             </Text>
           </TextWrapper>
         </Wrapper>
