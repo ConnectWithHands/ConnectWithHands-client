@@ -18,14 +18,14 @@ ye.addCurl(
   Finger.Index,
   FingerCurl.NoCurl,
   1.0,
-  HandSide.Palm,
+  HandSide.Back,
 );
 ye.addCurl(
   Handedness.Left,
   Finger.Index,
   FingerCurl.HalfCurl,
   0.8,
-  HandSide.Palm,
+  HandSide.Back,
 );
 ye.addDirection(
   Handedness.Left,
@@ -55,8 +55,8 @@ ye.addDirection(
 ye.addCurl(Handedness.Left, Finger.Ring, FingerCurl.FullCurl, 1.0);
 ye.addCurl(Handedness.Left, Finger.Ring, FingerCurl.HalfCurl, 1.0);
 
-ye.addCurl(Handedness.Left, Finger.Pinky, FingerCurl.FullCurl, 1.0);
 ye.addCurl(Handedness.Left, Finger.Pinky, FingerCurl.HalfCurl, 1.0);
+ye.addCurl(Handedness.Left, Finger.Pinky, FingerCurl.NoCurl, 1.0);
 ye.addDirection(
   Handedness.Left,
   Finger.Pinky,
