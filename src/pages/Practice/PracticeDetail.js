@@ -27,6 +27,7 @@ import { PRACTICE_TITLE, PRACTICE_DETECTED, Letter } from "../../constants";
 function PracticeDetail() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
+  const indexRef = useRef();
   const params = useParams();
   const navigate = useNavigate();
   const [score, setScore] = useState(0);
@@ -36,6 +37,7 @@ function PracticeDetail() {
   const [, increaseIndex] = useAtom(increaseIndexOfGesture);
   const [, decreaseIndex] = useAtom(decreaseIndexOfGesture);
   const indexGestures = useAtomValue(indexOfLetters);
+  indexRef.current = indexGestures;
   const typeOfLetter = params.id;
   const indexOfLetter = indexGestures[typeOfLetter];
   const engNameOfCurrentLetter = Letter[typeOfLetter][indexOfLetter];
@@ -69,14 +71,12 @@ function PracticeDetail() {
     ) {
       const video = webcamRef.current.video;
       const { videoWidth, videoHeight } = video;
-      console.log(video);
 
       webcamRef.current.video.width = videoWidth;
       webcamRef.current.video.height = videoHeight;
 
       canvasRef.current.width = videoWidth;
       canvasRef.current.height = videoHeight;
-      console.log(canvasRef.current);
 
       try {
         const hand = await detector.estimateHands(video);
@@ -93,8 +93,10 @@ function PracticeDetail() {
             return hand.gestures.length ? hand.gestures[maxScore] : false;
           });
 
+          const currentIndex = indexRef.current[typeOfLetter];
+
           if (
-            bestGesture[0]?.name === Gestures[typeOfLetter][indexOfLetter]?.name
+            bestGesture[0]?.name === Gestures[typeOfLetter][currentIndex]?.name
           ) {
             console.log("일치");
             const scoreToString = (bestGesture[0].score + "").substring(0, 4);
@@ -131,12 +133,12 @@ function PracticeDetail() {
     if (detector) {
       timerId = setInterval(() => {
         detectHands(detector);
-      }, 1000);
+      }, 500);
       console.log(timerId);
     }
 
     return () => clearInterval(timerId);
-  }, [detector, page]);
+  }, [detector]);
 
   return (
     <Container>
