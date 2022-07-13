@@ -1,4 +1,4 @@
-export const COMMUNICATION_LIST = [
+export const GESTURE_PAGE = [
   {
     id: 0,
     title: "수어 인식하기",

@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import HeaderContent from "../../components/organisms/HeaderContent";
-import GestureContent from "../../components/organisms/GestureListContent";
-import { GESTURE_PAGE } from "../../constants/gesturePage";
+import CommunicationContent from "../../components/organisms/GestureListContent";
+import { COMMUNICATION_LIST } from "../../constants/gesturePage";
 
-function GestureMain() {
+function CommunicationMain() {
   const navigate = useNavigate();
 
   const moveToHome = () => {
@@ -14,33 +14,38 @@ function GestureMain() {
   };
 
   const moveToSubPage = (subPage) => {
-    navigate(`/gesture/${subPage}`);
+    navigate(`/communication/${subPage}`);
   };
 
   return (
     <Container>
       <HeaderContent title="수어 인식하기" onClick={moveToHome} />
       <Wrapper>
-        {GESTURE_PAGE.map((data) => (
-          <GestureContent key={data.id} onClick={moveToSubPage} {...data} />
+        {COMMUNICATION_LIST.map((data) => (
+          <CommunicationContent
+            key={data.id}
+            onClick={moveToSubPage}
+            {...data}
+          />
         ))}
       </Wrapper>
     </Container>
   );
 }
 
-export default GestureMain;
+export default CommunicationMain;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
 `;
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   margin: auto;
-  width: 90%;
 `;
