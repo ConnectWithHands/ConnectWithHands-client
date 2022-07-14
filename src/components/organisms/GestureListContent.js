@@ -20,7 +20,7 @@ function GestureContent({
   return (
     <StyledContainer>
       <Image
-        width={isMobile() ? "30%" : "20%"}
+        width={isMobile() ? "25%" : "20%"}
         height="250px"
         alt="icon"
         src={image}
