@@ -7,7 +7,7 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-serviceWorkerRegistration.unregister();
+serviceWorkerRegistration.register();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
