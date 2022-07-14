@@ -14,7 +14,7 @@ good.addCurl(Handedness.Left, Finger.Thumb, FingerCurl.NoCurl, 1.0);
 good.addDirection(
   Handedness.Left,
   Finger.Thumb,
-  FingerDirection[FingerAxis.XY].DiagonalUpLeft,
+  FingerDirection[FingerAxis.XY].DiagonalUpRight,
   0.8,
 );
 
