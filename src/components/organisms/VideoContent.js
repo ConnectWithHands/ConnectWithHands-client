@@ -5,10 +5,10 @@ import PropTypes from "prop-types";
 import Video from "../atoms/Video";
 import Canvas from "../atoms/Canvas";
 
-function VideoContent({ webcamRef, canvasRef }) {
+function VideoContent({ webcamRef, canvasRef, facingMode }) {
   return (
     <Container>
-      <Video ref={webcamRef} />
+      <Video ref={webcamRef} facingMode={facingMode} />
       <Canvas ref={canvasRef} />
     </Container>
   );
@@ -33,4 +33,5 @@ VideoContent.propTypes = {
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.any }),
   ]),
+  facingMode: PropTypes.string,
 };

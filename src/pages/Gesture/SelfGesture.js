@@ -18,7 +18,7 @@ import Button from "../../components/atoms/Button";
 import Input from "../../components/atoms/Input";
 import Video from "../../components/atoms/Video";
 import { isMobile } from "../../common/utilities";
-import { ERROR } from "../../constants";
+import { FACING_MODE, ERROR } from "../../constants";
 
 import MobileError from "../../assets/desktop.png";
 
@@ -186,7 +186,11 @@ function SelfGesture() {
           <HeaderContent title="나만의 제스처" onClick={moveToSubMain} />
           <ContentWrapper>
             <SubWrapper>
-              <Video ref={webcamRef} setWidth={true} />
+              <Video
+                ref={webcamRef}
+                setWidth={true}
+                facingMode={FACING_MODE.user}
+              />
             </SubWrapper>
             <SubWrapper>
               <TextWrapper>

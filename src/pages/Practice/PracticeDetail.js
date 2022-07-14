@@ -22,7 +22,12 @@ import Button from "../../components/atoms/Button";
 import ButtonList from "../../components/molecules/ButtonList";
 
 import ImageOfLetters from "../../assets/image";
-import { PRACTICE_TITLE, PRACTICE_DETECTED, Letter } from "../../constants";
+import {
+  FACING_MODE,
+  PRACTICE_TITLE,
+  PRACTICE_DETECTED,
+  Letter,
+} from "../../constants";
 
 function PracticeDetail() {
   const webcamRef = useRef(null);
@@ -157,7 +162,11 @@ function PracticeDetail() {
               다음 글자
             </Button>
           </ButtonList>
-          <VideoContent webcamRef={webcamRef} canvasRef={canvasRef} />
+          <VideoContent
+            webcamRef={webcamRef}
+            canvasRef={canvasRef}
+            facingMode={FACING_MODE.user}
+          />
         </SubWrapper>
         <SubWrapper>
           <Wrapper>

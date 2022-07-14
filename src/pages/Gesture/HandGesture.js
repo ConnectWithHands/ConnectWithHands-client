@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import { nanoid } from "nanoid";
-import { throttle } from "lodash";
+import throttle from "lodash.throttle";
 import "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-converter";
 import "@tensorflow/tfjs-backend-webgl";
@@ -17,7 +17,7 @@ import Text from "../../components/atoms/Text";
 import ButtonList from "../../components/molecules/ButtonList";
 import Button from "../../components/atoms/Button";
 
-import { WORD } from "../../constants";
+import { WORD, FACING_MODE } from "../../constants";
 
 function HandGesture() {
   const webcamRef = useRef(null);
@@ -27,6 +27,7 @@ function HandGesture() {
   const [score, setScore] = useState(0);
   const [words, setWords] = useState([]);
   const [detector, setDetector] = useState(false);
+  const [facingMode, setFacingMode] = useState(FACING_MODE.user);
   const wordsRef = useRef(words);
   wordsRef.current = words;
 
@@ -55,6 +56,17 @@ function HandGesture() {
       throttle((value) => setWords((previous) => [...previous, value]), 3000),
     [setWords],
   );
+
+  const handleFacingModeChange = () => {
+    switch (facingMode) {
+      case FACING_MODE.user:
+        setFacingMode(FACING_MODE.environment);
+        break;
+      case FACING_MODE.environment:
+        setFacingMode(FACING_MODE.user);
+        break;
+    }
+  };
 
   const detectHands = async (detector) => {
     if (
@@ -162,7 +174,7 @@ function HandGesture() {
     }
 
     return () => clearInterval(timerId);
-  }, [detector]);
+  }, [detector, facingMode]);
 
   useEffect(() => {
     return () => {
@@ -175,12 +187,31 @@ function HandGesture() {
       <HeaderContent title="수어 인식하기" onClick={moveToSubMain} />
       <ContentWrapper>
         <SubWrapper>
-          <VideoContent webcamRef={webcamRef} canvasRef={canvasRef} />
+          <ButtonList width="90%">
+            <Button
+              width="80%"
+              height="50px"
+              className="normal"
+              onClick={handleFacingModeChange}
+            >
+              카메라 전환
+            </Button>
+            <Button
+              width="80%"
+              height="50px"
+              className="normal"
+              onClick={handleSpeechStop}
+            >
+              소리끄기
+            </Button>
+          </ButtonList>
+          <VideoContent
+            webcamRef={webcamRef}
+            canvasRef={canvasRef}
+            facingMode={facingMode}
+          />
         </SubWrapper>
         <SubWrapper>
-          <Button className="normal" onClick={handleSpeechStop}>
-            소리끄기
-          </Button>
           <TextBox>
             {words.map((word) => (
               <Text key={nanoid()} className="big">
