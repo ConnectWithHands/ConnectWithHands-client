@@ -7,6 +7,8 @@ import Image from "../atoms/Image";
 import Button from "../atoms/Button";
 import ButtonList from "../molecules/ButtonList";
 
+import { isMobile } from "../../common/utilities";
+
 function GestureContent({
   title,
   description,
@@ -17,7 +19,12 @@ function GestureContent({
 }) {
   return (
     <StyledContainer>
-      <Image width="20%" height="250px" alt="icon" src={image} />
+      <Image
+        width={isMobile() ? "30%" : "20%"}
+        height="250px"
+        alt="icon"
+        src={image}
+      />
       <SubContainer>
         <Wrapper>
           <Text className="big">{title}</Text>
