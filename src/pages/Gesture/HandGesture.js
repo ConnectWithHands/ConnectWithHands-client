@@ -24,8 +24,10 @@ function HandGesture() {
   const canvasRef = useRef(null);
   const navigate = useNavigate();
   const [speech, setSpeech] = useState(null);
+  const [speechRecognition, setSpeechRecognition] = useState(null);
   const [score, setScore] = useState(0);
   const [words, setWords] = useState([]);
+  const [text, setText] = useState([]);
   const [detector, setDetector] = useState(false);
   const [facingMode, setFacingMode] = useState(FACING_MODE.user);
   const wordsRef = useRef(words);
@@ -33,13 +35,35 @@ function HandGesture() {
 
   const handleWordsInitialize = () => {
     setWords([]);
+    setText([]);
   };
 
   const moveToSubMain = () => {
     navigate("/gesture");
   };
 
-  const handleSpeechStart = (words) => {
+  const setUpSpeech = () => {
+    const speech = new SpeechSynthesisUtterance();
+    const recognition = new (window.SpeechRecognition ||
+      window.webkitSpeechRecognition)();
+
+    recognition.interimResults = true;
+    recognition.lang = "ko-KR";
+    recognition.continuous = true;
+    recognition.maxAlternatives = 10000;
+
+    if (!recognition) {
+      console.log("사용 불가");
+    }
+
+    setSpeech(speech);
+    setSpeechRecognition(recognition);
+  };
+
+  const handleSpeechStart = async (words) => {
+    const voices = window.speechSynthesis.getVoices();
+    speech.voice = voices.find((voice) => voice.name === "Google 한국의");
+
     if (words.length) {
       speech.text = words;
       window.speechSynthesis.speak(speech);
@@ -49,6 +73,17 @@ function HandGesture() {
   const handleSpeechStop = () => {
     window.speechSynthesis.pause();
     window.speechSynthesis.cancel();
+    speechRecognition.stop();
+  };
+
+  const handleSpeechRecognitionStart = () => {
+    speechRecognition.start();
+    speechRecognition.onresult = function (event) {
+      if (event.results[0].isFinal) {
+        setText((previous) => [...previous, event.results[0][0].transcript]);
+        speechRecognition.stop();
+      }
+    };
   };
 
   const throttleHandler = useMemo(
@@ -128,6 +163,7 @@ function HandGesture() {
               });
             } else if (bestGesture[0].name === "speech") {
               handleSpeechStart(wordsRef.current);
+              handleSpeechRecognitionStart();
             } else {
               const scoreToString = (bestGesture[0].score + "").substring(0, 4);
 
@@ -151,15 +187,11 @@ function HandGesture() {
   useEffect(() => {
     const runHandpose = async () => {
       const detector = await setHandDetector();
-      const speech = new SpeechSynthesisUtterance();
-      const voices = window.speechSynthesis.getVoices();
-      speech.voice = voices.find((voice) => voice.name === "Google 한국의");
-
-      console.log("detector ready");
       setDetector(detector);
-      setSpeech(speech);
+      console.log("detector ready");
     };
 
+    setUpSpeech();
     runHandpose();
   }, []);
 
@@ -179,6 +211,7 @@ function HandGesture() {
   useEffect(() => {
     return () => {
       throttleHandler.cancel();
+      speechRecognition?.stop();
     };
   }, []);
 
@@ -214,8 +247,15 @@ function HandGesture() {
         <SubWrapper>
           <TextBox>
             {words.map((word) => (
-              <Text key={nanoid()} className="big">
-                {word}
+              <Text key={nanoid()} className="normal">
+                {word.toString()}
+              </Text>
+            ))}
+          </TextBox>
+          <TextBox height="8vh">
+            {text.map((text) => (
+              <Text key={nanoid()} className="normal">
+                {text.toString()}
               </Text>
             ))}
           </TextBox>
@@ -270,18 +310,15 @@ const ContentWrapper = styled.div`
 const SubWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin: auto;
-
+  margin: auto 1rem;
   align-items: center;
   width: 100%;
-  margin: 1rem;
 `;
 
 const TextBox = styled.div`
   flex-wrap: wrap;
-  height: 15vh;
-  margin: 1rem 0;
-
+  height: ${(props) => (props.height ? props.height : "12vh")};
+  margin: 0.5rem 0;
   display: flex;
   justify-content: center;
   border: 1px solid black;
