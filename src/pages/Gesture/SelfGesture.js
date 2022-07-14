@@ -24,16 +24,16 @@ import MobileError from "../../assets/desktop.png";
 
 function SelfGesture() {
   const navigate = useNavigate();
-  const figures = useRef();
-  const probability = useRef();
   const webcamRef = useRef(null);
+  const [estimatedResult, setEstimatedResult] = useState({
+    resultName: "미탐지",
+    probability: "0",
+  });
   const [classifier, setClassifier] = useState(null);
   const [model, setModel] = useState(null);
   const [tfWebcam, setTfWebcam] = useState(null);
   const [initialMode, setInitialMode] = useState(false);
   const [gestureList, setGestureList] = useState([]);
-
-  console.log(isMobile());
 
   const runEstimator = async () => {
     if (classifier && model && tfWebcam) {
@@ -43,12 +43,11 @@ function SelfGesture() {
           const activation = model.infer(image, "conv_preds");
           const result = await classifier.predictClass(activation);
 
-          if (figures.current && probability.current) {
-            figures.current.innerText = `${result.label}`;
-            probability.current.innerText = `${
-              result.confidences[result.label]
-            }`;
-          }
+          setEstimatedResult((previous) => ({
+            ...previous,
+            resultName: result.label,
+            probability: result.confidences[result.label],
+          }));
 
           image.dispose();
         }
@@ -72,9 +71,6 @@ function SelfGesture() {
   };
 
   const initializeGesture = async () => {
-    figures.current.innerText = "";
-    probability.current.innerText = "";
-
     await classifier.clearAllClasses();
     setGestureList([]);
   };
@@ -111,7 +107,7 @@ function SelfGesture() {
     if (inputModel.length > 0) {
       const tempModel = knnClassifier.create();
 
-      fr.onload = async () => {
+      fr.onloadend = async () => {
         const dataset = fr.result;
 
         const tensorObj = Object.fromEntries(
@@ -124,6 +120,7 @@ function SelfGesture() {
         tempModel.setClassifierDataset(tensorObj);
         setClassifier(tempModel);
         setInitialMode(true);
+        event.target.value = "";
 
         console.log("Classifier has been set up! Congrats! ");
       };
@@ -195,8 +192,8 @@ function SelfGesture() {
             <SubWrapper>
               <TextWrapper>
                 <StyledText>탐지된 제스처 : </StyledText>
-                <StyledText ref={figures}></StyledText>
-                <StyledText ref={probability}></StyledText>
+                <StyledText>{estimatedResult.resultName}</StyledText>
+                <StyledText>{estimatedResult.probability}</StyledText>
               </TextWrapper>
               <FormContent onClick={addGesture} />
               <ListContainer>
@@ -215,7 +212,7 @@ function SelfGesture() {
               <Input
                 type="file"
                 className="small"
-                onChange={() => uploadModel(event)}
+                onChange={(event) => uploadModel(event)}
               />
               <ButtonList width="90%">
                 <Button
