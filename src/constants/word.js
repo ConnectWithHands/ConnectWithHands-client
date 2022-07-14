@@ -5,6 +5,8 @@ const WORD = {
   glad: "반갑습니다",
   appreciate: "감사합니다",
   love: "I love you",
+  good: "좋은",
+  day: "하루",
 };
 
 export default WORD;
