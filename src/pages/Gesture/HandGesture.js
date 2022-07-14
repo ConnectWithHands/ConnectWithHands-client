@@ -24,10 +24,8 @@ function HandGesture() {
   const canvasRef = useRef(null);
   const navigate = useNavigate();
   const [speech, setSpeech] = useState(null);
-  const [speechRecognition, setSpeechRecognition] = useState(null);
   const [score, setScore] = useState(0);
   const [words, setWords] = useState([]);
-  const [text, setText] = useState([]);
   const [detector, setDetector] = useState(false);
   const [facingMode, setFacingMode] = useState(FACING_MODE.user);
   const wordsRef = useRef(words);
@@ -35,7 +33,6 @@ function HandGesture() {
 
   const handleWordsInitialize = () => {
     setWords([]);
-    setText([]);
   };
 
   const moveToSubMain = () => {
@@ -44,20 +41,7 @@ function HandGesture() {
 
   const setUpSpeech = () => {
     const speech = new SpeechSynthesisUtterance();
-    const recognition = new (window.SpeechRecognition ||
-      window.webkitSpeechRecognition)();
-
-    recognition.interimResults = true;
-    recognition.lang = "ko-KR";
-    recognition.continuous = true;
-    recognition.maxAlternatives = 10000;
-
-    if (!recognition) {
-      console.log("사용 불가");
-    }
-
     setSpeech(speech);
-    setSpeechRecognition(recognition);
   };
 
   const handleSpeechStart = async (words) => {
@@ -73,17 +57,6 @@ function HandGesture() {
   const handleSpeechStop = () => {
     window.speechSynthesis.pause();
     window.speechSynthesis.cancel();
-    speechRecognition.stop();
-  };
-
-  const handleSpeechRecognitionStart = () => {
-    speechRecognition.start();
-    speechRecognition.onresult = function (event) {
-      if (event.results[0].isFinal) {
-        setText((previous) => [...previous, event.results[0][0].transcript]);
-        speechRecognition.stop();
-      }
-    };
   };
 
   const throttleHandler = useMemo(
@@ -163,7 +136,6 @@ function HandGesture() {
               });
             } else if (bestGesture[0].name === "speech") {
               handleSpeechStart(wordsRef.current);
-              handleSpeechRecognitionStart();
             } else {
               const scoreToString = (bestGesture[0].score + "").substring(0, 4);
 
@@ -211,7 +183,6 @@ function HandGesture() {
   useEffect(() => {
     return () => {
       throttleHandler.cancel();
-      speechRecognition?.stop();
     };
   }, []);
 
@@ -249,13 +220,6 @@ function HandGesture() {
             {words.map((word) => (
               <Text key={nanoid()} className="normal">
                 {word.toString()}
-              </Text>
-            ))}
-          </TextBox>
-          <TextBox height="8vh">
-            {text.map((text) => (
-              <Text key={nanoid()} className="normal">
-                {text.toString()}
               </Text>
             ))}
           </TextBox>
