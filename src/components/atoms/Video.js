@@ -6,12 +6,20 @@ import PropTypes from "prop-types";
 import { FACING_MODE } from "../../constants/webcam";
 import { isMobile } from "../../common/utilities";
 
-function Video(props, ref) {
+function Video({ facingMode }, ref) {
   const $size = { width: 640 };
   const $m_size = { width: 360 };
-  const normalConfig = {
-    facingMode: FACING_MODE.user,
+  // const normalConfig = {
+  //   facingMode: FACING_MODE.user,
+  //   width: isMobile() ? $m_size.width : $size.width,
+  // };
+
+  const videoConfig = {
     width: isMobile() ? $m_size.width : $size.width,
+    facingMode:
+      facingMode === FACING_MODE.user
+        ? FACING_MODE.user
+        : { exact: FACING_MODE.environment },
   };
 
   return (
@@ -19,7 +27,7 @@ function Video(props, ref) {
       autoPlay
       muted
       playsInline
-      videoConstraints={normalConfig}
+      videoConstraints={videoConfig}
       ref={ref}
     />
   );
@@ -38,7 +46,7 @@ const StyledVideo = styled(Webcam)`
 `;
 
 Video.propTypes = {
-  setWidth: PropTypes.bool,
+  facingMode: PropTypes.string,
   ref: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.elementType }),
