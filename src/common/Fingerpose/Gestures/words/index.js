@@ -8,6 +8,7 @@ import love from "./Love";
 import glad from "./Glad";
 import good from "./Good";
 import day from "./Day";
+import fist from "./Fist";
 
 const words = [
   hello,
@@ -20,6 +21,7 @@ const words = [
   glad,
   good,
   day,
+  fist,
 ];
 
 export default words;

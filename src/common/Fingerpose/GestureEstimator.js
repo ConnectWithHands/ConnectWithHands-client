@@ -25,14 +25,15 @@ export default class GestureEstimator {
         curls: estimation.curls,
         directions: estimation.directions,
       };
+
       hands.push(handData);
     }
 
-    const gestureData = [];
+    const fingerData = [];
 
     for (let hand of hands) {
-      let poseData = [];
-      let gesturesFound = [];
+      const poseData = [];
+      const gesturesFound = [];
 
       for (let fingerIdx of Finger.all) {
         poseData.push([
@@ -51,7 +52,7 @@ export default class GestureEstimator {
 
       // step 2: compare gesture description to each known gesture
       for (let gesture of this.gestures) {
-        let score = gesture.matchAgainst(
+        const score = gesture.matchAgainst(
           hand.handedness,
           hand.curls,
           hand.directions,
@@ -61,18 +62,61 @@ export default class GestureEstimator {
           gesturesFound.push({
             name: gesture.name,
             score: score,
-            numberOfHands: Object.keys(gesture.curls).length,
+            numberOfHands: gesture.numOfHands,
           });
         }
       }
 
-      gestureData.push({
+      fingerData.push({
         handness: hand.handedness,
         poseData: poseData,
         gestures: gesturesFound,
       });
     }
 
-    return gestureData;
+    const gesturesData = [];
+
+    for (let gesture of this.gestures) {
+      if (gesture.numOfHands !== hands.length) {
+        continue;
+      }
+
+      let sumOfScores = 0;
+      let isGestureMatched = true;
+
+      for (let hand of hands) {
+        const score = gesture.matchAgainst(
+          hand.handedness,
+          hand.curls,
+          hand.directions,
+        );
+
+        if (score < minScore) {
+          isGestureMatched = false;
+          break;
+        }
+
+        sumOfScores += score;
+      }
+
+      if (isGestureMatched) {
+        gesturesData.push({
+          name: gesture.name,
+          score: sumOfScores / gesture.numOfHands,
+          numberOfHands: gesture.numOfHands,
+        });
+      }
+    }
+
+    const bestGesture = [];
+
+    if (gesturesData.length) {
+      const higherScore = gesturesData.reduce((prev, current) =>
+        prev.score > current.score ? prev : current,
+      );
+      bestGesture.push(higherScore);
+    }
+
+    return { fingerData, bestGesture };
   }
 }

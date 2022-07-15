@@ -114,16 +114,9 @@ function TestDetail() {
           const gesture = GE.estimate(hand, 7);
           console.log("gesture", gesture);
 
-          const bestGesture = gesture.map((hand) => {
-            const score = hand.gestures.map((prediction) => prediction.score);
-            const maxScore = score.indexOf(Math.max(...score));
-
-            return hand.gestures.length ? hand.gestures[maxScore] : false;
-          });
-
           if (
-            bestGesture.length &&
-            bestGesture[0]?.name === random[indexOfRandom]?.name
+            gesture.bestGesture.length &&
+            gesture.bestGesture[0].name === random[indexOfRandom]?.name
           ) {
             console.log("일치");
             increaseIndexOfRandom();

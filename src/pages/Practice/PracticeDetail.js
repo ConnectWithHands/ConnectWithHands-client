@@ -89,18 +89,12 @@ function PracticeDetail() {
           const gesture = GE.estimate(hand, 7);
           console.log("gesture", gesture);
 
-          const bestGesture = gesture.map((hand) => {
-            const score = hand.gestures.map((prediction) => prediction.score);
-            const maxScore = score.indexOf(Math.max(...score));
-
-            return hand.gestures.length ? hand.gestures[maxScore] : false;
-          });
-
-          if (
-            bestGesture[0]?.name === Gestures[typeOfLetter][indexOfLetter]?.name
-          ) {
-            console.log("일치");
-            const scoreToString = (bestGesture[0].score + "").substring(0, 4);
+          if (gesture.bestGesture.length) {
+            const scoreToPercentage = gesture.bestGesture[0].score * 10;
+            const scoreToString = `${(scoreToPercentage + "").substring(
+              0,
+              4,
+            )}%`;
             setScore(scoreToString);
             setResult(PRACTICE_DETECTED.MATCHED);
           } else {
@@ -124,7 +118,6 @@ function PracticeDetail() {
       console.log("detector ready");
       setDetector(detector);
     };
-
     runHandpose();
   }, []);
 

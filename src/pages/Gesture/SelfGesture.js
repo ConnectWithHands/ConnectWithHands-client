@@ -131,9 +131,8 @@ function SelfGesture() {
   };
 
   const moveToSubMain = async () => {
-    await classifier.clearAllClasses();
-
-    await classifier.dispose();
+    await classifier?.clearAllClasses();
+    await classifier?.dispose();
     navigate("/gesture");
   };
 
@@ -177,7 +176,11 @@ function SelfGesture() {
   return (
     <Container>
       {isMobile() ? (
-        <ErrorContent image={MobileError} text={ERROR.MOBILE_FORBIDDEN} />
+        <ErrorContent
+          image={MobileError}
+          text={ERROR.MOBILE_FORBIDDEN}
+          onClick={moveToSubMain}
+        />
       ) : (
         <>
           <HeaderContent title="나만의 제스처" onClick={moveToSubMain} />

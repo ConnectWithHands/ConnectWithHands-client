@@ -10,8 +10,7 @@ import GestureDescription from "../../GestureDescription";
 
 const eo = new GestureDescription("eo");
 
-eo.addCurl(Handedness.Left, Finger.Thumb, FingerCurl.HalfCurl, 1.0);
-eo.addCurl(Handedness.Left, Finger.Thumb, FingerCurl.NoCurl, 0.8);
+eo.addCurl(Handedness.Left, Finger.Thumb, FingerCurl.NoCurl, 1.0);
 
 eo.addCurl(Handedness.Left, Finger.Index, FingerCurl.NoCurl, 1.0);
 eo.addCurl(Handedness.Left, Finger.Index, FingerCurl.HalfCurl, 0.8);
