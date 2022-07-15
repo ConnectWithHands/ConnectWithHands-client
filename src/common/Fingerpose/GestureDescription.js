@@ -5,9 +5,16 @@ export default class GestureDescription {
     // name (should be unique)
     this.name = name;
 
+    // num of hands(default value is 1)
+    this.numOfHands = 1;
+
     // gesture as described by curls / directions
     this.curls = {};
     this.directions = {};
+  }
+
+  addNumOfHands(num) {
+    this.numOfHands = num;
   }
 
   addCurl(handedness, finger, curl, contrib = 1.0, palmOrback = "") {
@@ -146,7 +153,12 @@ export default class GestureDescription {
     }
 
     // multiply final score with 10 (to maintain compatibility)
-    let finalScore = (score / numParameters) * 10;
+    let finalScore;
+    if (score === 0) {
+      finalScore = 0;
+    } else {
+      finalScore = (score / numParameters) * 10;
+    }
 
     return finalScore;
   }
