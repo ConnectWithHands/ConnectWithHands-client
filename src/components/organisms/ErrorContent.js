@@ -1,25 +1,27 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import Image from "../atoms/Image";
 import Text from "../atoms/Text";
 import Button from "../atoms/Button";
+import { isMobile } from "../../common/utilities";
 
-function ErrorContent({ image, text }) {
-  const navigate = useNavigate();
-  const moveToMainPage = () => navigate("/");
+function ErrorContent({ image, text, onClick }) {
+  const imageWidth = isMobile() ? "50%" : "20%";
+  const imageHeight = isMobile() ? "200px" : "400px";
 
   return (
     <StyledErrorContent>
-      <Image width="50%" height="200px" alt="error" src={image} />
+      <Image width={imageWidth} height={imageHeight} alt="error" src={image} />
       <Text className="title">{text}</Text>
-      <ButtonWrapper>
-        <Button width="80vw" height="5vh" onClick={moveToMainPage}>
-          홈으로 가기
-        </Button>
-      </ButtonWrapper>
+      {onClick && (
+        <ButtonWrapper>
+          <Button width="80vw" height="5vh" onClick={onClick}>
+            홈으로 가기
+          </Button>
+        </ButtonWrapper>
+      )}
     </StyledErrorContent>
   );
 }
