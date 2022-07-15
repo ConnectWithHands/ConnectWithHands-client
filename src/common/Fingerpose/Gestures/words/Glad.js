@@ -10,6 +10,8 @@ import GestureDescription from "../../GestureDescription";
 
 const glad = new GestureDescription("glad");
 
+glad.addNumOfHands(2);
+
 // thumb:
 glad.addCurl(Handedness.Left, Finger.Thumb, FingerCurl.HalfCurl, 1.0);
 glad.addCurl(Handedness.Left, Finger.Thumb, FingerCurl.NoCurl, 0.8);

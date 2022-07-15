@@ -10,6 +10,8 @@ import GestureDescription from "../../GestureDescription";
 
 const meet = new GestureDescription("meet");
 
+meet.addNumOfHands(2);
+
 // thumb:
 meet.addCurl(Handedness.Left, Finger.Thumb, FingerCurl.NoCurl, 1.0);
 

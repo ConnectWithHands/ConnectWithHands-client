@@ -99,52 +99,53 @@ function HandGesture() {
           const gesture = GE.estimate(hand, 7.5);
           console.log("gesture", gesture);
 
-          const bestGesture = gesture.map((hand) => {
-            const score = hand.gestures.map((prediction) => prediction.score);
-            const maxScore = score.indexOf(Math.max(...score));
+          if (gesture.bestGesture.length) {
+            const matchedGesture = gesture.bestGesture[0];
 
-            if (!hand.gestures.length) {
-              return;
+            switch (matchedGesture.name) {
+              case "erase":
+                setWords((previous) => {
+                  const copy = [...previous];
+                  copy.pop();
+
+                  return [...copy];
+                });
+                break;
+              case "speech":
+                handleSpeechStart(wordsRef.current);
+                break;
+              default: {
+                const scoreToPercentage = matchedGesture.score * 10;
+                const scoreToString = `${(scoreToPercentage + "").substring(
+                  0,
+                  4,
+                )}%`;
+
+                setScore(scoreToString);
+                throttleHandler(WORD[matchedGesture.name]);
+              }
             }
+            // if (matchedGesture.name === "erase") {
+            //   setWords((previous) => {
+            //     const copy = [...previous];
+            //     copy.pop();
 
-            return hand.gestures[maxScore];
-          });
+            //     return [...copy];
+            //   });
+            // } else if (matchedGesture.name === "speech") {
+            //   handleSpeechStart(wordsRef.current);
+            // } else {
+            //   const scoreToString = `${(matchedGesture.score + "").substring(
+            //     0,
+            //     4,
+            //   )}%`;
 
-          console.log("bestGesture", bestGesture);
-
-          if (bestGesture.length > 1 && bestGesture[0] && bestGesture[1]) {
-            const [hand1, hand2] = bestGesture;
-
-            if (hand1.name === hand2.name) {
-              const averageScore = (hand1.score + hand2.score) / 2;
-              const scoreToString = (averageScore + "").substring(0, 4);
-
-              throttleHandler(WORD[hand1.name]);
-              setScore(scoreToString);
-            }
-          } else if (
-            bestGesture.length === 1 &&
-            bestGesture[0] &&
-            bestGesture[0].numberOfHands === 1
-          ) {
-            if (bestGesture[0].name === "erase") {
-              setWords((previous) => {
-                const copy = [...previous];
-                copy.pop();
-
-                return [...copy];
-              });
-            } else if (bestGesture[0].name === "speech") {
-              handleSpeechStart(wordsRef.current);
-            } else {
-              const scoreToString = (bestGesture[0].score + "").substring(0, 4);
-
-              setScore(scoreToString);
-              throttleHandler(WORD[bestGesture[0].name]);
-            }
+            //   setScore(scoreToString);
+            //   throttleHandler(WORD[matchedGesture.name]);
+            // }
+          } else {
+            setScore(0);
           }
-        } else {
-          setScore(0);
         }
 
         const ctx = canvasRef.current.getContext("2d");
@@ -219,7 +220,7 @@ function HandGesture() {
           <TextBox>
             {words.map((word) => (
               <Text key={nanoid()} className="normal">
-                {word.toString()}
+                {word}
               </Text>
             ))}
           </TextBox>

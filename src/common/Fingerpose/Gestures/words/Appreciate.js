@@ -10,6 +10,8 @@ import GestureDescription from "../../GestureDescription";
 
 const appreciate = new GestureDescription("appreciate");
 
+appreciate.addNumOfHands(2);
+
 // thumb:
 appreciate.addCurl(Handedness.Left, Finger.Thumb, FingerCurl.NoCurl, 1.0);
 appreciate.addCurl(Handedness.Right, Finger.Thumb, FingerCurl.NoCurl, 1.0);

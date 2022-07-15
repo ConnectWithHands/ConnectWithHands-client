@@ -7,6 +7,7 @@ const WORD = {
   love: "I love you",
   good: "좋은",
   day: "하루",
+  fist: "주먹",
 };
 
 export default WORD;

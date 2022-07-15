@@ -10,7 +10,7 @@ import ButtonList from "../molecules/ButtonList";
 function PracticeListContent({ title, image, description, page, onClick }) {
   return (
     <StyledContainer>
-      <Image width="25%" height="200px" alt="logo" src={image} />
+      <Image width="25%" height="200px" alt="example" src={image} />
       <Wrapper>
         <Text className="big">{title}</Text>
         <Text className="small">{description}</Text>
