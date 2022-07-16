@@ -10,7 +10,7 @@ import ButtonList from "../molecules/ButtonList";
 function PracticeListContent({ title, image, description, page, onClick }) {
   return (
     <StyledContainer>
-      <Image width="25%" height="200px" alt="example" src={image} />
+      <Image width="20%" height="200px" alt="example" src={image} />
       <Wrapper>
         <Text className="big">{title}</Text>
         <Text className="small">{description}</Text>
@@ -43,7 +43,7 @@ const StyledContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  height: 25vh;
+  height: 20vh;
   margin: 1em 0;
   border: 1px solid black;
 `;

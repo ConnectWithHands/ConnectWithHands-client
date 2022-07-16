@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import { lengthOfLetter } from "../constants/index";
+import { LENGTH_LETTER_TYPE } from "../constants/index";
 
 const increaseIndex = (indexList, letter, initialValue) => ({
   ...indexList,
@@ -41,7 +41,7 @@ const initializeResult = atom(null, (get, set) => {
 });
 
 const increaseIndexOfGesture = atom(null, (get, set, letter) => {
-  if (lengthOfLetter[letter] - 1 === get(indexOfLetters)[letter]) {
+  if (LENGTH_LETTER_TYPE[letter] - 1 === get(indexOfLetters)[letter]) {
     set(indexOfLetters, increaseIndex(get(indexOfLetters), letter, 0));
     return;
   }
@@ -53,7 +53,11 @@ const decreaseIndexOfGesture = atom(null, (get, set, letter) => {
   if (!get(indexOfLetters)[letter]) {
     set(
       indexOfLetters,
-      decreaseIndex(get(indexOfLetters), letter, lengthOfLetter[letter] - 1),
+      decreaseIndex(
+        get(indexOfLetters),
+        letter,
+        LENGTH_LETTER_TYPE[letter] - 1,
+      ),
     );
     return;
   }

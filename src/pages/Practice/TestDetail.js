@@ -27,8 +27,8 @@ import ImageOfLetters from "../../assets/image";
 import {
   FACING_MODE,
   PRACTICE_TITLE,
-  lengthOfLetter,
-  Letter,
+  LENGTH_LETTER_TYPE,
+  LETTER,
 } from "../../constants";
 
 function TestDetail() {
@@ -45,7 +45,7 @@ function TestDetail() {
   const [, initailizeTest] = useAtom(initializeResult);
   const typeOfLetter = params.id;
   const engNameOfCurrentLetter = random[indexOfRandom]?.name;
-  const koreanNameOfCurrentLetter = Letter[typeOfLetter].getName(
+  const koreanNameOfCurrentLetter = LETTER[typeOfLetter].getKorName(
     engNameOfCurrentLetter,
   );
 
@@ -60,7 +60,7 @@ function TestDetail() {
   };
 
   const shuffleGestures = (data) => {
-    const length = lengthOfLetter[data];
+    const length = LENGTH_LETTER_TYPE[data];
     const gestures = Gestures[data];
     const result = [];
     const randomGestures = [];
