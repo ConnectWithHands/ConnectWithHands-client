@@ -6,7 +6,11 @@ import "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-converter";
 import "@tensorflow/tfjs-backend-webgl";
 
-import { setHandDetector, drawHandKeypoints } from "../../common/utilities";
+import {
+  setHandDetector,
+  drawHandKeypoints,
+  getPercentage,
+} from "../../common/utilities";
 import { GestureEstimator, Gestures } from "../../common/Fingerpose";
 import {
   indexOfLetters,
@@ -26,27 +30,33 @@ import {
   FACING_MODE,
   PRACTICE_TITLE,
   PRACTICE_DETECTED,
-  Letter,
+  LETTER,
+  NAME_LETTER_TYPE,
 } from "../../constants";
 
 function PracticeDetail() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
+  const xCordinationRef = useRef();
   const params = useParams();
   const navigate = useNavigate();
   const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
   const [result, setResult] = useState(PRACTICE_DETECTED.NONE);
   const [page, setPage] = useState(false);
   const [detector, setDetector] = useState(false);
+  const [xCordination, setXCordination] = useState([]);
   const [, increaseIndex] = useAtom(increaseIndexOfGesture);
   const [, decreaseIndex] = useAtom(decreaseIndexOfGesture);
   const indexGestures = useAtomValue(indexOfLetters);
   const typeOfLetter = params.id;
   const indexOfLetter = indexGestures[typeOfLetter];
-  const engNameOfCurrentLetter = Letter[typeOfLetter][indexOfLetter];
-  const koreanNameOfCurrentLetter = Letter[typeOfLetter].getName(
+  const engNameOfCurrentLetter = LETTER[typeOfLetter][indexOfLetter];
+  const koreanNameOfCurrentLetter = LETTER[typeOfLetter].getKorName(
     engNameOfCurrentLetter,
   );
+
+  xCordinationRef.current = xCordination;
 
   const moveToSubMain = () => {
     navigate("/practice");
@@ -55,6 +65,7 @@ function PracticeDetail() {
   const handleIndexIncrease = () => {
     increaseIndex(typeOfLetter);
     setScore(0);
+    setHighScore(0);
     setResult(PRACTICE_DETECTED.NONE);
     setPage(!page);
   };
@@ -62,8 +73,19 @@ function PracticeDetail() {
   const handleIndexDecrease = () => {
     decreaseIndex(typeOfLetter);
     setScore(0);
+    setHighScore(0);
     setResult(PRACTICE_DETECTED.NONE);
     setPage(!page);
+  };
+
+  const checkUnusualCase = (typeOfLetter, index) => {
+    const specialConsonants = [1, 4, 8, 10, 13];
+
+    if (typeOfLetter === NAME_LETTER_TYPE.consonants) {
+      if (specialConsonants.includes(index)) return true;
+    }
+
+    return false;
   };
 
   const detectHands = async (detector) => {
@@ -84,23 +106,59 @@ function PracticeDetail() {
       try {
         const hand = await detector.estimateHands(video);
         const GE = new GestureEstimator(Gestures[typeOfLetter]);
+        const isUnusual = checkUnusualCase(typeOfLetter, indexOfLetter);
 
         if (hand.length > 0) {
           const gesture = GE.estimate(hand, 7);
           console.log("gesture", gesture);
 
           if (gesture.bestGesture.length) {
-            const scoreToPercentage = gesture.bestGesture[0].score * 10;
-            const scoreToString = `${(scoreToPercentage + "").substring(
-              0,
-              4,
-            )}%`;
-            setScore(scoreToString);
-            setResult(PRACTICE_DETECTED.MATCHED);
-          } else {
-            setScore(0);
-            setResult(PRACTICE_DETECTED.UNMATCHED);
+            const highestScore = gesture.bestGesture[0];
+
+            if (
+              highestScore.name === Gestures[typeOfLetter][indexOfLetter]?.name
+            ) {
+              const score = getPercentage(highestScore.score);
+              setScore(score);
+              setHighScore((previous) =>
+                parseInt(score) > parseInt(previous) ? score : previous,
+              );
+              setResult(PRACTICE_DETECTED.MATCHED);
+            } else if (isUnusual) {
+              if (
+                typeOfLetter === NAME_LETTER_TYPE.consonants &&
+                highestScore.name ===
+                  Gestures[typeOfLetter][indexOfLetter - 1]?.name
+              ) {
+                if (xCordinationRef.current.length < 5) {
+                  setXCordination((previous) => [
+                    ...previous,
+                    hand[0].keypoints[0].x,
+                  ]);
+                }
+
+                const max = Math.max(...xCordinationRef.current);
+                const min = Math.min(...xCordinationRef.current);
+
+                if (max - min > 100) {
+                  const score = getPercentage(highestScore.score);
+                  setScore(score);
+                  setHighScore((previous) =>
+                    parseInt(score) > parseInt(previous) ? score : previous,
+                  );
+                  setResult(PRACTICE_DETECTED.MATCHED);
+                }
+              }
+            } else {
+              setXCordination([]);
+              setScore(0);
+              setResult(PRACTICE_DETECTED.UNMATCHED);
+            }
           }
+        } else {
+          setXCordination([]);
+          setScore(0);
+          setResult(PRACTICE_DETECTED.UNMATCHED);
         }
 
         const ctx = canvasRef.current.getContext("2d");
@@ -127,7 +185,7 @@ function PracticeDetail() {
     if (detector) {
       timerId = setInterval(() => {
         detectHands(detector);
-      }, 1000);
+      }, 200);
       console.log(timerId);
     }
 
@@ -162,6 +220,11 @@ function PracticeDetail() {
           />
         </SubWrapper>
         <SubWrapper>
+          {checkUnusualCase(typeOfLetter, indexOfLetter) ? (
+            <Text className="normal">
+              동일한 모양의 제스처를 오른쪽으로 이동
+            </Text>
+          ) : null}
           <Wrapper>
             <ImageBox>
               <Image
@@ -176,7 +239,7 @@ function PracticeDetail() {
             </TextBox>
           </Wrapper>
           <TextWrapper>
-            <Text className="normal">{`결과: ${result} /  정확도 : ${score}`}</Text>
+            <Text className="normal">{`결과: ${result} / 정확도: ${score} / 최고점: ${highScore}`}</Text>
           </TextWrapper>
         </SubWrapper>
       </ContentWrapper>
@@ -199,7 +262,6 @@ const ContentWrapper = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-
   @media screen and (max-width: 480px) {
     flex-direction: column;
   }
@@ -218,7 +280,6 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 70%;
-
   @media screen and (max-width: 480px) {
     flex-direction: row;
     width: 90%;
@@ -230,7 +291,6 @@ const TextWrapper = styled.div`
   justify-content: center;
   border: 1px solid black;
   width: 70%;
-
   @media screen and (max-width: 480px) {
     width: 90%;
   }
@@ -243,7 +303,6 @@ const ImageBox = styled.div`
   height: 15vh;
   margin: 1.25rem 0.25rem;
   border: 1px solid black;
-
   @media screen and (max-width: 480px) {
     flex-direction: row;
     width: 100%;

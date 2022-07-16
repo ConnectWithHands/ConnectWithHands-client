@@ -23,7 +23,7 @@ u.addCurl(
   Handedness.Left,
   Finger.Index,
   FingerCurl.HalfCurl,
-  1.0,
+  0.8,
   HandSide.Back,
 );
 u.addDirection(

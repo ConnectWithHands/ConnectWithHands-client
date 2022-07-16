@@ -12,17 +12,27 @@ import kieuk from "./consonants_kieuk.PNG";
 import tieut from "./consonants_tieut.PNG";
 import pieup from "./consonants_pieup.PNG";
 import hieut from "./consonants_hieut.PNG";
+import ssanggiyeok from "./consonants_ssanggiyeok.PNG";
+import ssangdigeut from "./consonants_ssangdigeut.PNG";
+import ssangbieup from "./consonants_ssangbieup.PNG";
+import ssangsiot from "./consonants_ssangsiot.PNG";
+import ssangjieut from "./consonants_ssangjieut.PNG";
 
 const consonants = {
   giyeok,
+  ssanggiyeok,
   nieun,
   digeut,
+  ssangdigeut,
   rieul,
   mieum,
   bieup,
+  ssangbieup,
   siot,
+  ssangsiot,
   ieung,
   jieut,
+  ssangjieut,
   chieut,
   kieuk,
   tieut,
