@@ -112,7 +112,7 @@ export default class GestureEstimator {
 
     if (gesturesData.length) {
       const higherScore = gesturesData.reduce((prev, current) =>
-        prev.score > current.score ? prev : current,
+        prev.score >= current.score ? prev : current,
       );
       bestGesture.push(higherScore);
     }
