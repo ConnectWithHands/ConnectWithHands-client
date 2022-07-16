@@ -1,5 +1,11 @@
 import { setHandDetector } from "./handpose";
 import { drawHandKeypoints } from "./canvas";
-import { isMobile } from "./device";
+import { isMobile, getPercentage, getConstantVowel } from "./global";
 
-export { setHandDetector, drawHandKeypoints, isMobile };
+export {
+  setHandDetector,
+  drawHandKeypoints,
+  isMobile,
+  getPercentage,
+  getConstantVowel,
+};
