@@ -12,17 +12,27 @@ import kieuk from "./Kieuk";
 import tieut from "./Tieut";
 import pieup from "./Pieup";
 import hieut from "./Hieut";
+import ssanggiyeok from "./Ssanggiyeok";
+import ssangdigeut from "./Ssangdigeut";
+import ssangbieup from "./Ssangbieup";
+import ssangsiot from "./Ssangsiot";
+import ssangjieut from "./Ssangjieut";
 
 const consonants = [
   giyeok,
+  ssanggiyeok,
   nieun,
   digeut,
+  ssangdigeut,
   rieul,
   miuem,
   bieup,
+  ssangbieup,
   siot,
+  ssangsiot,
   ieung,
   jieut,
+  ssangjieut,
   chieut,
   kieuk,
   tieut,

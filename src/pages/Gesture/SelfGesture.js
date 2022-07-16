@@ -198,7 +198,7 @@ function SelfGesture() {
                 <StyledText>{estimatedResult.resultName}</StyledText>
                 <StyledText>{estimatedResult.probability}</StyledText>
               </TextWrapper>
-              <FormContent onClick={addGesture} />
+              <FormContent placeholder="학습할 제스처" onClick={addGesture} />
               <ListContainer>
                 {gestureList.map((gesture) => (
                   <ListWrapper key={gesture.id}>

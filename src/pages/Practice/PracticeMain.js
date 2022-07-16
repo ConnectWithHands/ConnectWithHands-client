@@ -15,7 +15,7 @@ function PracticeMain() {
   };
 
   const moveToSubPage = (subPage, test = "") => {
-    navigate(`/practice/detail/${subPage}/${test}`);
+    navigate(`/practice/${subPage}/${test}`);
   };
 
   return (

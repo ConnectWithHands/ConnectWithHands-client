@@ -1,19 +1,19 @@
-import ImageOfLetters from "../assets/image";
+import IMAGE from "../assets/image";
 
 export const PRACTICE_LIST = [
   {
     id: 0,
     title: "자음",
     description: "총 14개",
-    image: ImageOfLetters.list.consonant,
-    page: "consonants",
+    image: IMAGE.list.consonant,
+    page: "detail/consonants",
   },
   {
     id: 1,
     title: "모음",
     description: "총 17개",
-    image: ImageOfLetters.list.vowel,
-    page: "vowels",
+    image: IMAGE.list.vowel,
+    page: "detail/vowels",
   },
 ];
 

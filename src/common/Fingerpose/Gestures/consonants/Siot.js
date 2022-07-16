@@ -28,13 +28,13 @@ siot.addCurl(
 siot.addDirection(
   Handedness.Left,
   Finger.Index,
-  FingerDirection[FingerAxis.XY].VerticalDown,
+  FingerDirection[FingerAxis.XY].DiagonalDownRight,
   1.0,
 );
 siot.addDirection(
   Handedness.Left,
   Finger.Index,
-  FingerDirection[FingerAxis.XY].DiagonalDownRight,
+  FingerDirection[FingerAxis.XY].VerticalDown,
   0.8,
 );
 

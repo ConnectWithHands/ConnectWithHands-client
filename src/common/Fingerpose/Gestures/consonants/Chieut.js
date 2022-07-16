@@ -54,13 +54,13 @@ chieut.addDirection(
   0.8,
 );
 
-chieut.addCurl(Handedness.Left, Finger.Pinky, FingerCurl.HalfCurl, 1);
-chieut.addCurl(Handedness.Left, Finger.Pinky, FingerCurl.NoCurl, 0.8);
-chieut.addDirection(
-  Handedness.Left,
-  Finger.Ring,
-  FingerDirection[FingerAxis.XY].VerticalDown,
-  0.8,
-);
+// chieut.addCurl(Handedness.Left, Finger.Pinky, FingerCurl.HalfCurl, 1);
+// chieut.addCurl(Handedness.Left, Finger.Pinky, FingerCurl.NoCurl, 0.8);
+// chieut.addDirection(
+//   Handedness.Left,
+//   Finger.Ring,
+//   FingerDirection[FingerAxis.XY].VerticalDown,
+//   0.8,
+// );
 
 export default chieut;

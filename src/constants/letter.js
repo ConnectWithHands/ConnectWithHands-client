@@ -1,26 +1,35 @@
-const lengthOfLetter = {
-  consonants: 14,
+const NAME_LETTER_TYPE = {
+  consonants: "consonants",
+  vowels: "vowels",
+};
+
+const LENGTH_LETTER_TYPE = {
+  consonants: 19,
   vowels: 17,
-  alphabet: 26,
 };
 
 const consonants = {
   0: "giyeok",
-  1: "nieun",
-  2: "digeut",
-  3: "rieul",
-  4: "mieum",
-  5: "bieup",
-  6: "siot",
-  7: "ieung",
-  8: "jieut",
-  9: "chieut",
-  10: "kieuk",
-  11: "tieut",
-  12: "pieup",
-  13: "hieut",
+  1: "ssanggiyeok",
+  2: "nieun",
+  3: "digeut",
+  4: "ssangdigeut",
+  5: "rieul",
+  6: "mieum",
+  7: "bieup",
+  8: "ssangbieup",
+  9: "siot",
+  10: "ssangsiot",
+  11: "ieung",
+  12: "jieut",
+  13: "ssangjieut",
+  14: "chieut",
+  15: "kieuk",
+  16: "tieut",
+  17: "pieup",
+  18: "hieut",
 
-  name: {
+  korName: {
     giyeok: "ㄱ",
     nieun: "ㄴ",
     digeut: "ㄷ",
@@ -35,10 +44,45 @@ const consonants = {
     tieut: "ㅌ",
     pieup: "ㅍ",
     hieut: "ㅎ",
+    ssanggiyeok: "ㄲ",
+    ssangdigeut: "ㄸ",
+    ssangbieup: "ㅃ",
+    ssangsiot: "ㅆ",
+    ssangjieut: "ㅉ",
   },
 
-  getName: function (value) {
-    return typeof this.name[value] !== "undefined" ? this.name[value] : false;
+  engName: {
+    ㄱ: "giyeok",
+    ㄴ: "nieun",
+    ㄷ: "digeut",
+    ㄹ: "rieul",
+    ㅁ: "mieum",
+    ㅂ: "bieup",
+    ㅅ: "siot",
+    ㅇ: "ieung",
+    ㅈ: "jieut",
+    ㅊ: "chieut",
+    ㅋ: "kieuk",
+    ㅌ: "tieut",
+    ㅍ: "pieup",
+    ㅎ: "hieut",
+    ㄲ: "ssanggiyeok",
+    ㄸ: "ssangdigeut",
+    ㅃ: "ssangbieup",
+    ㅆ: "ssangsiot",
+    ㅉ: "ssangjieut",
+  },
+
+  getKorName: function (value) {
+    return typeof this.korName[value] !== "undefined"
+      ? this.korName[value]
+      : false;
+  },
+
+  getEngName: function (value) {
+    return typeof this.engName[value] !== "undefined"
+      ? this.engName[value]
+      : false;
   },
 };
 
@@ -60,8 +104,12 @@ const vowels = {
   14: "oe",
   15: "wi",
   16: "ui",
+  17: "wa",
+  18: "wo",
+  19: "wae",
+  20: "we",
 
-  name: {
+  korName: {
     a: "ㅏ",
     ya: "ㅑ",
     eo: "ㅓ",
@@ -79,79 +127,52 @@ const vowels = {
     oe: "ㅚ",
     wi: "ㅟ",
     ui: "ㅢ",
+    wa: "ㅘ",
+    wo: "ㅝ",
+    wae: "ㅙ",
+    we: "ㅞ",
   },
 
-  getName: function (value) {
-    return typeof this.name[value] !== "undefined" ? this.name[value] : false;
-  },
-};
-
-const alphabet = {
-  0: "A",
-  1: "B",
-  2: "C",
-  3: "D",
-  4: "E",
-  5: "F",
-  6: "G",
-  7: "H",
-  8: "I",
-  9: "J",
-  10: "K",
-  11: "L",
-  12: "M",
-  13: "N",
-  14: "O",
-  15: "P",
-  16: "Q",
-  17: "R",
-  18: "S",
-  19: "T",
-  20: "U",
-  21: "V",
-  22: "W",
-  23: "X",
-  24: "Y",
-  25: "Z",
-
-  name: {
-    A: "a",
-    B: "b",
-    C: "c",
-    D: "d",
-    E: "e",
-    F: "f",
-    G: "g",
-    H: "h",
-    I: "i",
-    J: "j",
-    K: "k",
-    L: "l",
-    M: "m",
-    N: "n",
-    O: "o",
-    P: "p",
-    Q: "q",
-    R: "r",
-    S: "s",
-    T: "t",
-    U: "u",
-    V: "v",
-    W: "w",
-    X: "x",
-    Y: "y",
-    Z: "z",
+  engName: {
+    ㅏ: "a",
+    ㅑ: "ya",
+    ㅓ: "eo",
+    ㅕ: "yeo",
+    ㅗ: "o",
+    ㅛ: "yo",
+    ㅜ: "u",
+    ㅠ: "yu",
+    ㅡ: "eu",
+    ㅣ: "i",
+    ㅐ: "ae",
+    ㅒ: "yae",
+    ㅔ: "e",
+    ㅖ: "ye",
+    ㅚ: "oe",
+    ㅟ: "wi",
+    ㅢ: "ui",
+    ㅘ: "wa",
+    ㅝ: "wo",
+    ㅙ: "wae",
+    ㅞ: "we",
   },
 
-  getName: function (value) {
-    return typeof this.name[value] !== "undefined" ? this.name[value] : false;
+  getKorName: function (value) {
+    return typeof this.korName[value] !== "undefined"
+      ? this.korName[value]
+      : false;
+  },
+
+  getEngName: function (value) {
+    return typeof this.engName[value] !== "undefined"
+      ? this.engName[value]
+      : false;
   },
 };
 
-const Letter = {
+const LETTER = {
   consonants,
   vowels,
-  alphabet,
 };
 
-export { Letter, lengthOfLetter };
+export { LETTER, NAME_LETTER_TYPE, LENGTH_LETTER_TYPE };

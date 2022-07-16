@@ -5,16 +5,16 @@ import PropTypes from "prop-types";
 import Text from "../atoms/Text";
 import Form from "../molecules/Form";
 
-function FormContent({ title = "", onClick }) {
-  const [gestureName, setGesturenName] = useState("");
+function FormContent({ title = "", placeholder, onClick }) {
+  const [input, setInput] = useState("");
 
   const handleNameChange = (event) => {
-    setGesturenName(event.target.value);
+    setInput(event.target.value);
   };
 
-  const handleGestureAdd = async (value) => {
+  const handleDataAdd = async (value) => {
     await onClick(value);
-    setGesturenName("");
+    setInput("");
   };
 
   return (
@@ -25,12 +25,12 @@ function FormContent({ title = "", onClick }) {
         </Wrapper>
       )}
       <Form
-        value={gestureName}
-        placeholder="학습할 제스처"
+        value={input}
+        placeholder={placeholder}
         onChange={handleNameChange}
-        onClick={handleGestureAdd}
+        onClick={handleDataAdd}
       >
-        추가하기
+        입력하기
       </Form>
     </Container>
   );
@@ -53,6 +53,7 @@ const Wrapper = styled.div`
 
 FormContent.propTypes = {
   title: PropTypes.string,
+  placeholder: PropTypes.string,
   list: PropTypes.array,
   onClick: PropTypes.func,
   children: PropTypes.oneOfType([
