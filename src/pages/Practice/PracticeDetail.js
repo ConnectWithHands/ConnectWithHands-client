@@ -36,7 +36,6 @@ import {
 function PracticeDetail() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
-  // const xCordinationRef = useRef();
   const params = useParams();
   const navigate = useNavigate();
   const [score, setScore] = useState(0);
@@ -54,8 +53,6 @@ function PracticeDetail() {
   const koreanNameOfCurrentLetter = LETTER[typeOfLetter].getKorName(
     engNameOfCurrentLetter,
   );
-
-  // xCordinationRef.current = xCordination;
 
   const moveToSubMain = () => {
     navigate("/practice");

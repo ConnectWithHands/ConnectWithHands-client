@@ -2,15 +2,35 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import Video from "../atoms/Video";
-import Canvas from "../atoms/Canvas";
+import ButtonList from "../molecules/ButtonList";
+import VideoCanvas from "../molecules/VideoCanvas";
+import Button from "../atoms/Button";
 
-function VideoContent({ webcamRef, canvasRef, facingMode }) {
+function VideoContent({
+  webcamRef,
+  canvasRef,
+  facingMode,
+  leftButton,
+  rightButton,
+}) {
   return (
-    <Container>
-      <Video ref={webcamRef} facingMode={facingMode} />
-      <Canvas ref={canvasRef} />
-    </Container>
+    <>
+      <ButtonList width="100%">
+        <Button height="50px" className="small" onClick={leftButton.onClick}>
+          {leftButton.text}
+        </Button>
+        <Button height="50px" className="small" onClick={rightButton.onClick}>
+          {rightButton.text}
+        </Button>
+      </ButtonList>
+      <Container>
+        <VideoCanvas
+          webcamRef={webcamRef}
+          canvasRef={canvasRef}
+          facingMode={facingMode}
+        />
+      </Container>
+    </>
   );
 }
 
@@ -34,4 +54,6 @@ VideoContent.propTypes = {
     PropTypes.shape({ current: PropTypes.any }),
   ]),
   facingMode: PropTypes.string,
+  leftButton: PropTypes.object,
+  rightButton: PropTypes.object,
 };

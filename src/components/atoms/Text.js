@@ -33,9 +33,6 @@ const StyledSpan = styled.span`
   word-wrap: break-word;
   word-break: break-all;
   white-space: pre-wrap;
-  &.del {
-    text-decoration: line-through;
-  }
   &.small {
     padding: 0.5em 0.3em;
     font-size: 1rem;

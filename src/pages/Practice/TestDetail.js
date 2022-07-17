@@ -23,6 +23,7 @@ import {
   PRACTICE_TITLE,
   LENGTH_LETTER_TYPE,
   LETTER,
+  NAME_LETTER_TYPE,
 } from "../../constants";
 
 function TestDetail() {
@@ -49,11 +50,6 @@ function TestDetail() {
 
   const moveToSubMain = () => {
     navigate("/practice");
-  };
-
-  const initializeTest = () => {
-    setIndex(0);
-    setAnswers(0);
   };
 
   const increaseIndex = () => {
@@ -84,7 +80,8 @@ function TestDetail() {
   };
 
   const handleTestInitialize = () => {
-    initializeTest();
+    setIndex(0);
+    setAnswers(0);
     shuffleGestures(typeOfLetter);
   };
 
