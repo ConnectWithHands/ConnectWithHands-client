@@ -52,10 +52,6 @@ function PracticeAll() {
     return false;
   };
 
-  const estimateHandMove = (xValue) => {
-    setXCordination((previous) => [...previous, xValue]);
-  };
-
   const detectHands = async (detector) => {
     if (
       typeof webcamRef.current !== "undefined" &&
@@ -91,7 +87,7 @@ function PracticeAll() {
               }
 
               const xValue = hand[0].keypoints[0].x;
-              estimateHandMove(xValue);
+              setXCordination((previous) => [...previous, xValue]);
 
               const max = Math.max(...xCordination);
               const min = Math.min(...xCordination);

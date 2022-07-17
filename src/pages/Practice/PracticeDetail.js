@@ -23,8 +23,8 @@ import HeaderContent from "../../components/organisms/HeaderContent";
 import VideoContent from "../../components/organisms/VideoContent";
 import Image from "../../components/atoms/Image";
 import Text from "../../components/atoms/Text";
+import IMAGE from "../../assets";
 
-import ImageOfLetters from "../../assets";
 import {
   FACING_MODE,
   PRACTICE_TITLE,
@@ -74,11 +74,21 @@ function PracticeDetail() {
     setPage(!page);
   };
 
-  const checkUnusualCase = (typeOfLetter, index) => {
-    const specialConsonants = [1, 4, 8, 10, 13];
+  // const checkSpecialCase = (typeOfLetter, index) => {
+  //   const specialConsonants = [1, 4, 8, 10, 13];
 
-    if (typeOfLetter === NAME_LETTER_TYPE.consonants) {
-      if (specialConsonants.includes(index)) return true;
+  //   if (typeOfLetter === NAME_LETTER_TYPE.consonants) {
+  //     if (specialConsonants.includes(index)) return true;
+  //   }
+
+  //   return false;
+  // };
+
+  const checkSpecialCase = (type, gesture) => {
+    const specialConsonants = ["giyeok", "digeut", "bieup", "siot", "jieut"];
+
+    if (type === NAME_LETTER_TYPE.consonants) {
+      if (specialConsonants.includes(gesture.name)) return true;
     }
 
     return false;
@@ -102,7 +112,7 @@ function PracticeDetail() {
       try {
         const hand = await detector.estimateHands(video);
         const GE = new GestureEstimator(Gestures[typeOfLetter]);
-        const isUnusual = checkUnusualCase(typeOfLetter, indexOfLetter);
+        const isSpecial = checkSpecialCase(typeOfLetter, indexOfLetter);
 
         if (hand.length > 0) {
           const gesture = GE.estimate(hand, 7);
@@ -110,8 +120,33 @@ function PracticeDetail() {
 
           if (gesture.bestGesture.length) {
             const highestScore = gesture.bestGesture[0];
+            const isSpecial = checkSpecialCase(typeOfLetter, highestScore);
 
             if (
+              isSpecial &&
+              Gestures[typeOfLetter][indexOfLetter]?.name ===
+                `ssang${highestScore.name}`
+            ) {
+              if (setXCordination.length === 10) {
+                setXCordination([]);
+                return;
+              }
+
+              const xValue = hand[0].keypoints[0].x;
+              setXCordination((previous) => [...previous, xValue]);
+
+              const max = Math.max(...xCordination);
+              const min = Math.min(...xCordination);
+
+              if (max - min > 100) {
+                const score = getPercentage(highestScore.score);
+                setScore(score);
+                setHighScore((previous) =>
+                  parseInt(score) > parseInt(previous) ? score : previous,
+                );
+                setResult(PRACTICE_DETECTED.MATCHED);
+              }
+            } else if (
               highestScore.name === Gestures[typeOfLetter][indexOfLetter]?.name
             ) {
               const score = getPercentage(highestScore.score);
@@ -120,31 +155,6 @@ function PracticeDetail() {
                 parseInt(score) > parseInt(previous) ? score : previous,
               );
               setResult(PRACTICE_DETECTED.MATCHED);
-            } else if (isUnusual) {
-              if (
-                typeOfLetter === NAME_LETTER_TYPE.consonants &&
-                highestScore.name ===
-                  Gestures[typeOfLetter][indexOfLetter - 1]?.name
-              ) {
-                if (setXCordination.length < 5) {
-                  setXCordination((previous) => [
-                    ...previous,
-                    hand[0].keypoints[0].x,
-                  ]);
-                }
-
-                const max = Math.max(...xCordination);
-                const min = Math.min(...xCordination);
-
-                if (max - min > 100) {
-                  const score = getPercentage(highestScore.score);
-                  setScore(score);
-                  setHighScore((previous) =>
-                    parseInt(score) > parseInt(previous) ? score : previous,
-                  );
-                  setResult(PRACTICE_DETECTED.MATCHED);
-                }
-              }
             } else {
               setXCordination([]);
               setScore(0);
@@ -195,7 +205,7 @@ function PracticeDetail() {
           />
         </SubWrapper>
         <SubWrapper>
-          {checkUnusualCase(typeOfLetter, indexOfLetter) ? (
+          {checkSpecialCase(typeOfLetter, indexOfLetter) ? (
             <Text className="normal">
               동일한 모양의 제스처를 오른쪽으로 이동
             </Text>
@@ -205,7 +215,7 @@ function PracticeDetail() {
               <Image
                 width="50%"
                 alt="example"
-                src={ImageOfLetters[typeOfLetter][engNameOfCurrentLetter]}
+                src={IMAGE[typeOfLetter][engNameOfCurrentLetter]}
               />
             </ImageBox>
             <TextBox>
