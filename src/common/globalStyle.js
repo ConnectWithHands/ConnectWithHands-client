@@ -137,7 +137,6 @@ html,
   select {
     border-style: none;
     background: transparent;
-    -webkit-appearance: none;
     -moz-appearance: none;
   }
   b,

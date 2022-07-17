@@ -24,14 +24,16 @@ function PracticeListContent({ title, image, description, page, onClick }) {
         >
           연습하기
         </Button>
-        <Button
-          width="80%"
-          height="50px"
-          className="small"
-          onClick={() => onClick(page, "test")}
-        >
-          테스트하기
-        </Button>
+        {title !== "자/모음" ? (
+          <Button
+            width="80%"
+            height="50px"
+            className="small"
+            onClick={() => onClick(page, "test")}
+          >
+            테스트하기
+          </Button>
+        ) : null}
       </ButtonList>
     </StyledContainer>
   );

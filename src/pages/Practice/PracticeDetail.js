@@ -24,7 +24,7 @@ import VideoContent from "../../components/organisms/VideoContent";
 import Image from "../../components/atoms/Image";
 import Text from "../../components/atoms/Text";
 
-import ImageOfLetters from "../../assets/image";
+import ImageOfLetters from "../../assets";
 import {
   FACING_MODE,
   PRACTICE_TITLE,

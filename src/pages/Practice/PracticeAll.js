@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-converter";
@@ -8,92 +8,52 @@ import "@tensorflow/tfjs-backend-webgl";
 import {
   setHandDetector,
   drawHandKeypoints,
+  getPercentage,
   useInterval,
 } from "../../common/utilities";
 import { GestureEstimator, Gestures } from "../../common/Fingerpose";
 
 import HeaderContent from "../../components/organisms/HeaderContent";
-import VideoContent from "../../components/organisms/VideoContent";
-import Image from "../../components/atoms/Image";
+import VideoCanvas from "../../components/molecules/VideoCanvas";
 import Text from "../../components/atoms/Text";
-
-import IMAGE from "../../assets";
+import SelectBox from "../../components/atoms/Select";
 
 import {
   FACING_MODE,
-  PRACTICE_TITLE,
-  LENGTH_LETTER_TYPE,
-  NAME_LETTER_TYPE,
   LETTER,
+  PRACTICE_SELECT,
+  NAME_LETTER_TYPE,
 } from "../../constants";
 
-function TestDetail() {
+function PracticeAll() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
-  const params = useParams();
   const navigate = useNavigate();
   const [detector, setDetector] = useState(false);
-  const [hint, setHint] = useState(false);
-  const [index, setIndex] = useState(0);
-  const [answers, setAnswers] = useState(0);
-  const [randomLetters, setRandomLetters] = useState([]);
-  const typeOfLetter = params.id;
-  const testGesturesList =
-    typeOfLetter === NAME_LETTER_TYPE.consonants
-      ? Gestures.consonantsTest
-      : Gestures.vowels;
-  const engNameOfCurrentLetter = randomLetters[index]?.name;
-  const koreanNameOfCurrentLetter = LETTER[typeOfLetter].getKorName(
-    engNameOfCurrentLetter,
-  );
-
-  const moveToResultPage = (subPage) => {
-    navigate(`/practice/detail/${subPage}/test/result`, {
-      state: { subPage, answers },
-    });
-  };
+  const [type, setType] = useState("consonants");
+  const [score, setScore] = useState(0);
+  const [detectedGesture, setDetectedGesture] = useState("");
+  const [xCordination, setXCordination] = useState([]);
+  const koreanNameOfCurrentLetter = LETTER[type].getKorName(detectedGesture);
 
   const moveToSubMain = () => {
     navigate("/practice");
   };
 
-  const initializeTest = () => {
-    setIndex(0);
-    setAnswers(0);
-  };
+  const handleSelectChange = (event) => setType(event.target.value);
 
-  const increaseIndex = () => {
-    setIndex((previous) => previous + 1);
-  };
+  const checkSpecialCase = (type, gesture) => {
+    const specialConsonants = ["giyeok", "digeut", "bieup", "siot", "jieut"];
 
-  const shuffleGestures = () => {
-    const result = [];
-    const randomGestures = [];
-
-    for (let i = 0; i < 5; i++) {
-      const random = Math.floor(Math.random() * testGesturesList.length);
-
-      if (result.includes(random)) {
-        i--;
-      } else {
-        result.push(random);
-      }
+    if (type === NAME_LETTER_TYPE.consonants) {
+      if (specialConsonants.includes(gesture.name)) return true;
     }
 
-    result.forEach((index) => {
-      randomGestures.push(testGesturesList[index]);
-    });
-
-    setRandomLetters([...randomGestures]);
+    return false;
   };
 
-  const handleTestInitialize = () => {
-    initializeTest();
-    shuffleGestures();
-  };
-
-  const handleHintShow = () => {
-    setHint(!hint);
+  const estimateHandMove = (xValue) => {
+    setXCordination((previous) => [...previous, xValue]);
   };
 
   const detectHands = async (detector) => {
@@ -113,20 +73,44 @@ function TestDetail() {
 
       try {
         const hand = await detector.estimateHands(video);
-        const GE = new GestureEstimator(randomLetters);
+        const GE = new GestureEstimator(Gestures[type]);
 
         if (hand.length > 0) {
-          const gesture = GE.estimate(hand, 7);
+          const gesture = GE.estimate(hand, 8);
           console.log("gesture", gesture);
 
-          if (
-            gesture.bestGesture.length &&
-            gesture.bestGesture[0].name === randomLetters[index]?.name
-          ) {
-            console.log("일치");
-            setIndex((previous) => previous + 1);
-            setAnswers((previous) => previous + 1);
+          if (gesture.bestGesture.length) {
+            const highestScore = gesture.bestGesture[0];
+            const isSpecial = checkSpecialCase(type, highestScore);
+            console.log(highestScore);
+
+            if (isSpecial) {
+              if (setXCordination.length === 10) {
+                setXCordination([]);
+                return;
+              }
+
+              const xValue = hand[0].keypoints[0].x;
+              estimateHandMove(xValue);
+
+              const max = Math.max(...xCordination);
+              const min = Math.min(...xCordination);
+
+              if (max - min > 100) {
+                setDetectedGesture(`ssang${highestScore.name}`);
+              } else {
+                setDetectedGesture(highestScore.name);
+              }
+              const score = getPercentage(highestScore.score);
+              setScore(score);
+            } else {
+              const score = getPercentage(highestScore.score);
+              setScore(score);
+              setDetectedGesture(highestScore.name);
+            }
           }
+        } else {
+          setXCordination([]);
         }
 
         const ctx = canvasRef.current.getContext("2d");
@@ -144,17 +128,10 @@ function TestDetail() {
       console.log("detector ready");
       setDetector(detector);
     };
-
-    shuffleGestures();
     runHandpose();
   }, []);
 
   useInterval(() => {
-    if (index === 5) {
-      moveToResultPage(typeOfLetter);
-      return;
-    }
-
     if (detector) {
       detectHands(detector);
     }
@@ -162,39 +139,24 @@ function TestDetail() {
 
   return (
     <Container>
-      <HeaderContent title="테스트하기" onClick={moveToSubMain} />
+      <HeaderContent title="연습하기" onClick={moveToSubMain} />
       <ContentWrapper>
         <SubWrapper>
-          <VideoContent
+          <VideoCanvas
             webcamRef={webcamRef}
             canvasRef={canvasRef}
             facingMode={FACING_MODE.user}
-            leftButton={{ text: "다시 하기", onClick: handleTestInitialize }}
-            rightButton={{ text: "다음 글자", onClick: increaseIndex }}
           />
         </SubWrapper>
         <SubWrapper>
           <Wrapper>
-            <ImageBox onClick={handleHintShow}>
-              {engNameOfCurrentLetter && hint ? (
-                <Image
-                  width="50%"
-                  alt="example"
-                  src={IMAGE[typeOfLetter]?.[engNameOfCurrentLetter]}
-                />
-              ) : null}
-            </ImageBox>
+            <SelectBox data={PRACTICE_SELECT} onChange={handleSelectChange} />
             <TextBox>
-              <Text className="small">{PRACTICE_TITLE[typeOfLetter]}</Text>
-              {koreanNameOfCurrentLetter && (
-                <Text className="super">{koreanNameOfCurrentLetter}</Text>
-              )}
+              <Text className="super">{koreanNameOfCurrentLetter}</Text>
             </TextBox>
           </Wrapper>
           <TextWrapper>
-            <Text className="normal">{`문제: ${
-              index + 1
-            }번,  정답: ${answers} / 5 `}</Text>
+            <Text className="normal">{`정확도: ${score}`}</Text>
           </TextWrapper>
         </SubWrapper>
       </ContentWrapper>
@@ -202,7 +164,7 @@ function TestDetail() {
   );
 }
 
-export default TestDetail;
+export default PracticeAll;
 
 const Container = styled.div`
   display: flex;
@@ -217,7 +179,6 @@ const ContentWrapper = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-
   @media screen and (max-width: 480px) {
     flex-direction: column;
   }
@@ -228,7 +189,7 @@ const SubWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin: 0 1rem;
+  margin: auto 1rem;
 `;
 
 const Wrapper = styled.div`
@@ -236,9 +197,9 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 70%;
+  margin: auto;
 
   @media screen and (max-width: 480px) {
-    flex-direction: row;
     width: 90%;
   }
 `;
@@ -248,7 +209,6 @@ const TextWrapper = styled.div`
   justify-content: center;
   border: 1px solid black;
   width: 70%;
-
   @media screen and (max-width: 480px) {
     width: 90%;
   }
@@ -261,7 +221,6 @@ const ImageBox = styled.div`
   height: 15vh;
   margin: 1.25rem 0.25rem;
   border: 1px solid black;
-
   @media screen and (max-width: 480px) {
     flex-direction: row;
     width: 100%;
@@ -270,12 +229,4 @@ const ImageBox = styled.div`
 
 const TextBox = styled(ImageBox)`
   flex-direction: column;
-  background-color: null;
-`;
-
-const StyledCover = styled.div`
-  width: 100%;
-  z-index: 2;
-
-  background-color: #9cb4cc;
 `;
