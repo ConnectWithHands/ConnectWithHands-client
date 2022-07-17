@@ -41,7 +41,6 @@ function PracticeDetail() {
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [result, setResult] = useState(PRACTICE_DETECTED.NONE);
-  const [page, setPage] = useState(false);
   const [detector, setDetector] = useState(false);
   const [xCordination, setXCordination] = useState([]);
   const [, increaseIndex] = useAtom(increaseIndexOfGesture);
@@ -63,7 +62,6 @@ function PracticeDetail() {
     setScore(0);
     setHighScore(0);
     setResult(PRACTICE_DETECTED.NONE);
-    setPage(!page);
   };
 
   const handleIndexDecrease = () => {
@@ -71,18 +69,7 @@ function PracticeDetail() {
     setScore(0);
     setHighScore(0);
     setResult(PRACTICE_DETECTED.NONE);
-    setPage(!page);
   };
-
-  // const checkSpecialCase = (typeOfLetter, index) => {
-  //   const specialConsonants = [1, 4, 8, 10, 13];
-
-  //   if (typeOfLetter === NAME_LETTER_TYPE.consonants) {
-  //     if (specialConsonants.includes(index)) return true;
-  //   }
-
-  //   return false;
-  // };
 
   const checkSpecialCase = (type, gesture) => {
     const specialConsonants = ["giyeok", "digeut", "bieup", "siot", "jieut"];
@@ -112,7 +99,6 @@ function PracticeDetail() {
       try {
         const hand = await detector.estimateHands(video);
         const GE = new GestureEstimator(Gestures[typeOfLetter]);
-        const isSpecial = checkSpecialCase(typeOfLetter, indexOfLetter);
 
         if (hand.length > 0) {
           const gesture = GE.estimate(hand, 7);
@@ -189,7 +175,7 @@ function PracticeDetail() {
     if (detector) {
       detectHands(detector);
     }
-  }, 200);
+  }, 500);
 
   return (
     <Container>
