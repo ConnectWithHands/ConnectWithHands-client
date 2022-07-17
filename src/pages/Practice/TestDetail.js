@@ -1,27 +1,21 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useAtom } from "jotai";
 import "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-converter";
 import "@tensorflow/tfjs-backend-webgl";
 
-import { setHandDetector, drawHandKeypoints } from "../../common/utilities";
-import { GestureEstimator, Gestures } from "../../common/Fingerpose";
-
 import {
-  randomLetters,
-  handleIndexOfRandom,
-  handleCorrectAnswers,
-  initializeResult,
-} from "../../store";
+  setHandDetector,
+  drawHandKeypoints,
+  useInterval,
+} from "../../common/utilities";
+import { GestureEstimator, Gestures } from "../../common/Fingerpose";
 
 import HeaderContent from "../../components/organisms/HeaderContent";
 import VideoContent from "../../components/organisms/VideoContent";
 import Image from "../../components/atoms/Image";
 import Text from "../../components/atoms/Text";
-import Button from "../../components/atoms/Button";
-import ButtonList from "../../components/molecules/ButtonList";
 
 import ImageOfLetters from "../../assets/image";
 import {
@@ -38,25 +32,32 @@ function TestDetail() {
   const navigate = useNavigate();
   const [detector, setDetector] = useState(false);
   const [hint, setHint] = useState(false);
-  const [indexOfRandom, increaseIndexOfRandom] = useAtom(handleIndexOfRandom);
-  const [numOfCorrectAnswers, increaseNumOfCorrect] =
-    useAtom(handleCorrectAnswers);
-  const [random, setRandom] = useAtom(randomLetters);
-  const [, initailizeTest] = useAtom(initializeResult);
+  const [index, setIndex] = useState(0);
+  const [answers, setAnswers] = useState(0);
+  const [randomLetters, setRandomLetters] = useState([]);
   const typeOfLetter = params.id;
-  const engNameOfCurrentLetter = random[indexOfRandom]?.name;
+  const engNameOfCurrentLetter = randomLetters[index]?.name;
   const koreanNameOfCurrentLetter = LETTER[typeOfLetter].getKorName(
     engNameOfCurrentLetter,
   );
 
-  const moveToResultPage = (subPage) => {
+  const moveToResultPage = (subPage, answers) => {
     navigate(`/practice/detail/${subPage}/test/result`, {
-      state: subPage,
+      state: { subPage, answers },
     });
   };
 
   const moveToSubMain = () => {
     navigate("/practice");
+  };
+
+  const initializeTest = () => {
+    setIndex(0);
+    setAnswers(0);
+  };
+
+  const increaseIndex = () => {
+    setIndex((previous) => previous + 1);
   };
 
   const shuffleGestures = (data) => {
@@ -79,11 +80,11 @@ function TestDetail() {
       randomGestures.push(gestures[index]);
     });
 
-    setRandom([...randomGestures]);
+    setRandomLetters([...randomGestures]);
   };
 
   const handleTestInitialize = () => {
-    initailizeTest();
+    initializeTest();
     shuffleGestures(typeOfLetter);
   };
 
@@ -108,7 +109,7 @@ function TestDetail() {
 
       try {
         const hand = await detector.estimateHands(video);
-        const GE = new GestureEstimator(random);
+        const GE = new GestureEstimator(randomLetters);
 
         if (hand.length > 0) {
           const gesture = GE.estimate(hand, 7);
@@ -116,11 +117,10 @@ function TestDetail() {
 
           if (
             gesture.bestGesture.length &&
-            gesture.bestGesture[0].name === random[indexOfRandom]?.name
+            gesture.bestGesture[0].name === randomLetters[index]?.name
           ) {
-            console.log("일치");
-            increaseIndexOfRandom();
-            increaseNumOfCorrect();
+            setIndex((previous) => previous + 1);
+            setAnswers((previous) => previous + 1);
           }
         }
 
@@ -136,51 +136,35 @@ function TestDetail() {
   useEffect(() => {
     const runHandpose = async () => {
       const detector = await setHandDetector();
-      console.log("detector ready");
       setDetector(detector);
     };
 
     shuffleGestures(typeOfLetter);
-
     runHandpose();
   }, []);
 
-  useEffect(() => {
-    if (indexOfRandom === 5) {
-      moveToResultPage(typeOfLetter);
+  useInterval(() => {
+    if (index === 5) {
+      moveToResultPage(typeOfLetter, answers);
       return;
     }
 
-    console.log("다시 타이머 셋");
-
-    let timerId;
-
     if (detector) {
-      timerId = setInterval(() => {
-        detectHands(detector);
-      }, 1000);
+      detectHands(detector);
     }
-
-    return () => clearInterval(timerId);
-  }, [detector, indexOfRandom]);
+  }, 200);
 
   return (
     <Container>
       <HeaderContent title="테스트하기" onClick={moveToSubMain} />
       <ContentWrapper>
         <SubWrapper>
-          <ButtonList width="100%">
-            <Button className="small" onClick={handleTestInitialize}>
-              다시 하기
-            </Button>
-            <Button className="small" onClick={increaseIndexOfRandom}>
-              다음 글자
-            </Button>
-          </ButtonList>
           <VideoContent
             webcamRef={webcamRef}
             canvasRef={canvasRef}
             facingMode={FACING_MODE.user}
+            leftButton={{ text: "다시 하기", onClick: handleTestInitialize }}
+            rightButton={{ text: "다음 글자", onClick: increaseIndex }}
           />
         </SubWrapper>
         <SubWrapper>
@@ -203,8 +187,8 @@ function TestDetail() {
           </Wrapper>
           <TextWrapper>
             <Text className="normal">{`문제: ${
-              indexOfRandom + 1
-            }번,  정답: ${numOfCorrectAnswers} / 5 `}</Text>
+              index + 1
+            }번,  정답: ${answers} / 5 `}</Text>
           </TextWrapper>
         </SubWrapper>
       </ContentWrapper>

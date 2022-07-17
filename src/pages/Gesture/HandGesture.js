@@ -8,7 +8,11 @@ import "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-converter";
 import "@tensorflow/tfjs-backend-webgl";
 
-import { setHandDetector, drawHandKeypoints } from "../../common/utilities";
+import {
+  setHandDetector,
+  drawHandKeypoints,
+  useInterval,
+} from "../../common/utilities";
 import { GestureEstimator, Gestures } from "../../common/Fingerpose";
 
 import HeaderContent from "../../components/organisms/HeaderContent";
@@ -125,24 +129,6 @@ function HandGesture() {
                 throttleHandler(WORD[matchedGesture.name]);
               }
             }
-            // if (matchedGesture.name === "erase") {
-            //   setWords((previous) => {
-            //     const copy = [...previous];
-            //     copy.pop();
-
-            //     return [...copy];
-            //   });
-            // } else if (matchedGesture.name === "speech") {
-            //   handleSpeechStart(wordsRef.current);
-            // } else {
-            //   const scoreToString = `${(matchedGesture.score + "").substring(
-            //     0,
-            //     4,
-            //   )}%`;
-
-            //   setScore(scoreToString);
-            //   throttleHandler(WORD[matchedGesture.name]);
-            // }
           } else {
             setScore(0);
           }
@@ -168,18 +154,11 @@ function HandGesture() {
     runHandpose();
   }, []);
 
-  useEffect(() => {
-    let timerId;
-
+  useInterval(() => {
     if (detector) {
-      timerId = setInterval(() => {
-        detectHands(detector);
-      }, 1000);
-      console.log(timerId);
+      detectHands(detector);
     }
-
-    return () => clearInterval(timerId);
-  }, [detector, facingMode]);
+  }, 1000);
 
   useEffect(() => {
     return () => {
@@ -192,28 +171,15 @@ function HandGesture() {
       <HeaderContent title="수어 인식하기" onClick={moveToSubMain} />
       <ContentWrapper>
         <SubWrapper>
-          <ButtonList width="90%">
-            <Button
-              width="80%"
-              height="50px"
-              className="normal"
-              onClick={handleFacingModeChange}
-            >
-              카메라 전환
-            </Button>
-            <Button
-              width="80%"
-              height="50px"
-              className="normal"
-              onClick={handleSpeechStop}
-            >
-              소리끄기
-            </Button>
-          </ButtonList>
           <VideoContent
             webcamRef={webcamRef}
             canvasRef={canvasRef}
-            facingMode={facingMode}
+            facingMode={FACING_MODE.user}
+            leftButton={{
+              text: "카메라 전환",
+              onClick: handleFacingModeChange,
+            }}
+            rightButton={{ text: "소리끄기", onClick: handleSpeechStop }}
           />
         </SubWrapper>
         <SubWrapper>

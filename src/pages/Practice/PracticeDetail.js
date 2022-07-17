@@ -10,6 +10,7 @@ import {
   setHandDetector,
   drawHandKeypoints,
   getPercentage,
+  useInterval,
 } from "../../common/utilities";
 import { GestureEstimator, Gestures } from "../../common/Fingerpose";
 import {
@@ -22,8 +23,6 @@ import HeaderContent from "../../components/organisms/HeaderContent";
 import VideoContent from "../../components/organisms/VideoContent";
 import Image from "../../components/atoms/Image";
 import Text from "../../components/atoms/Text";
-import Button from "../../components/atoms/Button";
-import ButtonList from "../../components/molecules/ButtonList";
 
 import ImageOfLetters from "../../assets/image";
 import {
@@ -37,7 +36,7 @@ import {
 function PracticeDetail() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
-  const xCordinationRef = useRef();
+  // const xCordinationRef = useRef();
   const params = useParams();
   const navigate = useNavigate();
   const [score, setScore] = useState(0);
@@ -56,7 +55,7 @@ function PracticeDetail() {
     engNameOfCurrentLetter,
   );
 
-  xCordinationRef.current = xCordination;
+  // xCordinationRef.current = xCordination;
 
   const moveToSubMain = () => {
     navigate("/practice");
@@ -130,15 +129,15 @@ function PracticeDetail() {
                 highestScore.name ===
                   Gestures[typeOfLetter][indexOfLetter - 1]?.name
               ) {
-                if (xCordinationRef.current.length < 5) {
+                if (setXCordination.length < 5) {
                   setXCordination((previous) => [
                     ...previous,
                     hand[0].keypoints[0].x,
                   ]);
                 }
 
-                const max = Math.max(...xCordinationRef.current);
-                const min = Math.min(...xCordinationRef.current);
+                const max = Math.max(...xCordination);
+                const min = Math.min(...xCordination);
 
                 if (max - min > 100) {
                   const score = getPercentage(highestScore.score);
@@ -179,44 +178,23 @@ function PracticeDetail() {
     runHandpose();
   }, []);
 
-  useEffect(() => {
-    let timerId;
-
+  useInterval(() => {
     if (detector) {
-      timerId = setInterval(() => {
-        detectHands(detector);
-      }, 200);
-      console.log(timerId);
+      detectHands(detector);
     }
-
-    return () => clearInterval(timerId);
-  }, [detector, page]);
+  }, 200);
 
   return (
     <Container>
       <HeaderContent title="연습하기" onClick={moveToSubMain} />
       <ContentWrapper>
         <SubWrapper>
-          <ButtonList width="100%">
-            <Button
-              height="50px"
-              className="small"
-              onClick={handleIndexDecrease}
-            >
-              이전 글자
-            </Button>
-            <Button
-              height="50px"
-              className="small"
-              onClick={handleIndexIncrease}
-            >
-              다음 글자
-            </Button>
-          </ButtonList>
           <VideoContent
             webcamRef={webcamRef}
             canvasRef={canvasRef}
             facingMode={FACING_MODE.user}
+            leftButton={{ text: "이전 글자", onClick: handleIndexDecrease }}
+            rightButton={{ text: "다음 글자", onClick: handleIndexIncrease }}
           />
         </SubWrapper>
         <SubWrapper>
@@ -239,7 +217,7 @@ function PracticeDetail() {
             </TextBox>
           </Wrapper>
           <TextWrapper>
-            <Text className="normal">{`결과: ${result} / 정확도: ${score} / 최고점: ${highScore}`}</Text>
+            <Text className="normal">{`${result} / 정확도: ${score} / 최고점: ${highScore}`}</Text>
           </TextWrapper>
         </SubWrapper>
       </ContentWrapper>
