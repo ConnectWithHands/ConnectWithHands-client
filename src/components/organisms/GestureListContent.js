@@ -20,7 +20,7 @@ function GestureContent({
   return (
     <StyledContainer>
       <Image
-        width={isMobile() ? "25%" : "20%"}
+        width={isMobile() ? "25%" : "15%"}
         height="250px"
         alt="icon"
         src={image}
@@ -53,7 +53,7 @@ const StyledContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 30vh;
+  height: 100%;
   margin: 1em 0;
   border: 1px solid black;
 
@@ -68,6 +68,12 @@ const SubContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 1em 0;
+  width: 60%;
+
+  @media screen and (max-width: 480px) {
+    width: 90%;
+    flex-direction: column;
+  }
 `;
 
 const Wrapper = styled.div`

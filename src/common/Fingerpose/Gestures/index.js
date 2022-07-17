@@ -1,10 +1,11 @@
 import words from "./words";
-import consonants from "./consonants";
+import { consonants, consonantsTest } from "./consonants";
 import vowels from "./vowels";
 
 const Gestures = {
   words,
   consonants,
+  consonantsTest,
   vowels,
 };
 

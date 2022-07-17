@@ -8,6 +8,7 @@ import Main from "./pages/Main";
 import Practice from "./pages/Practice";
 import PracticeMain from "./pages/Practice/PracticeMain";
 import PracticeDetail from "./pages/Practice/PracticeDetail";
+import PracticeAll from "./pages/Practice/PracticeAll";
 import TestDetail from "./pages/Practice/TestDetail";
 import TestResult from "./pages/Practice/TestResult";
 import Gesture from "./pages/Gesture";
@@ -34,6 +35,7 @@ function App() {
               <Route path="detail/:id" element={<PracticeDetail />} />
               <Route path="detail/:id/test" element={<TestDetail />} />
               <Route path="detail/:id/test/result" element={<TestResult />} />
+              <Route path="detail/all" element={<PracticeAll />} />
             </Route>
             <Route path="/gesture" element={<Gesture />}>
               <Route index element={<GestureMain />} />

@@ -17,7 +17,7 @@ function ErrorContent({ image, text, onClick }) {
       <Text className="title">{text}</Text>
       {onClick && (
         <ButtonWrapper>
-          <Button width="80vw" height="5vh" onClick={onClick}>
+          <Button width="80%" className="normal" onClick={onClick}>
             홈으로 가기
           </Button>
         </ButtonWrapper>
@@ -39,6 +39,7 @@ const StyledErrorContent = styled.div`
 
 const ButtonWrapper = styled.div`
   display: flex;
+  width: 100%;
 `;
 
 ErrorContent.propTypes = {

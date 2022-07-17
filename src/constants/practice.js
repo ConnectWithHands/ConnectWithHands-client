@@ -1,4 +1,4 @@
-import IMAGE from "../assets/image";
+import IMAGE from "../assets";
 
 export const PRACTICE_LIST = [
   {
@@ -15,6 +15,13 @@ export const PRACTICE_LIST = [
     image: IMAGE.list.vowel,
     page: "detail/vowels",
   },
+  {
+    id: 2,
+    title: "자/모음",
+    description: "자율 연습",
+    image: IMAGE.list.all,
+    page: "detail/all",
+  },
 ];
 
 export const PRACTICE_TITLE = {
@@ -27,3 +34,8 @@ export const PRACTICE_DETECTED = {
   MATCHED: "일치",
   NONE: "탐지 전 ",
 };
+
+export const PRACTICE_SELECT = [
+  { id: 0, value: "consonants", title: "자음" },
+  { id: 1, value: "vowels", title: "모음" },
+];

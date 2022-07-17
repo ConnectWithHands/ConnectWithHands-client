@@ -40,4 +40,21 @@ const consonants = [
   hieut,
 ];
 
-export default consonants;
+const consonantsTest = [
+  giyeok,
+  nieun,
+  digeut,
+  rieul,
+  miuem,
+  bieup,
+  siot,
+  ieung,
+  jieut,
+  chieut,
+  kieuk,
+  tieut,
+  pieup,
+  hieut,
+];
+
+export { consonants, consonantsTest };

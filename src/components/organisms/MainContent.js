@@ -17,11 +17,6 @@ function MainContent() {
     navigate(`/${pageName}`);
   };
 
-  const subTitle = `"손의 언어로 하나되다"`;
-
-  const descriptionText =
-    "손의 모양을 확인하세요!\n정확한 손 모양으로 수어를\n연습하고 소통할 수 있습니다.";
-
   return (
     <StyledMainContent>
       <Wrapper>
@@ -59,6 +54,11 @@ function MainContent() {
 }
 
 export default MainContent;
+
+const subTitle = `"손의 언어로 하나되다"`;
+
+const descriptionText =
+  "손의 모양을 확인하세요!\n정확한 손 모양으로 수어를\n연습하고 소통할 수 있습니다.";
 
 const StyledMainContent = styled.div`
   display: flex;

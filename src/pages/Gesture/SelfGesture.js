@@ -20,6 +20,8 @@ import Video from "../../components/atoms/Video";
 import { isMobile } from "../../common/utilities";
 import { FACING_MODE, ERROR } from "../../constants";
 
+import { useInterval } from "../../common/utilities";
+
 import MobileError from "../../assets/desktop.png";
 
 function SelfGesture() {
@@ -139,13 +141,12 @@ function SelfGesture() {
   useEffect(() => {
     const runModel = async () => {
       const classifier = knnClassifier.create();
-      setClassifier(classifier);
       const mobilenetModel = await mobilenet.load();
-      setModel(mobilenetModel);
       const webcam = await tf.data.webcam(webcamRef.current.video);
+      setModel(mobilenetModel);
+      setClassifier(classifier);
       setTfWebcam(webcam);
       setInitialMode(true);
-      console.log("model loaded");
     };
 
     if (!isMobile()) {
@@ -153,25 +154,11 @@ function SelfGesture() {
     }
   }, []);
 
-  useEffect(() => {
-    if (webcamRef.current) {
+  useInterval(() => {
+    if (webcamRef.current && initialMode) {
       runEstimator();
     }
-  }, [webcamRef]);
-
-  useEffect(() => {
-    let timerId;
-
-    if (initialMode) {
-      timerId = setInterval(() => {
-        runEstimator();
-      }, 1000);
-
-      console.log(timerId);
-    }
-
-    return () => clearInterval(timerId);
-  }, [initialMode]);
+  }, 500);
 
   return (
     <Container>

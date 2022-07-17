@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useAtom, useAtomValue } from "jotai";
 import "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-converter";
 import "@tensorflow/tfjs-backend-webgl";
@@ -13,63 +12,35 @@ import {
   useInterval,
 } from "../../common/utilities";
 import { GestureEstimator, Gestures } from "../../common/Fingerpose";
-import {
-  indexOfLetters,
-  increaseIndexOfGesture,
-  decreaseIndexOfGesture,
-} from "../../store";
 
 import HeaderContent from "../../components/organisms/HeaderContent";
-import VideoContent from "../../components/organisms/VideoContent";
-import Image from "../../components/atoms/Image";
+import VideoCanvas from "../../components/molecules/VideoCanvas";
 import Text from "../../components/atoms/Text";
-import IMAGE from "../../assets";
+import SelectBox from "../../components/atoms/Select";
 
 import {
   FACING_MODE,
-  PRACTICE_TITLE,
-  PRACTICE_DETECTED,
   LETTER,
+  PRACTICE_SELECT,
   NAME_LETTER_TYPE,
 } from "../../constants";
 
-function PracticeDetail() {
+function PracticeAll() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
-  const params = useParams();
   const navigate = useNavigate();
-  const [score, setScore] = useState(0);
-  const [highScore, setHighScore] = useState(0);
-  const [result, setResult] = useState(PRACTICE_DETECTED.NONE);
   const [detector, setDetector] = useState(false);
+  const [type, setType] = useState("consonants");
+  const [score, setScore] = useState(0);
+  const [detectedGesture, setDetectedGesture] = useState("");
   const [xCordination, setXCordination] = useState([]);
-  const [, increaseIndex] = useAtom(increaseIndexOfGesture);
-  const [, decreaseIndex] = useAtom(decreaseIndexOfGesture);
-  const indexGestures = useAtomValue(indexOfLetters);
-  const typeOfLetter = params.id;
-  const indexOfLetter = indexGestures[typeOfLetter];
-  const engNameOfCurrentLetter = LETTER[typeOfLetter][indexOfLetter];
-  const koreanNameOfCurrentLetter = LETTER[typeOfLetter].getKorName(
-    engNameOfCurrentLetter,
-  );
+  const koreanNameOfCurrentLetter = LETTER[type].getKorName(detectedGesture);
 
   const moveToSubMain = () => {
     navigate("/practice");
   };
 
-  const handleIndexIncrease = () => {
-    increaseIndex(typeOfLetter);
-    setScore(0);
-    setHighScore(0);
-    setResult(PRACTICE_DETECTED.NONE);
-  };
-
-  const handleIndexDecrease = () => {
-    decreaseIndex(typeOfLetter);
-    setScore(0);
-    setHighScore(0);
-    setResult(PRACTICE_DETECTED.NONE);
-  };
+  const handleSelectChange = (event) => setType(event.target.value);
 
   const checkSpecialCase = (type, gesture) => {
     const specialConsonants = ["giyeok", "digeut", "bieup", "siot", "jieut"];
@@ -98,21 +69,18 @@ function PracticeDetail() {
 
       try {
         const hand = await detector.estimateHands(video);
-        const GE = new GestureEstimator(Gestures[typeOfLetter]);
+        const GE = new GestureEstimator(Gestures[type]);
 
         if (hand.length > 0) {
-          const gesture = GE.estimate(hand, 7);
+          const gesture = GE.estimate(hand, 8);
           console.log("gesture", gesture);
 
           if (gesture.bestGesture.length) {
             const highestScore = gesture.bestGesture[0];
-            const isSpecial = checkSpecialCase(typeOfLetter, highestScore);
+            const isSpecial = checkSpecialCase(type, highestScore);
+            console.log(highestScore);
 
-            if (
-              isSpecial &&
-              Gestures[typeOfLetter][indexOfLetter]?.name ===
-                `ssang${highestScore.name}`
-            ) {
+            if (isSpecial) {
               if (setXCordination.length === 10) {
                 setXCordination([]);
                 return;
@@ -125,32 +93,20 @@ function PracticeDetail() {
               const min = Math.min(...xCordination);
 
               if (max - min > 100) {
-                const score = getPercentage(highestScore.score);
-                setScore(score);
-                setHighScore((previous) =>
-                  parseInt(score) > parseInt(previous) ? score : previous,
-                );
-                setResult(PRACTICE_DETECTED.MATCHED);
+                setDetectedGesture(`ssang${highestScore.name}`);
+              } else {
+                setDetectedGesture(highestScore.name);
               }
-            } else if (
-              highestScore.name === Gestures[typeOfLetter][indexOfLetter]?.name
-            ) {
               const score = getPercentage(highestScore.score);
               setScore(score);
-              setHighScore((previous) =>
-                parseInt(score) > parseInt(previous) ? score : previous,
-              );
-              setResult(PRACTICE_DETECTED.MATCHED);
             } else {
-              setXCordination([]);
-              setScore(0);
-              setResult(PRACTICE_DETECTED.UNMATCHED);
+              const score = getPercentage(highestScore.score);
+              setScore(score);
+              setDetectedGesture(highestScore.name);
             }
           }
         } else {
           setXCordination([]);
-          setScore(0);
-          setResult(PRACTICE_DETECTED.UNMATCHED);
         }
 
         const ctx = canvasRef.current.getContext("2d");
@@ -175,42 +131,28 @@ function PracticeDetail() {
     if (detector) {
       detectHands(detector);
     }
-  }, 500);
+  }, 200);
 
   return (
     <Container>
       <HeaderContent title="연습하기" onClick={moveToSubMain} />
       <ContentWrapper>
         <SubWrapper>
-          <VideoContent
+          <VideoCanvas
             webcamRef={webcamRef}
             canvasRef={canvasRef}
             facingMode={FACING_MODE.user}
-            leftButton={{ text: "이전 글자", onClick: handleIndexDecrease }}
-            rightButton={{ text: "다음 글자", onClick: handleIndexIncrease }}
           />
         </SubWrapper>
         <SubWrapper>
-          {checkSpecialCase(typeOfLetter, indexOfLetter) ? (
-            <Text className="normal">
-              동일한 모양의 제스처를 오른쪽으로 이동
-            </Text>
-          ) : null}
           <Wrapper>
-            <ImageBox>
-              <Image
-                width="50%"
-                alt="example"
-                src={IMAGE[typeOfLetter][engNameOfCurrentLetter]}
-              />
-            </ImageBox>
+            <SelectBox data={PRACTICE_SELECT} onChange={handleSelectChange} />
             <TextBox>
-              <Text className="small">{PRACTICE_TITLE[typeOfLetter]}</Text>
               <Text className="super">{koreanNameOfCurrentLetter}</Text>
             </TextBox>
           </Wrapper>
           <TextWrapper>
-            <Text className="normal">{`${result} / 정확도: ${score} / 최고점: ${highScore}`}</Text>
+            <Text className="normal">{`정확도: ${score}`}</Text>
           </TextWrapper>
         </SubWrapper>
       </ContentWrapper>
@@ -218,7 +160,7 @@ function PracticeDetail() {
   );
 }
 
-export default PracticeDetail;
+export default PracticeAll;
 
 const Container = styled.div`
   display: flex;
@@ -243,7 +185,7 @@ const SubWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin: 0 1rem;
+  margin: auto 1rem;
 `;
 
 const Wrapper = styled.div`
@@ -251,8 +193,9 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 70%;
+  margin: auto;
+
   @media screen and (max-width: 480px) {
-    flex-direction: row;
     width: 90%;
   }
 `;

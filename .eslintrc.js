@@ -4,25 +4,18 @@ module.exports = {
     commonjs: true,
     es2021: true,
     node: true,
-    jest: true,
+    jest: true
   },
-  extends: [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:prettier/recommended",
-  ],
+  extends: ["eslint:recommended", "plugin:react/recommended", "plugin:prettier/recommended", "plugin:storybook/recommended"],
   rules: {
     "no-unused-vars": ["off"],
-    "prettier/prettier": [
-      "error",
-      {
-        endOfLine: "auto",
-      },
-    ],
+    "prettier/prettier": ["error", {
+      endOfLine: "auto"
+    }]
   },
   parserOptions: {
     parser: "babel-eslint",
     sourceType: "module",
-    allowImportExportEverywhere: true,
-  },
+    allowImportExportEverywhere: true
+  }
 };
