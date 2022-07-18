@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
-import HeaderContent from "../../components/organisms/HeaderContent";
+import Header from "../../components/molecules/Header";
 import Button from "../../components/atoms/Button";
 import Image from "../../components/atoms/Image";
 import Text from "../../components/atoms/Text";
@@ -24,7 +24,7 @@ function TestResult() {
 
   return (
     <Container>
-      <HeaderContent title="테스트 결과" onClick={moveToTestPage} />
+      <Header title="테스트 결과" onClick={moveToTestPage} />
       <MainWrapper>
         <Wrapper>
           <Image width="50%" height="400px" alt="congrats" src={congrats} />

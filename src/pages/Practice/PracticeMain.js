@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import PracticeListContent from "../../components/organisms/PracticeListContent";
-import HeaderContent from "../../components/organisms/HeaderContent";
+import Header from "../../components/molecules/Header";
 
 import { PRACTICE_LIST } from "../../constants/practice";
 
@@ -20,7 +20,7 @@ function PracticeMain() {
 
   return (
     <Container>
-      <HeaderContent title="수어 연습" onClick={moveToHome} />
+      <Header title="수어 연습" onClick={moveToHome} />
       <Wrapper>
         {PRACTICE_LIST.map((data) => (
           <PracticeListContent

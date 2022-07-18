@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import Button from "../atoms/Button";
 import Title from "./Title";
 
-function Header({ children, onClick }) {
+function Header({ title, onClick }) {
   return (
     <StyledHeader>
       <Button
@@ -15,7 +15,7 @@ function Header({ children, onClick }) {
         onClick={onClick}
       >{`<`}</Button>
       <Wrapper>
-        <Title color="black">{children}</Title>
+        <Title color="black">{title}</Title>
       </Wrapper>
     </StyledHeader>
   );
@@ -37,6 +37,6 @@ const Wrapper = styled.div`
 `;
 
 Header.propTypes = {
-  children: PropTypes.string,
+  title: PropTypes.string,
   onClick: PropTypes.func,
 };

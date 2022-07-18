@@ -32,6 +32,13 @@ yo.addDirection(
   FingerDirection[FingerAxis.XY].VerticalUp,
   0.8,
 );
+yo.addDirection(
+  Handedness.Left,
+  Finger.Index,
+  FingerDirection[FingerAxis.YZ.VerticalUp],
+  0.8,
+  FingerAxis.YZ,
+);
 
 yo.addCurl(Handedness.Left, Finger.Middle, FingerCurl.NoCurl, 1, HandSide.Back);
 yo.addDirection(
