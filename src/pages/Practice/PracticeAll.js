@@ -13,8 +13,8 @@ import {
 } from "../../common/utilities";
 import { GestureEstimator, Gestures } from "../../common/Fingerpose";
 
-import HeaderContent from "../../components/organisms/HeaderContent";
 import VideoCanvas from "../../components/molecules/VideoCanvas";
+import Header from "../../components/molecules/Header";
 import Text from "../../components/atoms/Text";
 import SelectBox from "../../components/atoms/Select";
 
@@ -135,7 +135,7 @@ function PracticeAll() {
 
   return (
     <Container>
-      <HeaderContent title="연습하기" onClick={moveToSubMain} />
+      <Header title="연습하기" onClick={moveToSubMain} />
       <ContentWrapper>
         <SubWrapper>
           <VideoCanvas

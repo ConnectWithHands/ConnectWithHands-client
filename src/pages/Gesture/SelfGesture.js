@@ -9,10 +9,10 @@ import * as tf from "@tensorflow/tfjs";
 import * as mobilenet from "@tensorflow-models/mobilenet";
 import * as knnClassifier from "@tensorflow-models/knn-classifier";
 
-import HeaderContent from "../../components/organisms/HeaderContent";
 import FormContent from "../../components/organisms/FormContent";
 import ErrorContent from "../../components/organisms/ErrorContent";
 import ButtonList from "../../components/molecules/ButtonList";
+import Header from "../../components/molecules/Header";
 import Text from "../../components/atoms/Text";
 import Button from "../../components/atoms/Button";
 import Input from "../../components/atoms/Input";
@@ -170,7 +170,7 @@ function SelfGesture() {
         />
       ) : (
         <>
-          <HeaderContent title="나만의 제스처" onClick={moveToSubMain} />
+          <Header title="나만의 제스처" onClick={moveToSubMain} />
           <ContentWrapper>
             <SubWrapper>
               <Video

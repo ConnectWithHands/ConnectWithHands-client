@@ -15,7 +15,7 @@ import {
 } from "../../common/utilities";
 import { GestureEstimator, Gestures } from "../../common/Fingerpose";
 
-import HeaderContent from "../../components/organisms/HeaderContent";
+import Header from "../../components/molecules/Header";
 import VideoContent from "../../components/organisms/VideoContent";
 import Text from "../../components/atoms/Text";
 import ButtonList from "../../components/molecules/ButtonList";
@@ -32,8 +32,6 @@ function HandGesture() {
   const [words, setWords] = useState([]);
   const [detector, setDetector] = useState(false);
   const [facingMode, setFacingMode] = useState(FACING_MODE.user);
-  const wordsRef = useRef(words);
-  wordsRef.current = words;
 
   const handleWordsInitialize = () => {
     setWords([]);
@@ -116,7 +114,7 @@ function HandGesture() {
                 });
                 break;
               case "speech":
-                handleSpeechStart(wordsRef.current);
+                handleSpeechStart(words);
                 break;
               default: {
                 const scoreToPercentage = matchedGesture.score * 10;
@@ -158,7 +156,7 @@ function HandGesture() {
     if (detector) {
       detectHands(detector);
     }
-  }, 1000);
+  }, 500);
 
   useEffect(() => {
     return () => {
@@ -168,13 +166,13 @@ function HandGesture() {
 
   return (
     <Container>
-      <HeaderContent title="수어 인식하기" onClick={moveToSubMain} />
+      <Header title="수어 인식하기" onClick={moveToSubMain} />
       <ContentWrapper>
         <SubWrapper>
           <VideoContent
             webcamRef={webcamRef}
             canvasRef={canvasRef}
-            facingMode={FACING_MODE.user}
+            facingMode={facingMode}
             leftButton={{
               text: "카메라 전환",
               onClick: handleFacingModeChange,

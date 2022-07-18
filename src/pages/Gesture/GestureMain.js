@@ -2,8 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import HeaderContent from "../../components/organisms/HeaderContent";
 import GestureContent from "../../components/organisms/GestureListContent";
+import Header from "../../components/molecules/Header";
 import { GESTURE_PAGE } from "../../constants/gesturePage";
 
 function GestureMain() {
@@ -19,7 +19,7 @@ function GestureMain() {
 
   return (
     <Container>
-      <HeaderContent title="수어 인식하기" onClick={moveToHome} />
+      <Header title="수어 인식하기" onClick={moveToHome} />
       <Wrapper>
         {GESTURE_PAGE.map((data) => (
           <GestureContent key={data.id} onClick={moveToSubPage} {...data} />

@@ -19,8 +19,8 @@ import {
   decreaseIndexOfGesture,
 } from "../../store";
 
-import HeaderContent from "../../components/organisms/HeaderContent";
 import VideoContent from "../../components/organisms/VideoContent";
+import Header from "../../components/molecules/Header";
 import Image from "../../components/atoms/Image";
 import Text from "../../components/atoms/Text";
 import IMAGE from "../../assets";
@@ -179,7 +179,7 @@ function PracticeDetail() {
 
   return (
     <Container>
-      <HeaderContent title="연습하기" onClick={moveToSubMain} />
+      <Header title="연습하기" onClick={moveToSubMain} />
       <ContentWrapper>
         <SubWrapper>
           <VideoContent

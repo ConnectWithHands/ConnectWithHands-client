@@ -52,7 +52,7 @@ export default GestureContent;
 const StyledContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   height: 100%;
   margin: 1em 0;
   border: 1px solid black;

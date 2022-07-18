@@ -12,8 +12,8 @@ import {
 } from "../../common/utilities";
 import { GestureEstimator, Gestures } from "../../common/Fingerpose";
 
-import HeaderContent from "../../components/organisms/HeaderContent";
 import VideoContent from "../../components/organisms/VideoContent";
+import Header from "../../components/molecules/Header";
 import Image from "../../components/atoms/Image";
 import Text from "../../components/atoms/Text";
 
@@ -22,7 +22,6 @@ import IMAGE from "../../assets";
 import {
   FACING_MODE,
   PRACTICE_TITLE,
-  LENGTH_LETTER_TYPE,
   NAME_LETTER_TYPE,
   LETTER,
 } from "../../constants";
@@ -162,7 +161,7 @@ function TestDetail() {
 
   return (
     <Container>
-      <HeaderContent title="테스트하기" onClick={moveToSubMain} />
+      <Header title="테스트하기" onClick={moveToSubMain} />
       <ContentWrapper>
         <SubWrapper>
           <VideoContent
