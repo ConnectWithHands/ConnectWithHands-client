@@ -157,7 +157,6 @@ function SelfGesture() {
 
     if (webcamRef.current) {
       runModel();
-      console.log(tfWebcam);
     }
   }, [webcamRef.current]);
 
@@ -171,7 +170,6 @@ function SelfGesture() {
       <ContentWrapper>
         <SubWrapper>
           <TFwebcam ref={webcamRef} device={isMobile() ? "mobile" : "pc"} />
-          {/* <Video ref={webcamRef} facingMode={FACING_MODE.user} /> */}
         </SubWrapper>
         <SubWrapper>
           <TextWrapper>

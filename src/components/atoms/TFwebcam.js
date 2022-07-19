@@ -36,7 +36,7 @@ const StyledVideo = styled(Webcam)`
   left: 0;
   right: 0;
   text-align: center;
-  width: ${(props) => (props.device === "mobile" ? "360px" : "640px")};
+  width: auto;
   height: auto;
 `;
 
@@ -48,6 +48,8 @@ TFwebcam.propTypes = {
     PropTypes.shape({ current: PropTypes.elementType }),
   ]),
 };
+
+// width: ${(props) => (props.device === "mobile" ? "360px" : "640px")};
 
 // width: ${() => (isMobile() ? $m_size.width : $size.width)};
 // height: ${() => (isMobile() ? $m_size.height : $size.height)};
