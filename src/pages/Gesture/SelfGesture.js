@@ -22,6 +22,7 @@ import { FACING_MODE, ERROR } from "../../constants";
 import { useInterval } from "../../common/utilities";
 
 import MobileError from "../../assets/desktop.png";
+import Video from "../../components/atoms/Video";
 
 const defaultResult = {
   resultName: "미탐지",
@@ -140,6 +141,14 @@ function SelfGesture() {
     const runModel = async () => {
       const classifier = knnClassifier.create();
       const mobilenetModel = await mobilenet.load();
+
+      const video = webcamRef.current.video;
+      console.log("video", video);
+      const { videoWidth, videoHeight } = video;
+
+      webcamRef.current.video.width = videoWidth;
+      webcamRef.current.video.height = videoHeight;
+
       const webcam = await tf.data.webcam(webcamRef.current.video);
       setModel(mobilenetModel);
       setClassifier(classifier);
@@ -148,6 +157,7 @@ function SelfGesture() {
 
     if (webcamRef.current) {
       runModel();
+      console.log(tfWebcam);
     }
   }, [webcamRef.current]);
 
@@ -161,6 +171,7 @@ function SelfGesture() {
       <ContentWrapper>
         <SubWrapper>
           <TFwebcam ref={webcamRef} device={isMobile() ? "mobile" : "pc"} />
+          {/* <Video ref={webcamRef} facingMode={FACING_MODE.user} /> */}
         </SubWrapper>
         <SubWrapper>
           <TextWrapper>
