@@ -59,6 +59,7 @@ const Container = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: #f2d7d9;
+  font-family: "Noto Sans CJK KR";
 `;
 
 const Wrapper = styled.div`
@@ -66,9 +67,8 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 1280px;
-  height: 1000px;
+  height: 820px;
   background-color: white;
-  border-radius: 20px;
 
   @media screen and (max-width: 480px) {
     flex-direction: column;

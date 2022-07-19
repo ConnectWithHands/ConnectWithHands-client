@@ -6,7 +6,7 @@ export const GESTURE_PAGE = [
     id: 0,
     title: "수어 인식하기",
     description:
-      "화면에 비치는 손을 실시간으로 인식하여 텍스트를 출력합니다. 현재 학습된 수어만 인식 가능합니다.",
+      "손을 실시간으로 인식하여 텍스트를 출력합니다. 현재 학습된 수어만 인식 가능합니다.",
     buttonTitle: "인식하기",
     image: handOnScreen,
     page: "handgesture",

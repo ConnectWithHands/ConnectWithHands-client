@@ -85,6 +85,7 @@ function HandGesture() {
       webcamRef.current.video.readyState === 4
     ) {
       const video = webcamRef.current.video;
+      console.log("video", video);
       const { videoWidth, videoHeight } = video;
 
       webcamRef.current.video.width = videoWidth;
@@ -181,6 +182,7 @@ function HandGesture() {
           />
         </SubWrapper>
         <SubWrapper>
+          <Text className="big">탐지된 수어</Text>
           <TextBox>
             {words.map((word) => (
               <Text key={nanoid()} className="normal">
@@ -264,6 +266,7 @@ const TextWrapper = styled.div`
   justify-content: center;
   border: 1px solid black;
   width: 80%;
+  margin: 0.5rem 0;
 
   @media screen and (max-width: 480px) {
     width: 90%;

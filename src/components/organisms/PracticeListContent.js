@@ -7,10 +7,17 @@ import Text from "../atoms/Text";
 import Button from "../atoms/Button";
 import ButtonList from "../molecules/ButtonList";
 
+import { isMobile } from "../../common/utilities";
+
 function PracticeListContent({ title, image, description, page, onClick }) {
   return (
     <StyledContainer>
-      <Image width="20%" height="200px" alt="example" src={image} />
+      <Image
+        width={isMobile() ? "20%" : "15%"}
+        height="180px"
+        alt="example"
+        src={image}
+      />
       <Wrapper>
         <Text className="big">{title}</Text>
         <Text className="small">{description}</Text>
@@ -19,6 +26,8 @@ function PracticeListContent({ title, image, description, page, onClick }) {
         <Button
           width="80%"
           height="50px"
+          bgColor="white"
+          outline="#748DA6"
           className="small"
           onClick={() => onClick(page)}
         >
@@ -28,6 +37,8 @@ function PracticeListContent({ title, image, description, page, onClick }) {
           <Button
             width="80%"
             height="50px"
+            bgColor="white"
+            outline="#748DA6"
             className="small"
             onClick={() => onClick(page, "test")}
           >
@@ -45,14 +56,16 @@ const StyledContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  height: 20vh;
+  height: 70%;
   margin: 1em 0;
   border: 1px solid black;
+  border-radius: 10px;
 `;
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  width: 10%;
 `;
 
 PracticeListContent.propTypes = {

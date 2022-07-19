@@ -18,16 +18,16 @@ function Main() {
     navigate(`/${pageName}`);
   };
 
-  const subTitle = `"손의 언어로 하나되다"`;
-
-  const descriptionText =
-    "손의 모양을 확인하세요!\n정확한 손 모양으로 수어를\n연습하고 소통할 수 있습니다.";
-
   return (
     <Container>
       <StyledMainContent>
-        <Wrapper>
-          <Image width="60%" height="400px" alt="logo" src={logo} />
+        <Image
+          width={isMobile() ? "50%" : "30%"}
+          height={isMobile() ? "300px" : "400px"}
+          alt="logo"
+          src={logo}
+        />
+        <ContentWrapper>
           <TextBox>
             <Text color="#748DA6" className={isMobile() ? "title" : "super"}>
               수어지교(手語之交)
@@ -39,33 +39,42 @@ function Main() {
               {descriptionText}
             </Text>
           </TextBox>
-        </Wrapper>
-        <ButtonWrapper>
-          <ButtonList width="100%" flexDirection="column">
-            <Button
-              width="80%"
-              height="50px"
-              className="normal"
-              onClick={() => moveToPage("practice")}
-            >
-              수어 연습하기
-            </Button>
-            <Button
-              width="80%"
-              height="50px"
-              className="normal"
-              onClick={() => moveToPage("gesture")}
-            >
-              수어 인식하기
-            </Button>
-          </ButtonList>
-        </ButtonWrapper>
+          <ButtonWrapper>
+            <ButtonList width="100%" flexDirection="column">
+              <Button
+                width="60%"
+                height="50px"
+                className="normal"
+                bgColor="white"
+                outline="#748DA6"
+                onClick={() => moveToPage("practice")}
+              >
+                수어 연습하기
+              </Button>
+              <Button
+                width="60%"
+                height="50px"
+                className="normal"
+                bgColor="white"
+                outline="#748DA6"
+                onClick={() => moveToPage("gesture")}
+              >
+                수어 인식하기
+              </Button>
+            </ButtonList>
+          </ButtonWrapper>
+        </ContentWrapper>
       </StyledMainContent>
     </Container>
   );
 }
 
 export default Main;
+
+const subTitle = `"손의 언어로 하나되다"`;
+
+const descriptionText =
+  "화면에 비치는 손을 확인해 보세요!\n정확한 손 모양으로 수어를 연습하고\n실시간으로 소통할 수 있습니다.";
 
 const Container = styled.div`
   display: flex;
@@ -89,33 +98,32 @@ const TextBox = styled.div`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  height: 20vh;
-
-  @media screen and (max-width: 480px) {
-    flex-direction: column;
-  }
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 50%;
+  height: 100%;
+  margin: 1.5rem 0;
 
   @media screen and (max-width: 480px) {
     flex-direction: column;
     width: 100%;
   }
+`;
+
+const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center
+  width: 60%;
 `;
 
 const ButtonWrapper = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
   margin: auto;
-  width: 50%;
+  width: 100%;
+  height: auto;
 
   @media screen and (max-width: 480px) {
     width: 100%;
+    flex-direction: column;
   }
 `;

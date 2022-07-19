@@ -43,11 +43,19 @@ const StyledButton = styled.button`
   margin: ${(props) => props.margin || "0.5em"};
   border-radius: 3.7px;
   border: ${(props) =>
-    props.outline === "none" ? "none" : `0.7px solid ${props.outline}`};
+    props.outline === "none" ? "none" : `1px solid ${props.outline}`};
   background: ${(props) => (props.transparent ? "transparent" : props.bgColor)};
   color: ${(props) => props.color || "black"};
   cursor: pointer;
   outline: none;
+  font-family: "Noto Sans CJK KR";
+
+  &:hover {
+    transform: scale(1.1);
+    background: linear-gradient(-45deg, #f2d7d9 0%, #9cb4cc 100%);
+    color: white;
+  }
+
   &.small {
     padding: 7px 7px;
     font-size: 1rem;

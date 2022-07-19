@@ -33,8 +33,10 @@ function GestureContent({
         <Wrapper>
           <ButtonList width="100%">
             <Button
-              width="80%"
+              width="50%"
               height="50px"
+              bgColor="white"
+              outline="#748DA6"
               className="small"
               onClick={() => onClick(page)}
             >
@@ -52,10 +54,11 @@ export default GestureContent;
 const StyledContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: center;
   height: 100%;
   margin: 1em 0;
   border: 1px solid black;
+  border-radius: 10px;
 
   @media screen and (max-width: 480px) {
     flex-direction: column;
@@ -68,7 +71,7 @@ const SubContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 1em 0;
-  width: 60%;
+  width: 50%;
 
   @media screen and (max-width: 480px) {
     width: 90%;

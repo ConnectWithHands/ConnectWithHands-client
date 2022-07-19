@@ -149,9 +149,7 @@ function SelfGesture() {
       setInitialMode(true);
     };
 
-    if (!isMobile()) {
-      runModel();
-    }
+    runModel();
   }, []);
 
   useInterval(() => {
@@ -162,29 +160,30 @@ function SelfGesture() {
 
   return (
     <Container>
-      {isMobile() ? (
+      {/* {isMobile() ? (
         <ErrorContent
           image={MobileError}
           text={ERROR.MOBILE_FORBIDDEN}
           onClick={moveToSubMain}
         />
-      ) : (
-        <>
-          <Header title="나만의 제스처" onClick={moveToSubMain} />
-          <ContentWrapper>
-            <SubWrapper>
-              <Video
-                ref={webcamRef}
-                setWidth={true}
-                facingMode={FACING_MODE.user}
-              />
-            </SubWrapper>
-            <SubWrapper>
-              <TextWrapper>
-                <StyledText>탐지된 제스처 : </StyledText>
-                <StyledText>{estimatedResult.resultName}</StyledText>
-                <StyledText>{estimatedResult.probability}</StyledText>
-              </TextWrapper>
+      ) : ( */}
+      <>
+        <Header title="나만의 제스처" onClick={moveToSubMain} />
+        <ContentWrapper>
+          <SubWrapper>
+            <Video
+              tfWidth={isMobile() ? "360px" : "640px"}
+              ref={webcamRef}
+              setWidth={true}
+              facingMode={FACING_MODE.user}
+            />
+          </SubWrapper>
+          <SubWrapper>
+            <TextWrapper>
+              <Text className="big">{`제스처 이름: ${estimatedResult.resultName} `}</Text>
+              <Text className="big">{`확률 :  ${estimatedResult.probability} `}</Text>
+            </TextWrapper>
+            <FormContainer>
               <FormContent placeholder="학습할 제스처" onClick={addGesture} />
               <ListContainer>
                 {gestureList.map((gesture) => (
@@ -202,30 +201,32 @@ function SelfGesture() {
               <Input
                 type="file"
                 className="small"
+                width="80%"
                 onChange={(event) => uploadModel(event)}
               />
-              <ButtonList width="90%">
-                <Button
-                  width="80%"
-                  height="50px"
-                  className="normal"
-                  onClick={initializeGesture}
-                >
-                  초기화
-                </Button>
-                <Button
-                  width="80%"
-                  height="50px"
-                  className="normal"
-                  onClick={saveModel}
-                >
-                  저장하기
-                </Button>
-              </ButtonList>
-            </SubWrapper>
-          </ContentWrapper>
-        </>
-      )}
+            </FormContainer>
+            <ButtonList width="90%">
+              <Button
+                width="80%"
+                height="50px"
+                className="normal"
+                onClick={initializeGesture}
+              >
+                초기화
+              </Button>
+              <Button
+                width="80%"
+                height="50px"
+                className="normal"
+                onClick={saveModel}
+              >
+                저장하기
+              </Button>
+            </ButtonList>
+          </SubWrapper>
+        </ContentWrapper>
+      </>
+      {/* )} */}
     </Container>
   );
 }
@@ -259,9 +260,11 @@ const SubWrapper = styled.div`
   width: 100%;
 `;
 
-const StyledText = styled.div`
-  margin: 0.5rem 0.2rem;
-  font-size: 1.1rem;
+const FormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 `;
 
 const TextWrapper = styled.div`
@@ -273,6 +276,7 @@ const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 90%;
+  margin: 0.5rem 0;
   height: 15vh;
   border: 1px solid #808080;
   overflow-y: scroll;

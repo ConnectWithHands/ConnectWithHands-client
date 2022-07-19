@@ -16,10 +16,22 @@ function VideoContent({
   return (
     <>
       <ButtonList width="100%">
-        <Button height="50px" className="small" onClick={leftButton.onClick}>
+        <Button
+          height="50px"
+          className="small"
+          bgColor="white"
+          outline="#748DA6"
+          onClick={leftButton.onClick}
+        >
           {leftButton.text}
         </Button>
-        <Button height="50px" className="small" onClick={rightButton.onClick}>
+        <Button
+          height="50px"
+          className="small"
+          bgColor="white"
+          outline="#748DA6"
+          onClick={rightButton.onClick}
+        >
           {rightButton.text}
         </Button>
       </ButtonList>
