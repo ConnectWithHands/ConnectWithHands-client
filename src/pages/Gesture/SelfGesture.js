@@ -16,25 +16,25 @@ import Header from "../../components/molecules/Header";
 import Text from "../../components/atoms/Text";
 import Button from "../../components/atoms/Button";
 import Input from "../../components/atoms/Input";
-import Video from "../../components/atoms/Video";
+import TFwebcam from "../../components/atoms/TFwebcam";
 import { isMobile } from "../../common/utilities";
 import { FACING_MODE, ERROR } from "../../constants";
-
 import { useInterval } from "../../common/utilities";
 
 import MobileError from "../../assets/desktop.png";
 
+const defaultResult = {
+  resultName: "미탐지",
+  probability: "0",
+};
+
 function SelfGesture() {
   const navigate = useNavigate();
   const webcamRef = useRef(null);
-  const [estimatedResult, setEstimatedResult] = useState({
-    resultName: "미탐지",
-    probability: "0",
-  });
+  const [estimatedResult, setEstimatedResult] = useState(defaultResult);
   const [classifier, setClassifier] = useState(null);
   const [model, setModel] = useState(null);
   const [tfWebcam, setTfWebcam] = useState(null);
-  const [initialMode, setInitialMode] = useState(false);
   const [gestureList, setGestureList] = useState([]);
 
   const runEstimator = async () => {
@@ -64,7 +64,6 @@ function SelfGesture() {
   };
 
   const trainGesture = async (classId) => {
-    console.log("학습");
     const image = await tfWebcam.capture();
     const activation = model.infer(image, true);
 
@@ -75,6 +74,7 @@ function SelfGesture() {
   const initializeGesture = async () => {
     await classifier.clearAllClasses();
     setGestureList([]);
+    setEstimatedResult(defaultResult);
   };
 
   const saveModel = async () => {
@@ -101,7 +101,6 @@ function SelfGesture() {
     await classifier.clearAllClasses();
     await classifier.dispose();
 
-    setInitialMode(false);
     console.log("Uploading");
     let inputModel = event.target.files;
     let fr = new FileReader();
@@ -121,7 +120,6 @@ function SelfGesture() {
 
         tempModel.setClassifierDataset(tensorObj);
         setClassifier(tempModel);
-        setInitialMode(true);
         event.target.value = "";
 
         console.log("Classifier has been set up! Congrats! ");
@@ -146,87 +144,79 @@ function SelfGesture() {
       setModel(mobilenetModel);
       setClassifier(classifier);
       setTfWebcam(webcam);
-      setInitialMode(true);
     };
 
-    runModel();
-  }, []);
+    if (webcamRef.current) {
+      runModel();
+    }
+  }, [webcamRef.current]);
 
   useInterval(() => {
-    if (webcamRef.current && initialMode) {
-      runEstimator();
-    }
+    runEstimator();
   }, 500);
 
   return (
     <Container>
-      {/* {isMobile() ? (
-        <ErrorContent
-          image={MobileError}
-          text={ERROR.MOBILE_FORBIDDEN}
-          onClick={moveToSubMain}
-        />
-      ) : ( */}
-      <>
-        <Header title="나만의 제스처" onClick={moveToSubMain} />
-        <ContentWrapper>
-          <SubWrapper>
-            <Video
-              tfWidth={isMobile() ? "360px" : "640px"}
-              ref={webcamRef}
-              setWidth={true}
-              facingMode={FACING_MODE.user}
+      <Header title="나만의 제스처" onClick={moveToSubMain} />
+      <ContentWrapper>
+        <SubWrapper>
+          <TFwebcam ref={webcamRef} device={isMobile() ? "mobile" : "pc"} />
+        </SubWrapper>
+        <SubWrapper>
+          <TextWrapper>
+            <Text className="big">{`제스처 이름: ${
+              estimatedResult.resultName
+                ? estimatedResult.resultName
+                : defaultResult.resultName
+            } `}</Text>
+            <Text className="big">{`확률 :  ${
+              estimatedResult.probability
+                ? estimatedResult.probability
+                : defaultResult.probability
+            } `}</Text>
+          </TextWrapper>
+          <FormContainer>
+            <FormContent placeholder="학습할 제스처" onClick={addGesture} />
+            <ListContainer>
+              {gestureList.map((gesture) => (
+                <ListWrapper key={gesture.id}>
+                  <Text width="65%">{gesture.name}</Text>
+                  <Button
+                    className="small"
+                    onClick={() => trainGesture(gesture.name)}
+                  >
+                    학습
+                  </Button>
+                </ListWrapper>
+              ))}
+            </ListContainer>
+            <Input
+              type="file"
+              className="small"
+              width="80%"
+              onChange={(event) => uploadModel(event)}
             />
-          </SubWrapper>
-          <SubWrapper>
-            <TextWrapper>
-              <Text className="big">{`제스처 이름: ${estimatedResult.resultName} `}</Text>
-              <Text className="big">{`확률 :  ${estimatedResult.probability} `}</Text>
-            </TextWrapper>
-            <FormContainer>
-              <FormContent placeholder="학습할 제스처" onClick={addGesture} />
-              <ListContainer>
-                {gestureList.map((gesture) => (
-                  <ListWrapper key={gesture.id}>
-                    <Text width="65%">{gesture.name}</Text>
-                    <Button
-                      className="small"
-                      onClick={() => trainGesture(gesture.name)}
-                    >
-                      학습
-                    </Button>
-                  </ListWrapper>
-                ))}
-              </ListContainer>
-              <Input
-                type="file"
-                className="small"
-                width="80%"
-                onChange={(event) => uploadModel(event)}
-              />
-            </FormContainer>
-            <ButtonList width="90%">
-              <Button
-                width="80%"
-                height="50px"
-                className="normal"
-                onClick={initializeGesture}
-              >
-                초기화
-              </Button>
-              <Button
-                width="80%"
-                height="50px"
-                className="normal"
-                onClick={saveModel}
-              >
-                저장하기
-              </Button>
-            </ButtonList>
-          </SubWrapper>
-        </ContentWrapper>
-      </>
-      {/* )} */}
+          </FormContainer>
+          <ButtonList width="90%">
+            <Button
+              width="80%"
+              height="50px"
+              className="normal"
+              onClick={initializeGesture}
+            >
+              초기화
+            </Button>
+            <Button
+              width="80%"
+              height="50px"
+              className="normal"
+              onClick={saveModel}
+            >
+              저장하기
+            </Button>
+          </ButtonList>
+        </SubWrapper>
+      </ContentWrapper>
     </Container>
   );
 }

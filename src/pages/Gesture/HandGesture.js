@@ -85,7 +85,6 @@ function HandGesture() {
       webcamRef.current.video.readyState === 4
     ) {
       const video = webcamRef.current.video;
-      console.log("video", video);
       const { videoWidth, videoHeight } = video;
 
       webcamRef.current.video.width = videoWidth;

@@ -6,21 +6,21 @@ import PropTypes from "prop-types";
 import { FACING_MODE } from "../../constants/webcam";
 import { isMobile } from "../../common/utilities";
 
-function Video({ facingMode }, ref) {
-  const $size = { width: 640 };
-  const $m_size = { width: 360 };
+const $size = { width: 640, height: 480 };
+const $m_size = { width: 360, height: 250 };
+
+function TFwebcam({ device }, ref) {
+  const deviceSize = device === "mobile" ? $m_size : $size;
 
   const videoConfig = {
-    width: isMobile() ? $m_size.width : $size.width,
-    facingMode:
-      facingMode === FACING_MODE.user
-        ? FACING_MODE.user
-        : { exact: FACING_MODE.environment },
+    width: deviceSize.width,
+    facingMode: FACING_MODE.user,
   };
 
   return (
     <StyledVideo
       autoPlay
+      device={device}
       muted
       playsInline
       videoConstraints={videoConfig}
@@ -29,22 +29,25 @@ function Video({ facingMode }, ref) {
   );
 }
 
-export default forwardRef(Video);
+export default forwardRef(TFwebcam);
 
 const StyledVideo = styled(Webcam)`
   margin: 0 auto;
   left: 0;
   right: 0;
   text-align: center;
-  z-index: 2;
-  width: auto;
+  width: ${(props) => (props.device === "mobile" ? "360px" : "640px")};
   height: auto;
 `;
 
-Video.propTypes = {
-  facingMode: PropTypes.string,
+TFwebcam.propTypes = {
+  device: PropTypes.string,
+  tfWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   ref: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.elementType }),
   ]),
 };
+
+// width: ${() => (isMobile() ? $m_size.width : $size.width)};
+// height: ${() => (isMobile() ? $m_size.height : $size.height)};
