@@ -20,8 +20,10 @@ import VideoContent from "../../components/organisms/VideoContent";
 import Text from "../../components/atoms/Text";
 import ButtonList from "../../components/molecules/ButtonList";
 import Button from "../../components/atoms/Button";
+import Slide from "../../components/molecules/Slide";
+import MultipleSlides from "../../components/molecules/slider";
 
-import { WORD, FACING_MODE } from "../../constants";
+import { WORD, FACING_MODE, EXAMPLE_IMAGE } from "../../constants";
 
 function HandGesture() {
   const webcamRef = useRef(null);
@@ -63,7 +65,7 @@ function HandGesture() {
 
   const throttleHandler = useMemo(
     () =>
-      throttle((value) => setWords((previous) => [...previous, value]), 3000),
+      throttle((value) => setWords((previous) => [...previous, value]), 2000),
     [setWords],
   );
 
@@ -99,7 +101,7 @@ function HandGesture() {
 
         if (hand.length > 0) {
           const gesture = GE.estimate(hand, 7.5);
-          console.log("gesture", gesture);
+          // console.log("gesture", gesture);
 
           if (gesture.bestGesture.length) {
             const matchedGesture = gesture.bestGesture[0];
@@ -210,6 +212,7 @@ function HandGesture() {
               텍스트 읽기
             </Button>
           </ButtonList>
+          {/* <Slide images={EXAMPLE_IMAGE} /> */}
         </SubWrapper>
       </ContentWrapper>
     </Container>

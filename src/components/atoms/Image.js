@@ -3,6 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 function Image({ width, height, zIndex, alt, src }) {
+  console.log(src);
   const cssStyle = {
     width,
     height,

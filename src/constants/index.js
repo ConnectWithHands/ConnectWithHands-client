@@ -1,4 +1,4 @@
-import { GESTURE_PAGE } from "./gesturePage";
+import { GESTURE_PAGE, EXAMPLE_IMAGE } from "./gesturePage";
 import { LETTER, NAME_LETTER_TYPE, LENGTH_LETTER_TYPE } from "./letter";
 import WORD from "./word";
 import { ERROR } from "./error";
@@ -12,6 +12,7 @@ import { FACING_MODE } from "./webcam";
 
 export {
   GESTURE_PAGE,
+  EXAMPLE_IMAGE,
   LETTER,
   NAME_LETTER_TYPE,
   LENGTH_LETTER_TYPE,

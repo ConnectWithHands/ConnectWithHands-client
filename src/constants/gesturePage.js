@@ -1,5 +1,6 @@
 import handOnScreen from "../assets/sign-language.png";
 import learning from "../assets/neural.png";
+import IMAGE from "../assets";
 
 export const GESTURE_PAGE = [
   {
@@ -20,4 +21,14 @@ export const GESTURE_PAGE = [
     image: learning,
     page: "selfgesture",
   },
+];
+
+export const EXAMPLE_IMAGE = [
+  { id: 0, src: IMAGE.list.all },
+  { id: 1, src: IMAGE.list.consonant },
+  { id: 2, src: IMAGE.list.vowel },
+  { id: 3, src: handOnScreen },
+  { id: 5, src: learning },
+  { id: 6, src: learning },
+  { id: 7, src: learning },
 ];

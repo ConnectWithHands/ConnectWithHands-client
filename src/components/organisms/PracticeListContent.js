@@ -22,7 +22,7 @@ function PracticeListContent({ title, image, description, page, onClick }) {
         <Text className="big">{title}</Text>
         <Text className="small">{description}</Text>
       </Wrapper>
-      <ButtonList width="40%" flexDirection="column">
+      <ButtonList width="30%" flexDirection="column">
         <Button
           width="80%"
           height="50px"
@@ -42,7 +42,7 @@ function PracticeListContent({ title, image, description, page, onClick }) {
             className="small"
             onClick={() => onClick(page, "test")}
           >
-            테스트하기
+            테스트
           </Button>
         ) : null}
       </ButtonList>
@@ -65,7 +65,6 @@ const StyledContainer = styled.div`
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 10%;
 `;
 
 PracticeListContent.propTypes = {
