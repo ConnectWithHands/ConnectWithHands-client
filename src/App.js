@@ -15,6 +15,7 @@ import Gesture from "./pages/Gesture";
 import GestureMain from "./pages/Gesture/GestureMain";
 import SelfGesture from "./pages/Gesture/SelfGesture";
 import HandGesture from "./pages/Gesture/HandGesture";
+import NotFound from "./pages/NotFound";
 import ErrorContent from "./components/organisms/ErrorContent";
 
 import { ERROR } from "./constants";
@@ -42,6 +43,7 @@ function App() {
               <Route path="handgesture" element={<HandGesture />} />
               <Route path="selfgesture" element={<SelfGesture />} />
             </Route>
+            <Route path="/*" element={<NotFound />} />
           </Routes>
         </ErrorBoundary>
       </Wrapper>

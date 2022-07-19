@@ -63,6 +63,7 @@ function TestDetail() {
 
   const increaseIndex = () => {
     setIndex((previous) => previous + 1);
+    setHint(false);
   };
 
   const shuffleGestures = () => {
@@ -125,6 +126,7 @@ function TestDetail() {
             console.log("일치");
             setIndex((previous) => previous + 1);
             setAnswers((previous) => previous + 1);
+            setHint(false);
           }
         }
 
