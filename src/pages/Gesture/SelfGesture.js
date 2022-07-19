@@ -149,7 +149,7 @@ function SelfGesture() {
       webcamRef.current.video.width = videoWidth;
       webcamRef.current.video.height = videoHeight;
 
-      const webcam = await tf.data.webcam(webcamRef.current.video);
+      const webcam = await tf.data.webcam(video);
       setModel(mobilenetModel);
       setClassifier(classifier);
       setTfWebcam(webcam);

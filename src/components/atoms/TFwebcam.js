@@ -14,6 +14,7 @@ function TFwebcam({ device }, ref) {
 
   const videoConfig = {
     width: deviceSize.width,
+    heigth: deviceSize.heigth,
     facingMode: FACING_MODE.user,
   };
 
@@ -36,8 +37,8 @@ const StyledVideo = styled(Webcam)`
   left: 0;
   right: 0;
   text-align: center;
-  width: auto;
-  height: auto;
+  width: ${(props) => (props.device === "mobile" ? "360px" : "640px")};
+  height: ${(props) => (props.device === "mobile" ? "250px" : "480px")};
 `;
 
 TFwebcam.propTypes = {
