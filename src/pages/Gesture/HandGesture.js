@@ -43,16 +43,18 @@ function HandGesture() {
     navigate("/gesture");
   };
 
-  const setUpSpeech = () => {
+  const setUpSpeech = async () => {
     const speech = new SpeechSynthesisUtterance();
     setSpeech(speech);
   };
 
   const handleSpeechStart = async (words) => {
-    const voices = window.speechSynthesis.getVoices();
-    speech.voice = voices.find((voice) => voice.name === "Google 한국의");
+    if (speech.voice === null) {
+      const voices = window.speechSynthesis.getVoices();
+      speech.voice = voices.find((voice) => voice.name === "Google 한국의");
+    }
 
-    if (words.length) {
+    if (speech && words.length) {
       speech.text = words;
       window.speechSynthesis.speak(speech);
     }
@@ -63,9 +65,9 @@ function HandGesture() {
     window.speechSynthesis.cancel();
   };
 
-  const throttleHandler = useMemo(
+  const addWordThrottle = useMemo(
     () =>
-      throttle((value) => setWords((previous) => [...previous, value]), 2000),
+      throttle((value) => setWords((previous) => [...previous, value]), 3000),
     [setWords],
   );
 
@@ -96,12 +98,12 @@ function HandGesture() {
       canvasRef.current.height = videoHeight;
 
       try {
-        const hand = await detector.estimateHands(video);
+        const hand = await detector.estimateHands(webcamRef.current.video);
         const GE = new GestureEstimator(Gestures.words);
 
         if (hand.length > 0) {
-          const gesture = GE.estimate(hand, 7.5);
-          // console.log("gesture", gesture);
+          const gesture = GE.estimate(hand, 8);
+          console.log("gesture", gesture);
 
           if (gesture.bestGesture.length) {
             const matchedGesture = gesture.bestGesture[0];
@@ -116,7 +118,9 @@ function HandGesture() {
                 });
                 break;
               case "speech":
-                handleSpeechStart(words);
+                if (window.speechSynthesis.speaking === false) {
+                  handleSpeechStart(words);
+                }
                 break;
               default: {
                 const scoreToPercentage = matchedGesture.score * 10;
@@ -126,12 +130,18 @@ function HandGesture() {
                 )}%`;
 
                 setScore(scoreToString);
-                throttleHandler(WORD[matchedGesture.name]);
+
+                if (words[words.length - 1] !== WORD[matchedGesture.name]) {
+                  addWordThrottle(WORD[matchedGesture.name]);
+                }
               }
             }
           } else {
             setScore(0);
+            addWordThrottle.cancel();
           }
+        } else {
+          addWordThrottle.cancel();
         }
 
         const ctx = canvasRef.current.getContext("2d");
@@ -162,7 +172,7 @@ function HandGesture() {
 
   useEffect(() => {
     return () => {
-      throttleHandler.cancel();
+      addWordThrottle.cancel();
     };
   }, []);
 
