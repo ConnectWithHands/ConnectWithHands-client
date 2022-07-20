@@ -35,7 +35,6 @@ export default class FingerPoseEstimator {
     const slopesYZ = [];
 
     const isPalmOrBack = this.estimateHandSide(handedness, keypoints3D);
-    console.log(isPalmOrBack);
 
     for (let finger of Finger.all) {
       const points = Finger.getPoints(finger);

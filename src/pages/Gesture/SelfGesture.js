@@ -24,13 +24,15 @@ import { useInterval } from "../../common/utilities";
 
 import MobileError from "../../assets/desktop.png";
 
+const defaultResult = {
+  resultName: "미탐지",
+  probability: "0",
+};
+
 function SelfGesture() {
   const navigate = useNavigate();
   const webcamRef = useRef(null);
-  const [estimatedResult, setEstimatedResult] = useState({
-    resultName: "미탐지",
-    probability: "0",
-  });
+  const [estimatedResult, setEstimatedResult] = useState(defaultResult);
   const [classifier, setClassifier] = useState(null);
   const [model, setModel] = useState(null);
   const [tfWebcam, setTfWebcam] = useState(null);
@@ -64,7 +66,6 @@ function SelfGesture() {
   };
 
   const trainGesture = async (classId) => {
-    console.log("학습");
     const image = await tfWebcam.capture();
     const activation = model.infer(image, true);
 
@@ -75,6 +76,7 @@ function SelfGesture() {
   const initializeGesture = async () => {
     await classifier.clearAllClasses();
     setGestureList([]);
+    setEstimatedResult(defaultResult);
   };
 
   const saveModel = async () => {
@@ -149,15 +151,13 @@ function SelfGesture() {
       setInitialMode(true);
     };
 
-    if (!isMobile()) {
+    if (webcamRef.current) {
       runModel();
     }
-  }, []);
+  }, [webcamRef.current]);
 
   useInterval(() => {
-    if (webcamRef.current && initialMode) {
-      runEstimator();
-    }
+    runEstimator();
   }, 500);
 
   return (
@@ -173,37 +173,43 @@ function SelfGesture() {
           <Header title="나만의 제스처" onClick={moveToSubMain} />
           <ContentWrapper>
             <SubWrapper>
-              <Video
-                ref={webcamRef}
-                setWidth={true}
-                facingMode={FACING_MODE.user}
-              />
+              <Video ref={webcamRef} facingMode={FACING_MODE.user} />
             </SubWrapper>
             <SubWrapper>
               <TextWrapper>
-                <StyledText>탐지된 제스처 : </StyledText>
-                <StyledText>{estimatedResult.resultName}</StyledText>
-                <StyledText>{estimatedResult.probability}</StyledText>
+                <Text className="big">{`제스처 이름: ${
+                  estimatedResult.resultName
+                    ? estimatedResult.resultName
+                    : defaultResult.resultName
+                } `}</Text>
+                <Text className="big">{`확률 :  ${
+                  estimatedResult.probability
+                    ? estimatedResult.probability
+                    : defaultResult.probability
+                } `}</Text>
               </TextWrapper>
-              <FormContent placeholder="학습할 제스처" onClick={addGesture} />
-              <ListContainer>
-                {gestureList.map((gesture) => (
-                  <ListWrapper key={gesture.id}>
-                    <Text width="65%">{gesture.name}</Text>
-                    <Button
-                      className="small"
-                      onClick={() => trainGesture(gesture.name)}
-                    >
-                      학습
-                    </Button>
-                  </ListWrapper>
-                ))}
-              </ListContainer>
-              <Input
-                type="file"
-                className="small"
-                onChange={(event) => uploadModel(event)}
-              />
+              <FormContainer>
+                <FormContent placeholder="학습할 제스처" onClick={addGesture} />
+                <ListContainer>
+                  {gestureList.map((gesture) => (
+                    <ListWrapper key={gesture.id}>
+                      <Text width="65%">{gesture.name}</Text>
+                      <Button
+                        className="small"
+                        onClick={() => trainGesture(gesture.name)}
+                      >
+                        학습
+                      </Button>
+                    </ListWrapper>
+                  ))}
+                </ListContainer>
+                <Input
+                  type="file"
+                  className="small"
+                  width="80%"
+                  onChange={(event) => uploadModel(event)}
+                />
+              </FormContainer>
               <ButtonList width="90%">
                 <Button
                   width="80%"
@@ -259,9 +265,11 @@ const SubWrapper = styled.div`
   width: 100%;
 `;
 
-const StyledText = styled.div`
-  margin: 0.5rem 0.2rem;
-  font-size: 1.1rem;
+const FormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 `;
 
 const TextWrapper = styled.div`
@@ -273,6 +281,7 @@ const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 90%;
+  margin: 0.5rem 0;
   height: 15vh;
   border: 1px solid #808080;
   overflow-y: scroll;

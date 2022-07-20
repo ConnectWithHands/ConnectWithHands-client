@@ -48,7 +48,6 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  margin: 0.5rem 0;
 `;
 
 FormContent.propTypes = {

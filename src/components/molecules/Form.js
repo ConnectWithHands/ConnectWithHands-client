@@ -15,7 +15,7 @@ function Form({ value, type, placeholder, onChange, onClick, children }) {
         placeholder={placeholder}
         onChange={onChange}
       />
-      <Button height="60%" className="small" onClick={() => onClick(value)}>
+      <Button className="normal" onClick={() => onClick(value)}>
         {children}
       </Button>
     </StyledForm>

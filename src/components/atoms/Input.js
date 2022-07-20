@@ -7,18 +7,19 @@ function Input({
   type = "text",
   name,
   value,
+  width,
   placeholder,
   onChange,
 }) {
-  const props = {
-    type,
-    name,
-    value,
+  const cssStyle = {
+    width,
   };
 
   return (
     <StyledInput
-      {...props}
+      {...cssStyle}
+      type={type}
+      name={name}
       value={value}
       placeholder={placeholder}
       className={className}
@@ -33,7 +34,8 @@ const StyledInput = styled.input`
   display: inline-block;
   border: 0.3px solid lightgray;
   padding: 0 1rem;
-  margin: 1rem 0;
+  width: ${(props) => props.width || "auto"};
+  margin: 0.5rem 0;
   &.small {
     min-height: 1.3em;
     font-size: 1rem;

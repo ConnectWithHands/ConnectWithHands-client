@@ -75,7 +75,7 @@ function PracticeDetail() {
     const specialConsonants = ["giyeok", "digeut", "bieup", "siot", "jieut"];
 
     if (type === NAME_LETTER_TYPE.consonants) {
-      if (specialConsonants.includes(gesture.name)) return true;
+      if (specialConsonants.includes(gesture?.name)) return true;
     }
 
     return false;
@@ -106,6 +106,7 @@ function PracticeDetail() {
 
           if (gesture.bestGesture.length) {
             const highestScore = gesture.bestGesture[0];
+            console.log(highestScore);
             const isSpecial = checkSpecialCase(typeOfLetter, highestScore);
 
             if (
@@ -191,9 +192,12 @@ function PracticeDetail() {
           />
         </SubWrapper>
         <SubWrapper>
-          {checkSpecialCase(typeOfLetter, indexOfLetter) ? (
+          {checkSpecialCase(
+            typeOfLetter,
+            Gestures[typeOfLetter][indexOfLetter - 1],
+          ) ? (
             <Text className="normal">
-              동일한 모양의 제스처를 오른쪽으로 이동
+              동일한 모양의 제스처를 왼쪽에서 오른쪽으로 이동
             </Text>
           ) : null}
           <Wrapper>

@@ -15,6 +15,7 @@ import Gesture from "./pages/Gesture";
 import GestureMain from "./pages/Gesture/GestureMain";
 import SelfGesture from "./pages/Gesture/SelfGesture";
 import HandGesture from "./pages/Gesture/HandGesture";
+import NotFound from "./pages/NotFound";
 import ErrorContent from "./components/organisms/ErrorContent";
 
 import { ERROR } from "./constants";
@@ -42,6 +43,7 @@ function App() {
               <Route path="handgesture" element={<HandGesture />} />
               <Route path="selfgesture" element={<SelfGesture />} />
             </Route>
+            <Route path="/*" element={<NotFound />} />
           </Routes>
         </ErrorBoundary>
       </Wrapper>
@@ -59,6 +61,7 @@ const Container = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: #f2d7d9;
+  font-family: "Noto Sans CJK KR";
 `;
 
 const Wrapper = styled.div`
@@ -66,9 +69,8 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 1280px;
-  height: 1000px;
+  height: 820px;
   background-color: white;
-  border-radius: 20px;
 
   @media screen and (max-width: 480px) {
     flex-direction: column;
