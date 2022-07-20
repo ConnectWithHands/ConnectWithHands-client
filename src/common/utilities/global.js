@@ -98,7 +98,7 @@ function getConstantVowel(kor) {
 }
 
 const isiOS = () => {
-  return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  return /iPhone|iPod/i.test(navigator.userAgent);
 };
 
 const isAndroid = () => {
