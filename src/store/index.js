@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import { LENGTH_LETTER_TYPE } from "../constants/index";
+import { LENGTH_LETTER_TYPE, MODAL_TYPE } from "../constants";
 
 const increaseIndex = (indexList, letter, initialValue) => ({
   ...indexList,
@@ -42,4 +42,11 @@ const decreaseIndexOfGesture = atom(null, (get, set, letter) => {
   set(indexOfLetters, decreaseIndex(get(indexOfLetters), letter));
 });
 
-export { indexOfLetters, increaseIndexOfGesture, decreaseIndexOfGesture };
+const modalType = atom(MODAL_TYPE.NONE);
+
+export {
+  indexOfLetters,
+  increaseIndexOfGesture,
+  decreaseIndexOfGesture,
+  modalType,
+};

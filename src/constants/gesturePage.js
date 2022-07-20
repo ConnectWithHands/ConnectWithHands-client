@@ -24,11 +24,12 @@ export const GESTURE_PAGE = [
 ];
 
 export const EXAMPLE_IMAGE = [
-  { id: 0, src: IMAGE.list.all },
-  { id: 1, src: IMAGE.list.consonant },
-  { id: 2, src: IMAGE.list.vowel },
-  { id: 3, src: handOnScreen },
-  { id: 5, src: learning },
-  { id: 6, src: learning },
-  { id: 7, src: learning },
+  { id: 0, url: IMAGE.words.victory },
+  { id: 1, url: IMAGE.words.okay },
+  { id: 2, url: IMAGE.words.hello },
+  { id: 3, url: IMAGE.words.fist },
+  { id: 5, url: IMAGE.words.love },
+  { id: 6, url: IMAGE.words.thank },
+  { id: 7, url: IMAGE.words.day },
+  { id: 8, url: IMAGE.words.glad },
 ];

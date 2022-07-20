@@ -13,33 +13,34 @@ const glad = new GestureDescription("glad");
 glad.addNumOfHands(2);
 
 // thumb:
-glad.addCurl(Handedness.Left, Finger.Thumb, FingerCurl.HalfCurl, 1.0);
-glad.addCurl(Handedness.Left, Finger.Thumb, FingerCurl.NoCurl, 0.8);
-glad.addCurl(Handedness.Right, Finger.Thumb, FingerCurl.HalfCurl, 1.0);
-glad.addCurl(Handedness.Right, Finger.Thumb, FingerCurl.NoCurl, 0.8);
-
-// index:
-glad.addCurl(Handedness.Left, Finger.Index, FingerCurl.NoCurl, 1.0);
+glad.addCurl(Handedness.Left, Finger.Thumb, FingerCurl.NoCurl, 1.0);
 glad.addDirection(
   Handedness.Left,
+  Finger.Thumb,
+  FingerDirection[FingerAxis.XY].VerticalUp,
+  0.8,
+);
+glad.addCurl(Handedness.Right, Finger.Thumb, FingerCurl.NoCurl, 1.0);
+glad.addDirection(
+  Handedness.Right,
   Finger.Index,
   FingerDirection[FingerAxis.XY].VerticalUp,
   0.8,
 );
 
-// middle:
+// index:
 glad.addCurl(
   Handedness.Left,
-  Finger.Middle,
-  FingerCurl.HalfCurl,
+  Finger.Index,
+  FingerCurl.NoCurl,
   1.0,
   HandSide.Back,
 );
 glad.addCurl(
-  Handedness.Right,
-  Finger.Middle,
+  Handedness.Left,
+  Finger.Index,
   FingerCurl.HalfCurl,
-  1.0,
+  0.8,
   HandSide.Back,
 );
 glad.addDirection(
@@ -50,17 +51,44 @@ glad.addDirection(
 );
 glad.addDirection(
   Handedness.Left,
-  Finger.Right,
-  FingerDirection[FingerAxis.XY].HorizontalLeft,
+  Finger.Index,
+  FingerDirection[FingerAxis.XY].DiagonalUpRight,
   0.8,
 );
 
-// ring:
-glad.addCurl(Handedness.Left, Finger.Ring, FingerCurl.HalfCurl, 1.0);
-glad.addCurl(Handedness.Right, Finger.Ring, FingerCurl.HalfCurl, 1.0);
+glad.addCurl(
+  Handedness.Right,
+  Finger.Index,
+  FingerCurl.NoCurl,
+  1.0,
+  HandSide.Back,
+);
+glad.addCurl(
+  Handedness.Right,
+  Finger.Index,
+  FingerCurl.HalfCurl,
+  0.8,
+  HandSide.Back,
+);
+glad.addDirection(
+  Handedness.Right,
+  Finger.Index,
+  FingerDirection[FingerAxis.XY].HorizontalLeft,
+  0.8,
+);
+glad.addDirection(
+  Handedness.Right,
+  Finger.Index,
+  FingerDirection[FingerAxis.XY].DiagonalUpLeft,
+  0.8,
+);
 
-// pinky:
-glad.addCurl(Handedness.Left, Finger.Pinky, FingerCurl.HalfCurl, 1.0);
-glad.addCurl(Handedness.Right, Finger.Pinky, FingerCurl.HalfCurl, 1.0);
+// middle:
+for (let finger of [Finger.Middle, Finger.Ring, Finger.Pinky]) {
+  glad.addCurl(Handedness.Left, finger, FingerCurl.FullCurl, 1.0);
+  glad.addCurl(Handedness.Left, finger, FingerCurl.HalfCurl, 1.0);
+  glad.addCurl(Handedness.Right, finger, FingerCurl.FullCurl, 1.0);
+  glad.addCurl(Handedness.Right, finger, FingerCurl.HalfCurl, 1.0);
+}
 
 export default glad;

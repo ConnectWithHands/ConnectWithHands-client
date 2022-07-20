@@ -8,7 +8,7 @@ import {
   PRACTICE_DETECTED,
   PRACTICE_SELECT,
 } from "./practice";
-import { FACING_MODE } from "./webcam";
+import { FACING_MODE, MODAL_TYPE } from "./global";
 
 export {
   GESTURE_PAGE,
@@ -21,6 +21,7 @@ export {
   PRACTICE_DETECTED,
   PRACTICE_SELECT,
   FACING_MODE,
+  MODAL_TYPE,
   WORD,
   ERROR,
 };

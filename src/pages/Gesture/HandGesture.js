@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import { nanoid } from "nanoid";
+import { useAtom } from "jotai";
 import throttle from "lodash.throttle";
 import "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-converter";
@@ -14,16 +15,17 @@ import {
   useInterval,
 } from "../../common/utilities";
 import { GestureEstimator, Gestures } from "../../common/Fingerpose";
+import { modalType } from "../../store";
 
 import Header from "../../components/molecules/Header";
 import VideoContent from "../../components/organisms/VideoContent";
 import Text from "../../components/atoms/Text";
 import ButtonList from "../../components/molecules/ButtonList";
 import Button from "../../components/atoms/Button";
-import Slide from "../../components/molecules/Slide";
-import MultipleSlides from "../../components/molecules/slider";
+import Modal from "../../components/organisms/Modal";
 
-import { WORD, FACING_MODE, EXAMPLE_IMAGE } from "../../constants";
+import { WORD, FACING_MODE, EXAMPLE_IMAGE, MODAL_TYPE } from "../../constants";
+import { isMobile } from "@tensorflow/tfjs-core/dist/device_util";
 
 function HandGesture() {
   const webcamRef = useRef(null);
@@ -32,8 +34,10 @@ function HandGesture() {
   const [speech, setSpeech] = useState(null);
   const [score, setScore] = useState(0);
   const [words, setWords] = useState([]);
+  const [speechStatus, setSpeechStatus] = useState(false);
   const [detector, setDetector] = useState(false);
   const [facingMode, setFacingMode] = useState(FACING_MODE.user);
+  const [modal, setModal] = useAtom(modalType);
 
   const handleWordsInitialize = () => {
     setWords([]);
@@ -49,6 +53,7 @@ function HandGesture() {
   };
 
   const handleSpeechStart = async (words) => {
+    setSpeechStatus(true);
     if (speech.voice === null) {
       const voices = window.speechSynthesis.getVoices();
       speech.voice = voices.find((voice) => voice.name === "Google 한국의");
@@ -61,8 +66,17 @@ function HandGesture() {
   };
 
   const handleSpeechStop = () => {
+    setSpeechStatus(false);
     window.speechSynthesis.pause();
     window.speechSynthesis.cancel();
+  };
+
+  const handleModalOpen = () => {
+    setModal(MODAL_TYPE.INFO);
+  };
+
+  const handleModalClose = () => {
+    setModal(MODAL_TYPE.NONE);
   };
 
   const addWordThrottle = useMemo(
@@ -189,7 +203,7 @@ function HandGesture() {
               text: "카메라 전환",
               onClick: handleFacingModeChange,
             }}
-            rightButton={{ text: "소리끄기", onClick: handleSpeechStop }}
+            rightButton={{ text: "제스처 보기", onClick: handleModalOpen }}
           />
         </SubWrapper>
         <SubWrapper>
@@ -217,14 +231,30 @@ function HandGesture() {
               width="80%"
               height="50px"
               className="normal"
-              onClick={() => handleSpeechStart(words)}
+              onClick={
+                speechStatus ? handleSpeechStop : () => handleSpeechStart(words)
+              }
             >
-              텍스트 읽기
+              {speechStatus ? "읽기 종료" : "텍스트 읽기"}
             </Button>
           </ButtonList>
-          {/* <Slide images={EXAMPLE_IMAGE} /> */}
         </SubWrapper>
       </ContentWrapper>
+      {modal === MODAL_TYPE.INFO && (
+        <Modal onClose={handleModalClose}>
+          <Text className="normal">등록된 제스처 예시</Text>
+          <ImageWrapper>
+            {EXAMPLE_IMAGE.map((image) => (
+              <Image
+                width={isMobile() ? "50%" : "30%"}
+                src={image.url}
+                key={image.id}
+                alt="example"
+              />
+            ))}
+          </ImageWrapper>
+        </Modal>
+      )}
     </Container>
   );
 }
@@ -258,6 +288,12 @@ const SubWrapper = styled.div`
   width: 100%;
 `;
 
+const ImageWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+`;
+
 const TextBox = styled.div`
   flex-wrap: wrap;
   height: ${(props) => (props.height ? props.height : "12vh")};
@@ -283,4 +319,8 @@ const TextWrapper = styled.div`
   @media screen and (max-width: 480px) {
     width: 90%;
   }
+`;
+
+const Image = styled.img`
+  margin: 1rem;
 `;
