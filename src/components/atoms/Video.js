@@ -3,7 +3,7 @@ import Webcam from "react-webcam";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import { FACING_MODE } from "../../constants/webcam";
+import { FACING_MODE } from "../../constants";
 import { isMobile } from "../../common/utilities";
 
 function Video({ facingMode }, ref) {

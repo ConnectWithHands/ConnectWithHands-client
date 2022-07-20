@@ -5,7 +5,7 @@ import { Provider as JotaiProvider } from "jotai";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import App from "./App";
 
-// serviceWorkerRegistration.register();
+serviceWorkerRegistration.register();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
