@@ -36,7 +36,6 @@ function SelfGesture() {
   const [classifier, setClassifier] = useState(null);
   const [model, setModel] = useState(null);
   const [tfWebcam, setTfWebcam] = useState(null);
-  const [initialMode, setInitialMode] = useState(false);
   const [gestureList, setGestureList] = useState([]);
 
   const runEstimator = async () => {
@@ -103,8 +102,6 @@ function SelfGesture() {
     await classifier.clearAllClasses();
     await classifier.dispose();
 
-    setInitialMode(false);
-    console.log("Uploading");
     let inputModel = event.target.files;
     let fr = new FileReader();
 
@@ -123,7 +120,6 @@ function SelfGesture() {
 
         tempModel.setClassifierDataset(tensorObj);
         setClassifier(tempModel);
-        setInitialMode(true);
         event.target.value = "";
 
         console.log("Classifier has been set up! Congrats! ");
@@ -148,13 +144,10 @@ function SelfGesture() {
       setModel(mobilenetModel);
       setClassifier(classifier);
       setTfWebcam(webcam);
-      setInitialMode(true);
     };
 
-    if (webcamRef.current) {
-      runModel();
-    }
-  }, [webcamRef.current]);
+    runModel();
+  }, []);
 
   useInterval(() => {
     runEstimator();
