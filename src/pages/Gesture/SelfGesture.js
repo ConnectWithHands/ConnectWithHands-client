@@ -117,8 +117,6 @@ function SelfGesture() {
     await classifier.clearAllClasses();
     await classifier.dispose();
 
-    setInitialMode(false);
-    console.log("Uploading");
     let inputModel = event.target.files;
     let fr = new FileReader();
 
@@ -137,7 +135,6 @@ function SelfGesture() {
 
         tempModel.setClassifierDataset(tensorObj);
         setClassifier(tempModel);
-        setInitialMode(true);
         event.target.value = "";
 
         console.log("Classifier has been set up! Congrats! ");
@@ -162,13 +159,21 @@ function SelfGesture() {
       setModel(mobilenetModel);
       setClassifier(classifier);
       setTfWebcam(webcam);
-      setInitialMode(true);
     };
 
-    if (webcamRef.current) {
+    if (initialMode) {
+      console.log("모델 로드");
       runModel();
     }
-  }, [webcamRef.current]);
+  }, [initialMode]);
+
+  useEffect(() => {
+    console.log("로드 전", webcamRef.current);
+    if (webcamRef.current) {
+      console.log("비디오 로드");
+      setInitialMode(true);
+    }
+  }, [initialMode]);
 
   useInterval(() => {
     runEstimator();
@@ -195,7 +200,7 @@ function SelfGesture() {
             >
               카메라 전환
             </Button>
-            <TFWebcam ref={webcamRef} facingMode={FACING_MODE.user} />
+            <TFWebcam ref={webcamRef} facingMode={facingMode} />
           </SubWrapper>
           <SubWrapper>
             <TextWrapper>
