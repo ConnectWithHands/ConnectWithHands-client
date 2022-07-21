@@ -33,9 +33,13 @@ function TestDetail() {
   const navigate = useNavigate();
   const [detector, setDetector] = useState(false);
   const [hint, setHint] = useState(false);
-  const [index, setIndex] = useState(0);
-  const [answers, setAnswers] = useState(0);
   const [randomLetters, setRandomLetters] = useState([]);
+  const [question, setQuestion] = useState({
+    index: 0,
+    answers: 0,
+  });
+  const { index, answers } = question;
+
   const typeOfLetter = params.id;
   const testGesturesList =
     typeOfLetter === NAME_LETTER_TYPE.consonants
@@ -57,12 +61,17 @@ function TestDetail() {
   };
 
   const initializeTest = () => {
-    setIndex(0);
-    setAnswers(0);
+    setQuestion({
+      index: 0,
+      answers: 0,
+    });
   };
 
   const increaseIndex = () => {
-    setIndex((previous) => previous + 1);
+    setQuestion((previous) => ({
+      ...previous,
+      index: previous.index + 1,
+    }));
     setHint(false);
   };
 
@@ -124,8 +133,11 @@ function TestDetail() {
             gesture.bestGesture[0].name === randomLetters[index]?.name
           ) {
             console.log("일치");
-            setIndex((previous) => previous + 1);
-            setAnswers((previous) => previous + 1);
+            setQuestion((previous) => ({
+              ...previous,
+              index: previous.index + 1,
+              answers: previous.answers + 1,
+            }));
             setHint(false);
           }
         }
@@ -193,9 +205,8 @@ function TestDetail() {
             </TextBox>
           </Wrapper>
           <TextWrapper>
-            <Text className="normal">{`문제: ${
-              index + 1
-            }번,  정답: ${answers} / 5 `}</Text>
+            <Text className="normal" color="red">{`문제: ${index + 1}번`}</Text>
+            <Text className="normal">{`정답 수: ${answers} / 5 `}</Text>
           </TextWrapper>
         </SubWrapper>
       </ContentWrapper>
@@ -272,11 +283,4 @@ const ImageBox = styled.div`
 const TextBox = styled(ImageBox)`
   flex-direction: column;
   background-color: null;
-`;
-
-const StyledCover = styled.div`
-  width: 100%;
-  z-index: 2;
-
-  background-color: #9cb4cc;
 `;

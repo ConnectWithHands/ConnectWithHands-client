@@ -6,7 +6,10 @@ function getPercentage(value) {
 }
 
 const isiOS = () => {
-  return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  return (
+    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.vendor === "MacIntel" && navigator.maxTouchPoints > 1)
+  );
 };
 
 const isAndroid = () => {

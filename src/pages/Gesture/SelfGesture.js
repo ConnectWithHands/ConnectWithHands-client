@@ -17,7 +17,6 @@ import Text from "../../components/atoms/Text";
 import Button from "../../components/atoms/Button";
 import Input from "../../components/atoms/Input";
 import Video from "../../components/atoms/Video";
-import TFWebcam from "../../components/atoms/TFWebcam";
 import { isMobile } from "../../common/utilities";
 import { FACING_MODE, ERROR } from "../../constants";
 
@@ -37,21 +36,7 @@ function SelfGesture() {
   const [classifier, setClassifier] = useState(null);
   const [model, setModel] = useState(null);
   const [tfWebcam, setTfWebcam] = useState(null);
-  const [initialMode, setInitialMode] = useState(false);
-  const [facingMode, setFacingMode] = useState(FACING_MODE.user);
-
   const [gestureList, setGestureList] = useState([]);
-
-  const handleFacingModeChange = () => {
-    switch (facingMode) {
-      case FACING_MODE.user:
-        setFacingMode(FACING_MODE.environment);
-        break;
-      case FACING_MODE.environment:
-        setFacingMode(FACING_MODE.user);
-        break;
-    }
-  };
 
   const runEstimator = async () => {
     if (classifier && model && tfWebcam) {
@@ -155,32 +140,14 @@ function SelfGesture() {
     const runModel = async () => {
       const classifier = knnClassifier.create();
       const mobilenetModel = await mobilenet.load();
-
-      const video = webcamRef.current.video;
-      console.log("video", video);
-      const { videoWidth, videoHeight } = video;
-
-      webcamRef.current.video.width = videoWidth;
-      webcamRef.current.video.height = videoHeight;
-
-      const webcam = await tf.data.webcam(video);
+      const webcam = await tf.data.webcam(webcamRef.current.video);
       setModel(mobilenetModel);
       setClassifier(classifier);
       setTfWebcam(webcam);
     };
 
-    if (initialMode) {
-      console.log("모델 로드");
-      runModel();
-    }
-  }, [initialMode]);
-
-  useEffect(() => {
-    if (webcamRef.current) {
-      console.log("비디오 로드");
-      setInitialMode(true);
-    }
-  }, [initialMode]);
+    runModel();
+  }, []);
 
   useInterval(() => {
     runEstimator();
@@ -188,84 +155,76 @@ function SelfGesture() {
 
   return (
     <Container>
-      {/* {isMobile() ? (
+      {isMobile() ? (
         <ErrorContent
           image={MobileError}
           text={ERROR.MOBILE_FORBIDDEN}
           onClick={moveToSubMain}
         />
-      ) : ( */}
-      <>
-        <Header title="나만의 제스처" onClick={moveToSubMain} />
-        <ContentWrapper>
-          <SubWrapper>
-            <Button
-              width="80%"
-              height="50px"
-              className="normal"
-              onClick={handleFacingModeChange}
-            >
-              카메라 전환
-            </Button>
-            <TFWebcam ref={webcamRef} facingMode={facingMode} />
-          </SubWrapper>
-          <SubWrapper>
-            <TextWrapper>
-              <Text className="big">{`제스처 이름: ${
-                estimatedResult.resultName
-                  ? estimatedResult.resultName
-                  : defaultResult.resultName
-              } `}</Text>
-              <Text className="big">{`확률 :  ${
-                estimatedResult.probability
-                  ? estimatedResult.probability
-                  : defaultResult.probability
-              } `}</Text>
-            </TextWrapper>
-            <FormContainer>
-              <FormContent placeholder="학습할 제스처" onClick={addGesture} />
-              <ListContainer>
-                {gestureList.map((gesture) => (
-                  <ListWrapper key={gesture.id}>
-                    <Text width="65%">{gesture.name}</Text>
-                    <Button
-                      className="small"
-                      onClick={() => trainGesture(gesture.name)}
-                    >
-                      학습
-                    </Button>
-                  </ListWrapper>
-                ))}
-              </ListContainer>
-              <Input
-                type="file"
-                className="small"
-                width="80%"
-                onChange={(event) => uploadModel(event)}
-              />
-            </FormContainer>
-            <ButtonList width="90%">
-              <Button
-                width="80%"
-                height="50px"
-                className="normal"
-                onClick={initializeGesture}
-              >
-                초기화
-              </Button>
-              <Button
-                width="80%"
-                height="50px"
-                className="normal"
-                onClick={saveModel}
-              >
-                저장하기
-              </Button>
-            </ButtonList>
-          </SubWrapper>
-        </ContentWrapper>
-      </>
-      {/* )} */}
+      ) : (
+        <>
+          <Header title="나만의 제스처" onClick={moveToSubMain} />
+          <ContentWrapper>
+            <SubWrapper>
+              <Video ref={webcamRef} facingMode={FACING_MODE.user} />
+            </SubWrapper>
+            <SubWrapper>
+              <TextWrapper>
+                <Text className="big">{`제스처 이름: ${
+                  estimatedResult.resultName
+                    ? estimatedResult.resultName
+                    : defaultResult.resultName
+                } `}</Text>
+                <Text className="big">{`확률 :  ${
+                  estimatedResult.probability
+                    ? estimatedResult.probability
+                    : defaultResult.probability
+                } `}</Text>
+              </TextWrapper>
+              <FormContainer>
+                <FormContent placeholder="학습할 제스처" onClick={addGesture} />
+                <ListContainer>
+                  {gestureList.map((gesture) => (
+                    <ListWrapper key={gesture.id}>
+                      <Text width="65%">{gesture.name}</Text>
+                      <Button
+                        className="small"
+                        onClick={() => trainGesture(gesture.name)}
+                      >
+                        학습
+                      </Button>
+                    </ListWrapper>
+                  ))}
+                </ListContainer>
+                <Input
+                  type="file"
+                  className="small"
+                  width="80%"
+                  onChange={(event) => uploadModel(event)}
+                />
+              </FormContainer>
+              <ButtonList width="90%">
+                <Button
+                  width="80%"
+                  height="50px"
+                  className="normal"
+                  onClick={initializeGesture}
+                >
+                  초기화
+                </Button>
+                <Button
+                  width="80%"
+                  height="50px"
+                  className="normal"
+                  onClick={saveModel}
+                >
+                  저장하기
+                </Button>
+              </ButtonList>
+            </SubWrapper>
+          </ContentWrapper>
+        </>
+      )}
     </Container>
   );
 }
