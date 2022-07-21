@@ -168,7 +168,6 @@ function SelfGesture() {
   }, [initialMode]);
 
   useEffect(() => {
-    console.log("로드 전", webcamRef.current);
     if (webcamRef.current) {
       console.log("비디오 로드");
       setInitialMode(true);
