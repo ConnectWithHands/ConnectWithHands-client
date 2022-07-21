@@ -155,7 +155,15 @@ function SelfGesture() {
     const runModel = async () => {
       const classifier = knnClassifier.create();
       const mobilenetModel = await mobilenet.load();
-      const webcam = await tf.data.webcam(webcamRef.current.video);
+
+      const video = webcamRef.current.video;
+      console.log("video", video);
+      const { videoWidth, videoHeight } = video;
+
+      webcamRef.current.video.width = videoWidth;
+      webcamRef.current.video.height = videoHeight;
+
+      const webcam = await tf.data.webcam(video);
       setModel(mobilenetModel);
       setClassifier(classifier);
       setTfWebcam(webcam);
