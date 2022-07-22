@@ -108,7 +108,6 @@ function PracticeDetail() {
 
           if (gesture.bestGesture.length) {
             const highestScore = gesture.bestGesture[0];
-            console.log(highestScore);
             const isSpecial = checkSpecialCase(typeOfLetter, highestScore);
 
             if (

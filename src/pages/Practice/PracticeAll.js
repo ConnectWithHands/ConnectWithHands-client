@@ -80,7 +80,6 @@ function PracticeAll() {
           if (gesture.bestGesture.length) {
             const highestScore = gesture.bestGesture[0];
             const isSpecial = checkSpecialCase(type, highestScore);
-            console.log(highestScore);
 
             if (isSpecial) {
               if (setXCordination.length === 10) {
