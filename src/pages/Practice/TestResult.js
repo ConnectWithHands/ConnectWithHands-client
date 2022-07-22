@@ -1,13 +1,14 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
+import { media } from "../../styles/media";
 
-import Header from "../../components/molecules/Header";
+import ButtonList from "../../components/modules/ButtonList";
+import Header from "../../components/modules/Header";
 import Button from "../../components/atoms/Button";
 import Image from "../../components/atoms/Image";
 import Text from "../../components/atoms/Text";
-import congrats from "../../assets/congratulations.png";
-import ButtonList from "../../components/molecules/ButtonList";
+import IMAGE from "../../assets";
 
 function TestResult() {
   const navigate = useNavigate();
@@ -27,7 +28,12 @@ function TestResult() {
       <Header title="테스트 결과" onClick={moveToTestPage} />
       <MainWrapper>
         <Wrapper>
-          <Image width="50%" height="400px" alt="congrats" src={congrats} />
+          <Image
+            width="50%"
+            height="400px"
+            alt="congrats"
+            src={IMAGE.icon.congratulations}
+          />
           <TextWrapper>
             <Text color="black" className="big">
               테스트 결과
@@ -77,9 +83,9 @@ const MainWrapper = styled.div`
   width: 100%;
   height: 100%;
 
-  @media screen and (max-width: 480px) {
+  ${media.small`
     flex-direction: column;
-  }
+  `}
 `;
 
 const Wrapper = styled.div`
@@ -88,10 +94,10 @@ const Wrapper = styled.div`
   align-items: center;
   width: 50%;
 
-  @media screen and (max-width: 480px) {
+  ${media.small`
     flex-direction: column;
     width: 100%;
-  }
+  `}
 `;
 
 const ButtonWrapper = styled.div`
@@ -101,16 +107,16 @@ const ButtonWrapper = styled.div`
   margin: auto;
   width: 50%;
 
-  @media screen and (max-width: 480px) {
+  ${media.small`
     width: 100%;
-  }
+  `}
 `;
 
 const TextWrapper = styled(Container)`
   align-items: center;
 
-  @media screen and (max-width: 480px) {
+  ${media.small`
     flex-direction: column;
     height: 30%;
-  }
+  `}
 `;

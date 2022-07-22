@@ -3,17 +3,18 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import Text from "../atoms/Text";
-import Form from "../molecules/Form";
+import Input from "../atoms/Input";
+import Button from "../atoms/Button";
 
-function FormContent({ title = "", placeholder, onClick }) {
+function Form({ title = "", type, placeholder, onClick, children }) {
   const [input, setInput] = useState("");
 
   const handleNameChange = (event) => {
     setInput(event.target.value);
   };
 
-  const handleDataAdd = async (value) => {
-    await onClick(value);
+  const handleDataAdd = (value) => {
+    onClick(value);
     setInput("");
   };
 
@@ -24,19 +25,23 @@ function FormContent({ title = "", placeholder, onClick }) {
           <Text className="samll">{title}</Text>
         </Wrapper>
       )}
-      <Form
-        value={input}
-        placeholder={placeholder}
-        onChange={handleNameChange}
-        onClick={handleDataAdd}
-      >
-        입력하기
-      </Form>
+      <Wrapper>
+        <Input
+          type={type}
+          className="small"
+          value={input}
+          placeholder={placeholder}
+          onChange={handleNameChange}
+        />
+        <Button className="small" onClick={() => handleDataAdd(input)}>
+          {children}
+        </Button>
+      </Wrapper>
     </Container>
   );
 }
 
-export default FormContent;
+export default Form;
 
 const Container = styled.div`
   display: flex;
@@ -50,10 +55,10 @@ const Wrapper = styled.div`
   width: 100%;
 `;
 
-FormContent.propTypes = {
+Form.propTypes = {
   title: PropTypes.string,
+  type: PropTypes.string,
   placeholder: PropTypes.string,
-  list: PropTypes.array,
   onClick: PropTypes.func,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),

@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import PracticeListContent from "../../components/organisms/PracticeListContent";
-import Header from "../../components/molecules/Header";
+import PracticeListContent from "../../components/modules/PracticeListContent";
+import Header from "../../components/modules/Header";
 
-import { PRACTICE_LIST } from "../../constants/practice";
+import { PRACTICE_LIST } from "../../common/constants";
 
 function PracticeMain() {
   const navigate = useNavigate();

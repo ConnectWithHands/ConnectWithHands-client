@@ -2,9 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import ButtonList from "../molecules/ButtonList";
-import VideoCanvas from "../molecules/VideoCanvas";
+import ButtonList from "../modules/ButtonList";
 import Button from "../atoms/Button";
+import Video from "../atoms/Video";
+import Canvas from "../atoms/Canvas";
 
 function VideoContent({
   webcamRef,
@@ -14,7 +15,7 @@ function VideoContent({
   rightButton,
 }) {
   return (
-    <>
+    <Container>
       <ButtonList width="100%">
         <Button
           height="50px"
@@ -35,14 +36,11 @@ function VideoContent({
           {rightButton.text}
         </Button>
       </ButtonList>
-      <Container>
-        <VideoCanvas
-          webcamRef={webcamRef}
-          canvasRef={canvasRef}
-          facingMode={facingMode}
-        />
-      </Container>
-    </>
+      <VideoContainer>
+        <Video ref={webcamRef} facingMode={facingMode} />
+        <Canvas ref={canvasRef} />
+      </VideoContainer>
+    </Container>
   );
 }
 
@@ -51,8 +49,11 @@ export default VideoContent;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: black;
   width: 100%;
+`;
+
+const VideoContainer = styled(Container)`
+  background-color: black;
   position: relative;
 `;
 

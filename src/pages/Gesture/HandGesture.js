@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { media } from "../../styles/media";
 
 import { nanoid } from "nanoid";
 import { useAtom } from "jotai";
@@ -17,15 +18,20 @@ import {
 import { GestureEstimator, Gestures } from "../../common/Fingerpose";
 import { modalType } from "../../store";
 
-import Header from "../../components/molecules/Header";
-import VideoContent from "../../components/organisms/VideoContent";
+import Header from "../../components/modules/Header";
+import VideoContent from "../../components/modules/VideoContent";
+import Modal from "../../components/modules/Modal";
+import ButtonList from "../../components/modules/ButtonList";
 import Text from "../../components/atoms/Text";
-import ButtonList from "../../components/molecules/ButtonList";
 import Button from "../../components/atoms/Button";
-import Modal from "../../components/organisms/Modal";
 
-import { WORD, FACING_MODE, EXAMPLE_IMAGE, MODAL_TYPE } from "../../constants";
-import { isMobile } from "@tensorflow/tfjs-core/dist/device_util";
+import {
+  WORD,
+  FACING_MODE,
+  EXAMPLE_IMAGE,
+  MODAL_TYPE,
+} from "../../common/constants";
+import { isMobile } from "../../common/utilities";
 
 function HandGesture() {
   const webcamRef = useRef(null);
@@ -279,9 +285,9 @@ const ContentWrapper = styled.div`
   width: 100%;
   height: 100%;
 
-  @media screen and (max-width: 480px) {
+  ${media.small`
     flex-direction: column;
-  }
+  `}
 `;
 
 const SubWrapper = styled.div`
@@ -308,9 +314,9 @@ const TextBox = styled.div`
   width: 80%;
   overflow-y: scroll;
 
-  @media screen and (max-width: 480px) {
+  ${media.small`
     width: 90%;
-  }
+  `}
 `;
 
 const TextWrapper = styled.div`
@@ -320,9 +326,9 @@ const TextWrapper = styled.div`
   width: 80%;
   margin: 0.5rem 0;
 
-  @media screen and (max-width: 480px) {
+  ${media.small`
     width: 90%;
-  }
+  `}
 `;
 
 const Image = styled.img`

@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import Image from "../atoms/Image";
 import Text from "../atoms/Text";
 import Button from "../atoms/Button";
-import ButtonList from "../molecules/ButtonList";
+import ButtonList from "../modules/ButtonList";
 
 import { isMobile } from "../../common/utilities";
 

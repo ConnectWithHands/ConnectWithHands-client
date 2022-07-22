@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import { LENGTH_LETTER_TYPE, MODAL_TYPE } from "../constants";
+import { LENGTH_LETTER_TYPE, MODAL_TYPE } from "../common/constants";
 
 const increaseIndex = (indexList, letter, initialValue) => ({
   ...indexList,

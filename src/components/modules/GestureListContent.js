@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import { media } from "../../styles/media";
 
 import Text from "../atoms/Text";
 import Image from "../atoms/Image";
 import Button from "../atoms/Button";
-import ButtonList from "../molecules/ButtonList";
+import ButtonList from "../modules/ButtonList";
 
 import { isMobile } from "../../common/utilities";
 
@@ -60,10 +61,10 @@ const StyledContainer = styled.div`
   border: 1px solid black;
   border-radius: 10px;
 
-  @media screen and (max-width: 480px) {
+  ${media.small`
     flex-direction: column;
     height: 40vh;
-  }
+  `}
 `;
 
 const SubContainer = styled.div`
@@ -73,10 +74,10 @@ const SubContainer = styled.div`
   margin: 1em 0;
   width: 50%;
 
-  @media screen and (max-width: 480px) {
+  ${media.small`
     width: 90%;
     flex-direction: column;
-  }
+  `}
 `;
 
 const Wrapper = styled.div`
@@ -84,10 +85,10 @@ const Wrapper = styled.div`
   flex-direction: column;
   width: 70%;
 
-  @media screen and (max-width: 480px) {
+  ${media.small`
     width: 90%;
     flex-direction: column;
-  }
+  `}
 `;
 
 GestureContent.propTypes = {
