@@ -72,6 +72,7 @@ function TestDetail() {
       ...previous,
       index: previous.index + 1,
     }));
+
     setHint(false);
   };
 
