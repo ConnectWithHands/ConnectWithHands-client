@@ -1,6 +1,4 @@
-import handOnScreen from "../assets/sign-language.png";
-import learning from "../assets/neural.png";
-import IMAGE from "../assets";
+import IMAGE from "../../assets";
 
 export const GESTURE_PAGE = [
   {
@@ -9,7 +7,7 @@ export const GESTURE_PAGE = [
     description:
       "손을 실시간으로 인식하여 텍스트를 출력합니다. 현재 학습된 수어만 인식 가능합니다.",
     buttonTitle: "인식하기",
-    image: handOnScreen,
+    image: IMAGE.icon.signLanguage,
     page: "handgesture",
   },
   {
@@ -18,7 +16,7 @@ export const GESTURE_PAGE = [
     description:
       "실시간으로 제스처를 학습시킬 수 있습니다. 나만의 제스처를 학습시키고 테스트하세요!",
     buttonTitle: "만들기",
-    image: learning,
+    image: IMAGE.icon.neural,
     page: "selfgesture",
   },
 ];
