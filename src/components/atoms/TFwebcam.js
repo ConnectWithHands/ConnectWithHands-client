@@ -8,6 +8,7 @@ import { FACING_MODE } from "../../constants";
 function TFwebcam({ facingMode }, ref) {
   const videoConfig = {
     width: 640,
+    height: 480,
     facingMode:
       facingMode === FACING_MODE.user
         ? FACING_MODE.user
@@ -34,7 +35,7 @@ const StyledVideo = styled(Webcam)`
   text-align: center;
   z-index: 2;
   width: 640;
-  height: auto;
+  height: 480;
 `;
 
 TFwebcam.propTypes = {
