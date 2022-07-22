@@ -51,7 +51,7 @@ const StyledButton = styled.button`
   font-family: "Noto Sans CJK KR";
 
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
     background: linear-gradient(-45deg, #f2d7d9 0%, #9cb4cc 100%);
     color: white;
   }

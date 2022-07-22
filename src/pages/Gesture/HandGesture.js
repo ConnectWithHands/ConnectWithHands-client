@@ -115,6 +115,10 @@ function HandGesture() {
         const hand = await detector.estimateHands(webcamRef.current.video);
         const GE = new GestureEstimator(Gestures.words);
 
+        if (window.speechSynthesis.speaking === false) {
+          setSpeechStatus(false);
+        }
+
         if (hand.length > 0) {
           const gesture = GE.estimate(hand, 8);
           console.log("gesture", gesture);
