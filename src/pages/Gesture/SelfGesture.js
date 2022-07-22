@@ -200,22 +200,25 @@ function SelfGesture() {
           <Header title="나만의 제스처" onClick={moveToSubMain} />
           <ContentWrapper>
             <SubWrapper>
-              {initialMode && (
-                <Button
-                  width="50%"
-                  height="50px"
-                  className="small"
-                  bgColor="white"
-                  outline="#748DA6"
-                  onClick={handleFacingModeChange}
-                >
-                  카메라 전환
-                </Button>
+              {tfWebcam && (
+                <RowWrapper>
+                  <Text className="normal">모델 준비 완료</Text>
+                  <Button
+                    width="30%"
+                    height="50px"
+                    className="small"
+                    bgColor="white"
+                    outline="#748DA6"
+                    onClick={handleFacingModeChange}
+                  >
+                    카메라 전환
+                  </Button>
+                </RowWrapper>
               )}
               <TFwebcam ref={webcamRef} facingMode={facingMode} />
             </SubWrapper>
             <SubWrapper>
-              <TextWrapper>
+              <RowWrapper>
                 <Text className="big" color="red">{`제스처 이름: ${
                   estimatedResult.resultName
                     ? estimatedResult.resultName
@@ -226,7 +229,7 @@ function SelfGesture() {
                     ? estimatedResult.probability
                     : defaultResult.probability
                 } `}</Text>
-              </TextWrapper>
+              </RowWrapper>
               <FormContainer>
                 <Form placeholder="학습할 제스처" onClick={addGesture}>
                   제스처 추가
@@ -313,8 +316,9 @@ const FormContainer = styled.div`
   width: 100%;
 `;
 
-const TextWrapper = styled.div`
+const RowWrapper = styled.div`
   display: flex;
+  align-items: center;
   width: 90%;
 `;
 
