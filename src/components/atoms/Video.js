@@ -37,8 +37,6 @@ const StyledVideo = styled(Webcam)`
   right: 0;
   text-align: center;
   z-index: 2;
-  width: auto;
-  height: auto;
 `;
 
 Video.propTypes = {

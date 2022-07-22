@@ -18,7 +18,6 @@ import Text from "../../components/atoms/Text";
 import Button from "../../components/atoms/Button";
 import Input from "../../components/atoms/Input";
 import TFwebcam from "../../components/atoms/TFwebcam";
-import Video from "../../components/atoms/Video";
 import { isMobile } from "../../common/utilities";
 import { FACING_MODE, ERROR } from "../../common/constants";
 
@@ -36,10 +35,21 @@ function SelfGesture() {
   const [estimatedResult, setEstimatedResult] = useState(defaultResult);
   const [classifier, setClassifier] = useState(null);
   const [model, setModel] = useState(null);
+  const [initialMode, setInitialMode] = useState(false);
   const [tfWebcam, setTfWebcam] = useState(null);
   const [gestureList, setGestureList] = useState([]);
+  const [facingMode, setFacingMode] = useState(FACING_MODE.user);
 
   const runEstimator = async () => {
+    if (
+      !initialMode &&
+      typeof webcamRef.current !== "undefined" &&
+      webcamRef.current !== null &&
+      webcamRef.current.video.readyState === 4
+    ) {
+      setInitialMode(true);
+    }
+
     if (classifier && model && tfWebcam) {
       if (classifier.getNumClasses() > 0) {
         const image = await tfWebcam.capture();
@@ -83,16 +93,15 @@ function SelfGesture() {
 
   const saveModel = async () => {
     const dataset = await classifier.getClassifierDataset();
-
-    let stringDataset = JSON.stringify(
+    const stringDataset = JSON.stringify(
       Object.entries(dataset).map(([label, data]) => [
         label,
         Array.from(data.dataSync()),
         data.shape,
       ]),
     );
-
     const downloader = document.createElement("a");
+
     downloader.download = "model.json";
     downloader.href =
       "data:text/text;charset=utf-8," + encodeURIComponent(stringDataset);
@@ -139,6 +148,17 @@ function SelfGesture() {
     navigate("/gesture");
   };
 
+  const handleFacingModeChange = () => {
+    switch (facingMode) {
+      case FACING_MODE.user:
+        setFacingMode(FACING_MODE.environment);
+        break;
+      case FACING_MODE.environment:
+        setFacingMode(FACING_MODE.user);
+        break;
+    }
+  };
+
   useEffect(() => {
     const runInitialModel = async () => {
       const classifier = knnClassifier.create();
@@ -156,8 +176,12 @@ function SelfGesture() {
       setTfWebcam(webcam);
     };
 
-    runInitialModel();
-  }, []);
+    if (initialMode) {
+      runInitialModel();
+    }
+  }, [initialMode]);
+
+  useEffect;
 
   useInterval(() => {
     runEstimator();
@@ -176,7 +200,19 @@ function SelfGesture() {
           <Header title="나만의 제스처" onClick={moveToSubMain} />
           <ContentWrapper>
             <SubWrapper>
-              <TFwebcam ref={webcamRef} facingMode={FACING_MODE.user} />
+              {initialMode && (
+                <Button
+                  width="50%"
+                  height="50px"
+                  className="small"
+                  bgColor="white"
+                  outline="#748DA6"
+                  onClick={handleFacingModeChange}
+                >
+                  카메라 전환
+                </Button>
+              )}
+              <TFwebcam ref={webcamRef} facingMode={facingMode} />
             </SubWrapper>
             <SubWrapper>
               <TextWrapper>

@@ -31,7 +31,7 @@ import {
   EXAMPLE_IMAGE,
   MODAL_TYPE,
 } from "../../common/constants";
-import { isMobile } from "@tensorflow/tfjs-core/dist/device_util";
+import { isMobile } from "../../common/utilities";
 
 function HandGesture() {
   const webcamRef = useRef(null);
