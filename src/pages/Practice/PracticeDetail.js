@@ -177,7 +177,7 @@ function PracticeDetail() {
     if (detector) {
       detectHands(detector);
     }
-  }, 500);
+  }, 200);
 
   return (
     <Container>
