@@ -200,7 +200,7 @@ function SelfGesture() {
           <Header title="나만의 제스처" onClick={moveToSubMain} />
           <ContentWrapper>
             <SubWrapper>
-              {tfWebcam && (
+              {tfWebcam ? (
                 <RowWrapper>
                   <Text className="normal">모델 준비 완료</Text>
                   <Button
@@ -214,6 +214,8 @@ function SelfGesture() {
                     카메라 전환
                   </Button>
                 </RowWrapper>
+              ) : (
+                <Text className="normal">모델 준비 중</Text>
               )}
               <TFwebcam ref={webcamRef} facingMode={facingMode} />
             </SubWrapper>
