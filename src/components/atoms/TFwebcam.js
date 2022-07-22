@@ -3,7 +3,7 @@ import Webcam from "react-webcam";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import { FACING_MODE } from "../../constants";
+import { FACING_MODE } from "../../common/constants";
 
 function TFwebcam({ facingMode }, ref) {
   const videoConfig = {

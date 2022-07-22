@@ -20,7 +20,7 @@ import Input from "../../components/atoms/Input";
 import TFwebcam from "../../components/atoms/TFwebcam";
 import Video from "../../components/atoms/Video";
 import { isMobile } from "../../common/utilities";
-import { FACING_MODE, ERROR } from "../../constants";
+import { FACING_MODE, ERROR } from "../../common/constants";
 
 import { useInterval } from "../../common/utilities";
 

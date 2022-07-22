@@ -25,7 +25,7 @@ import {
   LETTER,
   PRACTICE_SELECT,
   NAME_LETTER_TYPE,
-} from "../../constants";
+} from "../../common/constants";
 
 function PracticeAll() {
   const webcamRef = useRef(null);

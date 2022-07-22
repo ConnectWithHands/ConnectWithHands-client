@@ -18,7 +18,7 @@ import HandGesture from "./pages/Gesture/HandGesture";
 import NotFound from "./pages/NotFound";
 import ErrorContent from "./components/modules/ErrorContent";
 
-import { ERROR } from "./constants";
+import { ERROR } from "./common/constants";
 import error from "./assets/error.png";
 
 function App() {

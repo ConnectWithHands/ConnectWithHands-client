@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import GestureContent from "../../components/modules/GestureListContent";
 import Header from "../../components/modules/Header";
-import { GESTURE_PAGE } from "../../constants/gesturePage";
+import { GESTURE_PAGE } from "../../common/constants";
 
 function GestureMain() {
   const navigate = useNavigate();

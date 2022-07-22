@@ -26,7 +26,7 @@ import {
   PRACTICE_TITLE,
   NAME_LETTER_TYPE,
   LETTER,
-} from "../../constants";
+} from "../../common/constants";
 
 function TestDetail() {
   const webcamRef = useRef(null);

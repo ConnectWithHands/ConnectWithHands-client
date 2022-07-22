@@ -25,7 +25,12 @@ import ButtonList from "../../components/modules/ButtonList";
 import Text from "../../components/atoms/Text";
 import Button from "../../components/atoms/Button";
 
-import { WORD, FACING_MODE, EXAMPLE_IMAGE, MODAL_TYPE } from "../../constants";
+import {
+  WORD,
+  FACING_MODE,
+  EXAMPLE_IMAGE,
+  MODAL_TYPE,
+} from "../../common/constants";
 import { isMobile } from "@tensorflow/tfjs-core/dist/device_util";
 
 function HandGesture() {

@@ -33,7 +33,7 @@ import {
   PRACTICE_DETECTED,
   LETTER,
   NAME_LETTER_TYPE,
-} from "../../constants";
+} from "../../common/constants";
 
 function PracticeDetail() {
   const webcamRef = useRef(null);
