@@ -1,4 +1,4 @@
-import IMAGE from "../assets";
+import IMAGE from "../../assets";
 
 export const PRACTICE_LIST = [
   {

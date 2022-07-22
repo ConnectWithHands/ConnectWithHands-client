@@ -1,15 +1,16 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { media } from "../styles/media";
 
-import ButtonList from "../components/molecules/ButtonList";
+import ButtonList from "../components/modules/ButtonList";
 import Image from "../components/atoms/Image";
 import Text from "../components/atoms/Text";
 import Button from "../components/atoms/Button";
 
 import { isMobile } from "../common/utilities";
 
-import logo from "../assets/heart.png";
+import IMAGE from "../assets";
 
 function Main() {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ function Main() {
           width={isMobile() ? "50%" : "30%"}
           height={isMobile() ? "300px" : "400px"}
           alt="logo"
-          src={logo}
+          src={IMAGE.icon.heart}
         />
         <ContentWrapper>
           <TextBox>
@@ -89,10 +90,11 @@ const StyledMainContent = styled.div`
   justify-content: space-evenly;
   width: 100%;
 
-  @media screen and (max-width: 480px) {
+  ${media.small`
     flex-direction: column;
-  }
+  `}
 `;
+
 const TextBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -101,10 +103,10 @@ const TextBox = styled.div`
   height: 100%;
   margin: 1.5rem 0;
 
-  @media screen and (max-width: 480px) {
+  ${media.small`
     flex-direction: column;
     width: 100%;
-  }
+  `}
 `;
 
 const ContentWrapper = styled.div`
@@ -122,8 +124,8 @@ const ButtonWrapper = styled.div`
   width: 100%;
   height: auto;
 
-  @media screen and (max-width: 480px) {
+  ${media.small`
     width: 100%;
     flex-direction: column;
-  }
+  `}
 `;

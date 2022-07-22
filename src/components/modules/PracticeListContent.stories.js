@@ -2,7 +2,7 @@ import React from "react";
 import PracticeListContent from "./PracticeListContent";
 import styled from "styled-components";
 
-import logo from "../../assets/heart.png";
+import IMAGE from "../../assets";
 
 export default {
   title: "PracticeList Component",
@@ -18,7 +18,7 @@ export const PracticeList = () => (
     <PracticeListContent
       title={TITLE}
       description={DESCRIPTION}
-      image={logo}
+      image={IMAGE.icon.heart}
       onClick={ONCLICK}
     />
   </Container>

@@ -3,26 +3,26 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { media } from "../../styles/media";
 
 import { nanoid } from "nanoid";
 import * as tf from "@tensorflow/tfjs";
 import * as mobilenet from "@tensorflow-models/mobilenet";
 import * as knnClassifier from "@tensorflow-models/knn-classifier";
 
-import FormContent from "../../components/organisms/FormContent";
-import ErrorContent from "../../components/organisms/ErrorContent";
-import ButtonList from "../../components/molecules/ButtonList";
-import Header from "../../components/molecules/Header";
+import Form from "../../components/modules/Form";
+import ErrorContent from "../../components/modules/ErrorContent";
+import ButtonList from "../../components/modules/ButtonList";
+import Header from "../../components/modules/Header";
 import Text from "../../components/atoms/Text";
 import Button from "../../components/atoms/Button";
 import Input from "../../components/atoms/Input";
-import Video from "../../components/atoms/Video";
+import TFwebcam from "../../components/atoms/TFwebcam";
 import { isMobile } from "../../common/utilities";
-import { FACING_MODE, ERROR } from "../../constants";
+import { FACING_MODE, ERROR } from "../../common/constants";
 
 import { useInterval } from "../../common/utilities";
-
-import MobileError from "../../assets/desktop.png";
+import IMAGE from "../../assets";
 
 const defaultResult = {
   resultName: "미탐지",
@@ -35,28 +35,41 @@ function SelfGesture() {
   const [estimatedResult, setEstimatedResult] = useState(defaultResult);
   const [classifier, setClassifier] = useState(null);
   const [model, setModel] = useState(null);
+  const [initialMode, setInitialMode] = useState(false);
   const [tfWebcam, setTfWebcam] = useState(null);
   const [gestureList, setGestureList] = useState([]);
+  const [facingMode, setFacingMode] = useState(FACING_MODE.user);
 
   const runEstimator = async () => {
+    if (
+      !initialMode &&
+      typeof webcamRef.current !== "undefined" &&
+      webcamRef.current !== null &&
+      webcamRef.current.video.readyState === 4
+    ) {
+      setInitialMode(true);
+    }
+
     if (classifier && model && tfWebcam) {
-      while (true) {
-        if (classifier.getNumClasses() > 0) {
-          const image = await tfWebcam.capture();
-          const activation = model.infer(image, "conv_preds");
-          const result = await classifier.predictClass(activation);
+      if (classifier.getNumClasses() > 0) {
+        const image = await tfWebcam.capture();
+        const activation = model.infer(image, "conv_preds");
+        const result = await classifier.predictClass(activation);
+        const probability = (result.confidences[result.label] + "").substring(
+          0,
+          4,
+        );
 
-          setEstimatedResult((previous) => ({
-            ...previous,
-            resultName: result.label,
-            probability: result.confidences[result.label],
-          }));
+        setEstimatedResult((previous) => ({
+          ...previous,
+          resultName: result.label,
+          probability: probability,
+        }));
 
-          image.dispose();
-        }
-
-        await tf.nextFrame();
+        image.dispose();
       }
+
+      await tf.nextFrame();
     }
   };
 
@@ -80,16 +93,15 @@ function SelfGesture() {
 
   const saveModel = async () => {
     const dataset = await classifier.getClassifierDataset();
-
-    let stringDataset = JSON.stringify(
+    const stringDataset = JSON.stringify(
       Object.entries(dataset).map(([label, data]) => [
         label,
         Array.from(data.dataSync()),
         data.shape,
       ]),
     );
-
     const downloader = document.createElement("a");
+
     downloader.download = "model.json";
     downloader.href =
       "data:text/text;charset=utf-8," + encodeURIComponent(stringDataset);
@@ -136,18 +148,38 @@ function SelfGesture() {
     navigate("/gesture");
   };
 
+  const handleFacingModeChange = () => {
+    switch (facingMode) {
+      case FACING_MODE.user:
+        setFacingMode(FACING_MODE.environment);
+        break;
+      case FACING_MODE.environment:
+        setFacingMode(FACING_MODE.user);
+        break;
+    }
+  };
+
   useEffect(() => {
-    const runModel = async () => {
+    const runInitialModel = async () => {
       const classifier = knnClassifier.create();
       const mobilenetModel = await mobilenet.load();
+
+      const video = webcamRef.current.video;
+      const { videoWidth, videoHeight } = video;
+
+      webcamRef.current.video.width = videoWidth;
+      webcamRef.current.video.height = videoHeight;
+
       const webcam = await tf.data.webcam(webcamRef.current.video);
       setModel(mobilenetModel);
       setClassifier(classifier);
       setTfWebcam(webcam);
     };
 
-    runModel();
-  }, []);
+    if (initialMode) {
+      runInitialModel();
+    }
+  }, [initialMode]);
 
   useInterval(() => {
     runEstimator();
@@ -157,7 +189,7 @@ function SelfGesture() {
     <Container>
       {isMobile() ? (
         <ErrorContent
-          image={MobileError}
+          image={IMAGE.icon.error}
           text={ERROR.MOBILE_FORBIDDEN}
           onClick={moveToSubMain}
         />
@@ -166,11 +198,26 @@ function SelfGesture() {
           <Header title="나만의 제스처" onClick={moveToSubMain} />
           <ContentWrapper>
             <SubWrapper>
-              <Video ref={webcamRef} facingMode={FACING_MODE.user} />
+              {tfWebcam && (
+                <RowWrapper>
+                  <Text className="normal">모델 준비 완료</Text>
+                  <Button
+                    width="30%"
+                    height="50px"
+                    className="small"
+                    bgColor="white"
+                    outline="#748DA6"
+                    onClick={handleFacingModeChange}
+                  >
+                    카메라 전환
+                  </Button>
+                </RowWrapper>
+              )}
+              <TFwebcam ref={webcamRef} facingMode={facingMode} />
             </SubWrapper>
             <SubWrapper>
-              <TextWrapper>
-                <Text className="big">{`제스처 이름: ${
+              <RowWrapper>
+                <Text className="big" color="red">{`제스처 이름: ${
                   estimatedResult.resultName
                     ? estimatedResult.resultName
                     : defaultResult.resultName
@@ -180,9 +227,11 @@ function SelfGesture() {
                     ? estimatedResult.probability
                     : defaultResult.probability
                 } `}</Text>
-              </TextWrapper>
+              </RowWrapper>
               <FormContainer>
-                <FormContent placeholder="학습할 제스처" onClick={addGesture} />
+                <Form placeholder="학습할 제스처" onClick={addGesture}>
+                  제스처 추가
+                </Form>
                 <ListContainer>
                   {gestureList.map((gesture) => (
                     <ListWrapper key={gesture.id}>
@@ -245,9 +294,9 @@ const ContentWrapper = styled.div`
   width: 100%;
   height: 100%;
 
-  @media screen and (max-width: 480px) {
+  ${media.small`
     flex-direction: column;
-  }
+  `}
 `;
 
 const SubWrapper = styled.div`
@@ -265,8 +314,9 @@ const FormContainer = styled.div`
   width: 100%;
 `;
 
-const TextWrapper = styled.div`
+const RowWrapper = styled.div`
   display: flex;
+  align-items: center;
   width: 90%;
 `;
 

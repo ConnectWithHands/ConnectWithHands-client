@@ -15,7 +15,7 @@ export default class FingerPoseEstimator {
       ...{
         // curl estimation
         HALF_CURL_START_LIMIT: 60.0,
-        NO_CURL_START_LIMIT: 120.0, // 원래 130
+        NO_CURL_START_LIMIT: 120.0,
         THUMB_CURL_START_LIMIT: 120.0,
 
         // direction estimation
@@ -35,6 +35,7 @@ export default class FingerPoseEstimator {
     const slopesYZ = [];
 
     const isPalmOrBack = this.estimateHandSide(handedness, keypoints3D);
+    console.log("isPalmOrBack", isPalmOrBack);
 
     for (let finger of Finger.all) {
       const points = Finger.getPoints(finger);
@@ -110,6 +111,7 @@ export default class FingerPoseEstimator {
     const { x: wirst_x, y: wirst_y } = wrist;
     const { x: thumb_mcp_x, y: thumb_mcp_y } = thumb_mcp;
     const { x: pinky_tip_x, y: pinky_tip_y } = pinky_tip;
+
     let expectedHandSide;
 
     if (
@@ -260,7 +262,6 @@ export default class FingerPoseEstimator {
     );
 
     let cos_in =
-      // 코사인 제 2법칙
       (mid_end_dist * mid_end_dist +
         start_mid_dist * start_mid_dist -
         start_end_dist * start_end_dist) /
@@ -272,8 +273,8 @@ export default class FingerPoseEstimator {
       cos_in = -1.0;
     }
 
-    let angleOfCurve = Math.acos(cos_in); // COS값을 arc cosin을 이용하여 degree을 구함
-    angleOfCurve = (57.2958 * angleOfCurve) % 180; // degree으로 radian를 구함
+    let angleOfCurve = Math.acos(cos_in);
+    angleOfCurve = (57.2958 * angleOfCurve) % 180;
 
     let fingerCurl;
     if (finger === 0) {
@@ -284,10 +285,8 @@ export default class FingerPoseEstimator {
       }
     } else {
       if (angleOfCurve > this.options.NO_CURL_START_LIMIT) {
-        //120
         fingerCurl = FingerCurl.NoCurl;
       } else if (angleOfCurve > this.options.HALF_CURL_START_LIMIT) {
-        // 60
         fingerCurl = FingerCurl.HalfCurl;
       } else {
         fingerCurl = FingerCurl.FullCurl;
@@ -309,9 +308,9 @@ export default class FingerPoseEstimator {
     if (axis === FingerAxis.XY) {
       if (max_dist_x_z === Math.abs(start_end_x_z_dist)) {
         if (start_end_x_z_dist > 0) {
-          estimatedDirection = FingerDirection[axis].HorizontalLeft; // 2
+          estimatedDirection = FingerDirection[axis].HorizontalLeft;
         } else {
-          estimatedDirection = FingerDirection[axis].HorizontalRight; // 3
+          estimatedDirection = FingerDirection[axis].HorizontalRight;
         }
       } else if (max_dist_x_z === Math.abs(start_mid_x_z_dist)) {
         if (start_mid_x_z_dist > 0) {
@@ -483,12 +482,12 @@ export default class FingerPoseEstimator {
       Math.abs(mid_end_z_dist),
     );
 
-    let voteVerticalXY = 0.0; // 수직
-    let voteDiagonalXY = 0.0; // 대각선
-    let voteHorizontalXY = 0.0; // 수평
-    let voteVerticalYZ = 0.0; // 수직
-    let voteDiagonalYZ = 0.0; // 대각선
-    let voteHorizontalYZ = 0.0; // 수평
+    let voteVerticalXY = 0.0;
+    let voteDiagonalXY = 0.0;
+    let voteHorizontalXY = 0.0;
+    let voteVerticalYZ = 0.0;
+    let voteDiagonalYZ = 0.0;
+    let voteHorizontalYZ = 0.0;
 
     let start_end_x_y_dist_ratio = max_dist_y / (max_dist_x + 0.00001);
     let start_end_z_y_dist_ratio = max_dist_y / (max_dist_z + 0.00001);
@@ -693,16 +692,12 @@ export default class FingerPoseEstimator {
     return [estimatedDirectionXY, estimatedDirectionYZ];
   }
 
-  //직각 삼각형의 높이와 밑변의 길이를 알 때 빗변과 밑변 사이의 끼인 값
-
   calculateSlope(point1x_z, point1y, point2x_z, point2y) {
-    const value = (point1y - point2y) / (point1x_z - point2x_z); // 밑변 분의 높이
-    const radian = Math.atan(value); // 아크 탄젠트로 라디안 값 구하기
+    const value = (point1y - point2y) / (point1x_z - point2x_z);
+    const radian = Math.atan(value);
     let slope = (radian * 180) / Math.PI;
-    // arc tan은 angel의 radian을 반환, 여기서180/PI를 하면 degree로 변환
 
     if (slope <= 0) {
-      // 음수면 양수로 변경 (절대값)
       slope = -slope;
     } else if (slope > 0) {
       slope = 180 - slope;

@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
+import { media } from "../../styles/media";
+
 import "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-converter";
 import "@tensorflow/tfjs-backend-webgl";
@@ -13,8 +15,8 @@ import {
 } from "../../common/utilities";
 import { GestureEstimator, Gestures } from "../../common/Fingerpose";
 
-import VideoCanvas from "../../components/molecules/VideoCanvas";
-import Header from "../../components/molecules/Header";
+import VideoCanvas from "../../components/modules/VideoCanvas";
+import Header from "../../components/modules/Header";
 import Text from "../../components/atoms/Text";
 import SelectBox from "../../components/atoms/Select";
 
@@ -23,7 +25,7 @@ import {
   LETTER,
   PRACTICE_SELECT,
   NAME_LETTER_TYPE,
-} from "../../constants";
+} from "../../common/constants";
 
 function PracticeAll() {
   const webcamRef = useRef(null);
@@ -78,7 +80,6 @@ function PracticeAll() {
           if (gesture.bestGesture.length) {
             const highestScore = gesture.bestGesture[0];
             const isSpecial = checkSpecialCase(type, highestScore);
-            console.log(highestScore);
 
             if (isSpecial) {
               if (setXCordination.length === 10) {
@@ -175,9 +176,10 @@ const ContentWrapper = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  @media screen and (max-width: 480px) {
+
+  ${media.small`
     flex-direction: column;
-  }
+  `}
 `;
 
 const SubWrapper = styled.div`
@@ -195,9 +197,9 @@ const Wrapper = styled.div`
   width: 70%;
   margin: auto;
 
-  @media screen and (max-width: 480px) {
+  ${media.small`
     width: 90%;
-  }
+  `}
 `;
 
 const TextWrapper = styled.div`
@@ -205,9 +207,10 @@ const TextWrapper = styled.div`
   justify-content: center;
   border: 1px solid black;
   width: 70%;
-  @media screen and (max-width: 480px) {
+
+  ${media.small`
     width: 90%;
-  }
+  `}
 `;
 
 const ImageBox = styled.div`
@@ -217,10 +220,11 @@ const ImageBox = styled.div`
   height: 15vh;
   margin: 1.25rem 0.25rem;
   border: 1px solid black;
-  @media screen and (max-width: 480px) {
+
+  ${media.small`
     flex-direction: row;
     width: 100%;
-  }
+  `}
 `;
 
 const TextBox = styled(ImageBox)`

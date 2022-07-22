@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "./Image";
 
-import logo from "../../assets/heart.png";
+import IMAGE from "../../assets";
 
 export default {
   title: "Image Component",
@@ -9,7 +9,7 @@ export default {
 };
 
 export const ImageComponent = () => (
-  <Image width="20%" height="400px" alt="example" src={logo}>
+  <Image width="20%" height="400px" alt="example" src={IMAGE.icon.heart}>
     example
   </Image>
 );

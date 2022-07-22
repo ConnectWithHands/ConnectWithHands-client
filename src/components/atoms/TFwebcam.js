@@ -4,14 +4,11 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import { FACING_MODE } from "../../common/constants";
-import { isMobile } from "../../common/utilities";
 
-function Video({ facingMode }, ref) {
-  const $size = { width: 640 };
-  const $m_size = { width: 360 };
-
+function TFwebcam({ facingMode }, ref) {
   const videoConfig = {
-    width: isMobile() ? $m_size.width : $size.width,
+    width: 640,
+    height: 480,
     facingMode:
       facingMode === FACING_MODE.user
         ? FACING_MODE.user
@@ -29,7 +26,7 @@ function Video({ facingMode }, ref) {
   );
 }
 
-export default forwardRef(Video);
+export default forwardRef(TFwebcam);
 
 const StyledVideo = styled(Webcam)`
   margin: 0 auto;
@@ -39,7 +36,7 @@ const StyledVideo = styled(Webcam)`
   z-index: 2;
 `;
 
-Video.propTypes = {
+TFwebcam.propTypes = {
   facingMode: PropTypes.string,
   ref: PropTypes.oneOfType([
     PropTypes.func,
