@@ -16,6 +16,7 @@ import Header from "../../components/molecules/Header";
 import Text from "../../components/atoms/Text";
 import Button from "../../components/atoms/Button";
 import Input from "../../components/atoms/Input";
+import TFwebcam from "../../components/atoms/TFwebcam";
 import Video from "../../components/atoms/Video";
 import { isMobile } from "../../common/utilities";
 import { FACING_MODE, ERROR } from "../../constants";
@@ -40,23 +41,25 @@ function SelfGesture() {
 
   const runEstimator = async () => {
     if (classifier && model && tfWebcam) {
-      while (true) {
-        if (classifier.getNumClasses() > 0) {
-          const image = await tfWebcam.capture();
-          const activation = model.infer(image, "conv_preds");
-          const result = await classifier.predictClass(activation);
+      if (classifier.getNumClasses() > 0) {
+        const image = await tfWebcam.capture();
+        const activation = model.infer(image, "conv_preds");
+        const result = await classifier.predictClass(activation);
+        const probability = (result.confidences[result.label] + "").substring(
+          0,
+          4,
+        );
 
-          setEstimatedResult((previous) => ({
-            ...previous,
-            resultName: result.label,
-            probability: result.confidences[result.label],
-          }));
+        setEstimatedResult((previous) => ({
+          ...previous,
+          resultName: result.label,
+          probability: probability,
+        }));
 
-          image.dispose();
-        }
-
-        await tf.nextFrame();
+        image.dispose();
       }
+
+      await tf.nextFrame();
     }
   };
 
@@ -166,11 +169,11 @@ function SelfGesture() {
           <Header title="나만의 제스처" onClick={moveToSubMain} />
           <ContentWrapper>
             <SubWrapper>
-              <Video ref={webcamRef} facingMode={FACING_MODE.user} />
+              <TFwebcam ref={webcamRef} facingMode={FACING_MODE.user} />
             </SubWrapper>
             <SubWrapper>
               <TextWrapper>
-                <Text className="big">{`제스처 이름: ${
+                <Text className="big" color="red">{`제스처 이름: ${
                   estimatedResult.resultName
                     ? estimatedResult.resultName
                     : defaultResult.resultName
