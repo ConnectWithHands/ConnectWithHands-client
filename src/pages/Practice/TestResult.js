@@ -8,7 +8,7 @@ import Header from "../../components/modules/Header";
 import Button from "../../components/atoms/Button";
 import Image from "../../components/atoms/Image";
 import Text from "../../components/atoms/Text";
-import congrats from "../../assets/congratulations.png";
+import IMAGE from "../../assets";
 
 function TestResult() {
   const navigate = useNavigate();
@@ -28,7 +28,12 @@ function TestResult() {
       <Header title="테스트 결과" onClick={moveToTestPage} />
       <MainWrapper>
         <Wrapper>
-          <Image width="50%" height="400px" alt="congrats" src={congrats} />
+          <Image
+            width="50%"
+            height="400px"
+            alt="congrats"
+            src={IMAGE.icon.congratulations}
+          />
           <TextWrapper>
             <Text color="black" className="big">
               테스트 결과

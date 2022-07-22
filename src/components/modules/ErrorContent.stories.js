@@ -2,7 +2,7 @@ import React from "react";
 import ErrorContent from "./ErrorContent";
 import styled from "styled-components";
 
-import logo from "../../assets/heart.png";
+import IMAGE from "../../assets";
 
 export default {
   title: "Error Component",
@@ -14,7 +14,7 @@ const ONCLICK = () => {};
 
 export const Error = () => (
   <Container>
-    <ErrorContent image={logo} text={TEXT} onClick={ONCLICK}>
+    <ErrorContent image={IMAGE.icon.heart} text={TEXT} onClick={ONCLICK}>
       example
     </ErrorContent>
   </Container>

@@ -8,8 +8,7 @@ import Text from "../components/atoms/Text";
 import Button from "../components/atoms/Button";
 
 import { isMobile } from "../common/utilities";
-
-import pageNotFound from "../assets/404.png";
+import IMAGE from "../assets";
 
 function NotFound() {
   const navigate = useNavigate();
@@ -24,7 +23,7 @@ function NotFound() {
         width={isMobile() ? "40%" : "20%"}
         height={isMobile() ? "250px" : "400px"}
         alt="notFound"
-        src={pageNotFound}
+        src={IMAGE.icon.notFound}
       />
       <Wrapper>
         <Text className="big">존재하지 않는 페이지 입니다</Text>

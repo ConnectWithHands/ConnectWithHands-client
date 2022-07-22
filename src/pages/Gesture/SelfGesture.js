@@ -23,8 +23,7 @@ import { isMobile } from "../../common/utilities";
 import { FACING_MODE, ERROR } from "../../common/constants";
 
 import { useInterval } from "../../common/utilities";
-
-import MobileError from "../../assets/desktop.png";
+import IMAGE from "../../assets";
 
 const defaultResult = {
   resultName: "미탐지",
@@ -161,7 +160,7 @@ function SelfGesture() {
     <Container>
       {isMobile() ? (
         <ErrorContent
-          image={MobileError}
+          image={IMAGE.icon.error}
           text={ERROR.MOBILE_FORBIDDEN}
           onClick={moveToSubMain}
         />

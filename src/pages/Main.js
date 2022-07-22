@@ -10,7 +10,7 @@ import Button from "../components/atoms/Button";
 
 import { isMobile } from "../common/utilities";
 
-import logo from "../assets/heart.png";
+import IMAGE from "../assets";
 
 function Main() {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ function Main() {
           width={isMobile() ? "50%" : "30%"}
           height={isMobile() ? "300px" : "400px"}
           alt="logo"
-          src={logo}
+          src={IMAGE.icon.heart}
         />
         <ContentWrapper>
           <TextBox>
