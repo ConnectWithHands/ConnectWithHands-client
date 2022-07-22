@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { media } from "../styles/media";
 
 import Image from "../components/atoms/Image";
 import Text from "../components/atoms/Text";
@@ -44,9 +45,9 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
 
-  @media screen and (max-width: 480px) {
+  ${media.small`
     flex-direction: column;
-  }
+  `}
 `;
 
 const Wrapper = styled.div`

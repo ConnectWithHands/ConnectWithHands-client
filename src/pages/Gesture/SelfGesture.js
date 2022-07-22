@@ -3,16 +3,17 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { media } from "../../styles/media";
 
 import { nanoid } from "nanoid";
 import * as tf from "@tensorflow/tfjs";
 import * as mobilenet from "@tensorflow-models/mobilenet";
 import * as knnClassifier from "@tensorflow-models/knn-classifier";
 
-import FormContent from "../../components/organisms/FormContent";
-import ErrorContent from "../../components/organisms/ErrorContent";
-import ButtonList from "../../components/molecules/ButtonList";
-import Header from "../../components/molecules/Header";
+import Form from "../../components/modules/Form";
+import ErrorContent from "../../components/modules/ErrorContent";
+import ButtonList from "../../components/modules/ButtonList";
+import Header from "../../components/modules/Header";
 import Text from "../../components/atoms/Text";
 import Button from "../../components/atoms/Button";
 import Input from "../../components/atoms/Input";
@@ -185,7 +186,9 @@ function SelfGesture() {
                 } `}</Text>
               </TextWrapper>
               <FormContainer>
-                <FormContent placeholder="학습할 제스처" onClick={addGesture} />
+                <Form placeholder="학습할 제스처" onClick={addGesture}>
+                  제스처 추가
+                </Form>
                 <ListContainer>
                   {gestureList.map((gesture) => (
                     <ListWrapper key={gesture.id}>
@@ -248,9 +251,9 @@ const ContentWrapper = styled.div`
   width: 100%;
   height: 100%;
 
-  @media screen and (max-width: 480px) {
+  ${media.small`
     flex-direction: column;
-  }
+  `}
 `;
 
 const SubWrapper = styled.div`

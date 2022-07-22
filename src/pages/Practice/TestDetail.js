@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { media } from "../../styles/media";
+
 import "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-converter";
 import "@tensorflow/tfjs-backend-webgl";
@@ -12,8 +14,8 @@ import {
 } from "../../common/utilities";
 import { GestureEstimator, Gestures } from "../../common/Fingerpose";
 
-import VideoContent from "../../components/organisms/VideoContent";
-import Header from "../../components/molecules/Header";
+import VideoContent from "../../components/modules/VideoContent";
+import Header from "../../components/modules/Header";
 import Image from "../../components/atoms/Image";
 import Text from "../../components/atoms/Text";
 
@@ -126,7 +128,7 @@ function TestDetail() {
         const GE = new GestureEstimator(randomLetters);
 
         if (hand.length > 0) {
-          const gesture = GE.estimate(hand, 7);
+          const gesture = GE.estimate(hand, 7.5);
           console.log("gesture", gesture);
 
           if (
@@ -231,9 +233,9 @@ const ContentWrapper = styled.div`
   width: 100%;
   height: 100%;
 
-  @media screen and (max-width: 480px) {
+  ${media.small`
     flex-direction: column;
-  }
+  `}
 `;
 
 const SubWrapper = styled.div`
@@ -250,10 +252,10 @@ const Wrapper = styled.div`
   align-items: center;
   width: 70%;
 
-  @media screen and (max-width: 480px) {
+  ${media.small`
     flex-direction: row;
     width: 90%;
-  }
+  `}
 `;
 
 const TextWrapper = styled.div`
@@ -262,9 +264,9 @@ const TextWrapper = styled.div`
   border: 1px solid black;
   width: 70%;
 
-  @media screen and (max-width: 480px) {
+  ${media.small`
     width: 90%;
-  }
+  `}
 `;
 
 const ImageBox = styled.div`
@@ -275,13 +277,13 @@ const ImageBox = styled.div`
   margin: 1.25rem 0.25rem;
   border: 1px solid black;
 
-  @media screen and (max-width: 480px) {
+  ${media.small`
     flex-direction: row;
     width: 100%;
-  }
+  `}
 `;
 
 const TextBox = styled(ImageBox)`
   flex-direction: column;
-  background-color: null;
+  background-color: transparant;
 `;

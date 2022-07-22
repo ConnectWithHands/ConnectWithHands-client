@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 import styled from "styled-components";
 
-import GlobalStyle from "./common/globalStyle";
+import GlobalStyle from "./styles/globalStyle";
 import Main from "./pages/Main";
 import Practice from "./pages/Practice";
 import PracticeMain from "./pages/Practice/PracticeMain";
@@ -16,7 +16,7 @@ import GestureMain from "./pages/Gesture/GestureMain";
 import SelfGesture from "./pages/Gesture/SelfGesture";
 import HandGesture from "./pages/Gesture/HandGesture";
 import NotFound from "./pages/NotFound";
-import ErrorContent from "./components/organisms/ErrorContent";
+import ErrorContent from "./components/modules/ErrorContent";
 
 import { ERROR } from "./constants";
 import error from "./assets/error.png";

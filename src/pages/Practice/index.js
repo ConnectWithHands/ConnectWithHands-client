@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-
 import styled from "styled-components";
+import { media } from "../../styles/media";
 
 function Practice() {
   return (
@@ -20,7 +20,7 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
 
-  @media screen and (max-width: 480px) {
+  ${media.small`
     flex-direction: column;
-  }
+  `}
 `;

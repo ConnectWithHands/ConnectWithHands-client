@@ -2,8 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import GestureContent from "../../components/organisms/GestureListContent";
-import Header from "../../components/molecules/Header";
+import GestureContent from "../../components/modules/GestureListContent";
+import Header from "../../components/modules/Header";
 import { GESTURE_PAGE } from "../../constants/gesturePage";
 
 function GestureMain() {

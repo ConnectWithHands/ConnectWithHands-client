@@ -1,8 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
-
 import styled from "styled-components";
 import PropTypes from "prop-types";
+
+import { media } from "../../styles/media";
 
 const Modal = ({ onClose, children }) => {
   const element = document.getElementById("modal");
@@ -46,11 +47,11 @@ const Content = styled.div`
   overflow-y: scroll;
   background: white;
 
-  @media screen and (max-width: 480px) {
+  ${media.small`
     height: 50%;
     width: 80%;
     flex-direction: column;
-  }
+  `}
 `;
 
 const ModalButton = styled.button`

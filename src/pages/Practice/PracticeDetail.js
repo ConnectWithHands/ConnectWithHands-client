@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
+import { media } from "../../styles/media";
+
 import { useAtom, useAtomValue } from "jotai";
 import "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-converter";
@@ -19,8 +21,8 @@ import {
   decreaseIndexOfGesture,
 } from "../../store";
 
-import VideoContent from "../../components/organisms/VideoContent";
-import Header from "../../components/molecules/Header";
+import VideoContent from "../../components/modules/VideoContent";
+import Header from "../../components/modules/Header";
 import Image from "../../components/atoms/Image";
 import Text from "../../components/atoms/Text";
 import IMAGE from "../../assets";
@@ -197,7 +199,7 @@ function PracticeDetail() {
             Gestures[typeOfLetter][indexOfLetter - 1],
           ) ? (
             <Text className="normal">
-              동일한 모양의 제스처를 왼쪽에서 오른쪽으로 이동
+              단자음 제스처를 왼쪽에서 오른쪽으로 이동
             </Text>
           ) : null}
           <Wrapper>
@@ -237,9 +239,10 @@ const ContentWrapper = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  @media screen and (max-width: 480px) {
+
+  ${media.small`
     flex-direction: column;
-  }
+  `}
 `;
 
 const SubWrapper = styled.div`
@@ -255,10 +258,11 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 70%;
-  @media screen and (max-width: 480px) {
+
+  ${media.small`
     flex-direction: row;
     width: 90%;
-  }
+  `}
 `;
 
 const TextWrapper = styled.div`
@@ -266,9 +270,10 @@ const TextWrapper = styled.div`
   justify-content: center;
   border: 1px solid black;
   width: 70%;
-  @media screen and (max-width: 480px) {
+
+  ${media.small`
     width: 90%;
-  }
+  `}
 `;
 
 const ImageBox = styled.div`
@@ -278,10 +283,11 @@ const ImageBox = styled.div`
   height: 15vh;
   margin: 1.25rem 0.25rem;
   border: 1px solid black;
-  @media screen and (max-width: 480px) {
+
+  ${media.small`
     flex-direction: row;
     width: 100%;
-  }
+  `}
 `;
 
 const TextBox = styled(ImageBox)`
