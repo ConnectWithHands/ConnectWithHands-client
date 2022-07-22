@@ -181,8 +181,6 @@ function SelfGesture() {
     }
   }, [initialMode]);
 
-  useEffect;
-
   useInterval(() => {
     runEstimator();
   }, 500);
