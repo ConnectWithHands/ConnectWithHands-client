@@ -19,7 +19,7 @@ import NotFound from "./pages/NotFound";
 import ErrorContent from "./components/modules/ErrorContent";
 
 import { ERROR } from "./common/constants";
-import error from "./assets/error.png";
+import IMAGE from "./assets";
 
 function App() {
   return (
@@ -27,7 +27,12 @@ function App() {
       <GlobalStyle />
       <Wrapper>
         <ErrorBoundary
-          fallback={<ErrorContent text={ERROR.SOMETHING_ERROR} image={error} />}
+          fallback={
+            <ErrorContent
+              text={ERROR.SOMETHING_ERROR}
+              image={IMAGE.icon.error}
+            />
+          }
         >
           <Routes>
             <Route path="/" element={<Main />} />
