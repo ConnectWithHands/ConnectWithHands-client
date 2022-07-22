@@ -34,8 +34,6 @@ const StyledVideo = styled(Webcam)`
   right: 0;
   text-align: center;
   z-index: 2;
-  width: 640px;
-  height: 480px;
 `;
 
 TFwebcam.propTypes = {

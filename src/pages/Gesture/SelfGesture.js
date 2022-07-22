@@ -140,16 +140,23 @@ function SelfGesture() {
   };
 
   useEffect(() => {
-    const runModel = async () => {
+    const runInitialModel = async () => {
       const classifier = knnClassifier.create();
       const mobilenetModel = await mobilenet.load();
+
+      const video = webcamRef.current.video;
+      const { videoWidth, videoHeight } = video;
+
+      webcamRef.current.video.width = videoWidth;
+      webcamRef.current.video.height = videoHeight;
+
       const webcam = await tf.data.webcam(webcamRef.current.video);
       setModel(mobilenetModel);
       setClassifier(classifier);
       setTfWebcam(webcam);
     };
 
-    runModel();
+    runInitialModel();
   }, []);
 
   useInterval(() => {
