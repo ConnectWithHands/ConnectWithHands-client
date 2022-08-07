@@ -7,11 +7,11 @@ import { FACING_MODE } from "../../common/constants";
 import { isMobile } from "../../common/utilities";
 
 function Video({ facingMode }, ref) {
-  const $size = { width: 640 };
-  const $m_size = { width: 360 };
+  const size = { width: 640 };
+  const m_size = { width: 360 };
 
   const videoConfig = {
-    width: isMobile() ? $m_size.width : $size.width,
+    width: isMobile() ? m_size.width : size.width,
     facingMode:
       facingMode === FACING_MODE.user
         ? FACING_MODE.user

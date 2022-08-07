@@ -18,7 +18,7 @@ function ErrorContent({ image, text, onClick }) {
       {onClick && (
         <ButtonWrapper>
           <Button width="80%" className="normal" onClick={onClick}>
-            홈으로 가기
+            돌아가기
           </Button>
         </ButtonWrapper>
       )}

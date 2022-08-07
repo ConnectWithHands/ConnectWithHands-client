@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { media } from "../../styles/media";
 
+import { useAtom } from "jotai";
 import { nanoid } from "nanoid";
 import * as tf from "@tensorflow/tfjs";
 import * as mobilenet from "@tensorflow-models/mobilenet";
@@ -14,14 +15,16 @@ import Form from "../../components/modules/Form";
 import ErrorContent from "../../components/modules/ErrorContent";
 import ButtonList from "../../components/modules/ButtonList";
 import Header from "../../components/modules/Header";
+import Modal from "../../components/modules/Modal";
 import Text from "../../components/atoms/Text";
 import Button from "../../components/atoms/Button";
 import Input from "../../components/atoms/Input";
 import TFwebcam from "../../components/atoms/TFwebcam";
 import { isMobile } from "../../common/utilities";
-import { FACING_MODE, ERROR } from "../../common/constants";
+import { FACING_MODE, MODAL_TYPE, ERROR } from "../../common/constants";
 
-import { useInterval } from "../../common/utilities";
+import { useInterval, checkOnline } from "../../common/utilities";
+import { modalType } from "../../store";
 import IMAGE from "../../assets";
 
 const defaultResult = {
@@ -39,6 +42,7 @@ function SelfGesture() {
   const [tfWebcam, setTfWebcam] = useState(null);
   const [gestureList, setGestureList] = useState([]);
   const [facingMode, setFacingMode] = useState(FACING_MODE.user);
+  const [modal, setModal] = useAtom(modalType);
 
   const runEstimator = async () => {
     if (
@@ -70,6 +74,8 @@ function SelfGesture() {
       }
 
       await tf.nextFrame();
+    } else {
+      setModal(MODAL_TYPE.ERROR);
     }
   };
 
@@ -159,6 +165,10 @@ function SelfGesture() {
     }
   };
 
+  const handleModalClose = () => {
+    setModal(MODAL_TYPE.NONE);
+  };
+
   useEffect(() => {
     const runInitialModel = async () => {
       const classifier = knnClassifier.create();
@@ -198,24 +208,29 @@ function SelfGesture() {
           <Header title="나만의 제스처" onClick={moveToSubMain} />
           <ContentWrapper>
             <SubWrapper>
-              {tfWebcam ? (
-                <RowWrapper>
-                  <Text className="normal">모델 준비 완료</Text>
-                  <Button
-                    width="30%"
-                    height="50px"
-                    className="small"
-                    bgColor="white"
-                    outline="#748DA6"
-                    onClick={handleFacingModeChange}
-                  >
-                    카메라 전환
-                  </Button>
-                </RowWrapper>
+              {!checkOnline() && (
+                <Text className="normal" color="red">
+                  {ERROR.OFFLINE}
+                </Text>
+              )}
+              {checkOnline() && tfWebcam ? (
+                <Text className="normal">모델 준비 완료</Text>
               ) : (
                 <Text className="normal">모델 준비 중</Text>
               )}
-              <TFwebcam ref={webcamRef} facingMode={facingMode} />
+              <RowWrapper>
+                <Button
+                  width="30%"
+                  height="50px"
+                  className="small"
+                  bgColor="white"
+                  outline="#748DA6"
+                  onClick={handleFacingModeChange}
+                >
+                  카메라 전환
+                </Button>
+                <TFwebcam ref={webcamRef} facingMode={facingMode} />
+              </RowWrapper>
             </SubWrapper>
             <SubWrapper>
               <RowWrapper>
@@ -276,6 +291,20 @@ function SelfGesture() {
           </ContentWrapper>
         </>
       )}
+      {modal === MODAL_TYPE.ERROR && (
+        <Modal onClose={handleModalClose}>
+          <Text className="big">{ERROR.CAMERA_UNDETECTED.title}</Text>
+          <Text className="normal">{ERROR.CAMERA_UNDETECTED.description}</Text>
+          <Button
+            className="normal"
+            width="50%"
+            height="50px"
+            onClick={moveToSubMain}
+          >
+            메인으로 돌아가기
+          </Button>
+        </Modal>
+      )}
     </Container>
   );
 }
@@ -316,9 +345,7 @@ const FormContainer = styled.div`
   width: 100%;
 `;
 
-const RowWrapper = styled.div`
-  display: flex;
-  align-items: center;
+const RowWrapper = styled(FormContainer)`
   width: 90%;
 `;
 

@@ -13,18 +13,22 @@ import {
   drawHandKeypoints,
   getPercentage,
   useInterval,
+  checkOnline,
 } from "../../common/utilities";
 import { GestureEstimator, Gestures } from "../../common/Fingerpose";
 import {
   indexOfLetters,
   increaseIndexOfGesture,
   decreaseIndexOfGesture,
+  modalType,
 } from "../../store";
 
 import VideoContent from "../../components/modules/VideoContent";
 import Header from "../../components/modules/Header";
+import Modal from "../../components/modules/Modal";
 import Image from "../../components/atoms/Image";
 import Text from "../../components/atoms/Text";
+import Button from "../../components/atoms/Button";
 import IMAGE from "../../assets";
 
 import {
@@ -33,6 +37,8 @@ import {
   PRACTICE_DETECTED,
   LETTER,
   NAME_LETTER_TYPE,
+  MODAL_TYPE,
+  ERROR,
 } from "../../common/constants";
 
 function PracticeDetail() {
@@ -45,6 +51,7 @@ function PracticeDetail() {
   const [result, setResult] = useState(PRACTICE_DETECTED.NONE);
   const [detector, setDetector] = useState(false);
   const [xCordination, setXCordination] = useState([]);
+  const [modal, setModal] = useAtom(modalType);
   const [, increaseIndex] = useAtom(increaseIndexOfGesture);
   const [, decreaseIndex] = useAtom(decreaseIndexOfGesture);
   const indexGestures = useAtomValue(indexOfLetters);
@@ -54,6 +61,10 @@ function PracticeDetail() {
   const koreanNameOfCurrentLetter = LETTER[typeOfLetter].getKorName(
     engNameOfCurrentLetter,
   );
+
+  const handleModalClose = () => {
+    setModal(MODAL_TYPE.NONE);
+  };
 
   const moveToSubMain = () => {
     navigate("/practice");
@@ -161,6 +172,8 @@ function PracticeDetail() {
         console.log("error", error);
         detector.dispose();
       }
+    } else {
+      setModal(MODAL_TYPE.ERROR);
     }
   };
 
@@ -184,6 +197,11 @@ function PracticeDetail() {
       <Header title="연습하기" onClick={moveToSubMain} />
       <ContentWrapper>
         <SubWrapper>
+          {!checkOnline() && (
+            <Text className="normal" color="red">
+              {ERROR.OFFLINE}
+            </Text>
+          )}
           <VideoContent
             webcamRef={webcamRef}
             canvasRef={canvasRef}
@@ -219,6 +237,20 @@ function PracticeDetail() {
           </TextWrapper>
         </SubWrapper>
       </ContentWrapper>
+      {modal === MODAL_TYPE.ERROR && (
+        <Modal onClose={handleModalClose}>
+          <Text className="big">{ERROR.CAMERA_UNDETECTED.title}</Text>
+          <Text className="normal">{ERROR.CAMERA_UNDETECTED.description}</Text>
+          <Button
+            className="normal"
+            width="50%"
+            height="50px"
+            onClick={moveToSubMain}
+          >
+            메인으로 돌아가기
+          </Button>
+        </Modal>
+      )}
     </Container>
   );
 }

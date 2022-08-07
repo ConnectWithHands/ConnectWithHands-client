@@ -14,6 +14,7 @@ import {
   setHandDetector,
   drawHandKeypoints,
   useInterval,
+  checkOnline,
 } from "../../common/utilities";
 import { GestureEstimator, Gestures } from "../../common/Fingerpose";
 import { modalType } from "../../store";
@@ -30,6 +31,7 @@ import {
   FACING_MODE,
   EXAMPLE_IMAGE,
   MODAL_TYPE,
+  ERROR,
 } from "../../common/constants";
 import { isMobile } from "../../common/utilities";
 
@@ -103,6 +105,7 @@ function HandGesture() {
   };
 
   const detectHands = async (detector) => {
+    console.log(webcamRef.current.video.readyState);
     if (
       typeof webcamRef.current !== "undefined" &&
       webcamRef.current !== null &&
@@ -174,10 +177,18 @@ function HandGesture() {
         console.log("error", error);
         detector.dispose();
       }
+    } else {
+      setModal(MODAL_TYPE.ERROR);
     }
   };
 
   useEffect(() => {
+    if (checkOnline() === false) {
+      setModal(MODAL_TYPE.OFFLINE);
+
+      return;
+    }
+
     const runHandpose = async () => {
       const detector = await setHandDetector();
       setDetector(detector);
@@ -205,6 +216,11 @@ function HandGesture() {
       <Header title="수어 인식하기" onClick={moveToSubMain} />
       <ContentWrapper>
         <SubWrapper>
+          {!checkOnline() && (
+            <Text className="normal" color="red">
+              {ERROR.OFFLINE}
+            </Text>
+          )}
           <VideoContent
             webcamRef={webcamRef}
             canvasRef={canvasRef}
@@ -265,6 +281,20 @@ function HandGesture() {
           </ImageWrapper>
         </Modal>
       )}
+      {modal === MODAL_TYPE.ERROR && (
+        <Modal onClose={handleModalClose}>
+          <Text className="big">{ERROR.CAMERA_UNDETECTED.title}</Text>
+          <Text className="normal">{ERROR.CAMERA_UNDETECTED.description}</Text>
+          <Button
+            className="normal"
+            width="50%"
+            height="50px"
+            onClick={moveToSubMain}
+          >
+            메인으로 돌아가기
+          </Button>
+        </Modal>
+      )}
     </Container>
   );
 }
@@ -306,7 +336,7 @@ const ImageWrapper = styled.div`
 
 const TextBox = styled.div`
   flex-wrap: wrap;
-  height: ${(props) => (props.height ? props.height : "12vh")};
+  height: ${(props) => (props.height ? props.height : "10vh")};
   margin: 0.5rem 0;
   display: flex;
   justify-content: center;

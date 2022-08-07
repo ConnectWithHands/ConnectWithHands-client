@@ -6,4 +6,6 @@ export const FACING_MODE = {
 export const MODAL_TYPE = {
   NONE: "none",
   INFO: "info",
+  ERROR: "error",
+  OFFLINE: "offline",
 };

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { media } from "../../styles/media";
 
+import { useAtom } from "jotai";
 import "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-converter";
 import "@tensorflow/tfjs-backend-webgl";
@@ -11,13 +12,17 @@ import {
   setHandDetector,
   drawHandKeypoints,
   useInterval,
+  checkOnline,
 } from "../../common/utilities";
 import { GestureEstimator, Gestures } from "../../common/Fingerpose";
+import { modalType } from "../../store";
 
 import VideoContent from "../../components/modules/VideoContent";
 import Header from "../../components/modules/Header";
+import Modal from "../../components/modules/Modal";
 import Image from "../../components/atoms/Image";
 import Text from "../../components/atoms/Text";
+import Button from "../../components/atoms/Button";
 
 import IMAGE from "../../assets";
 
@@ -26,6 +31,8 @@ import {
   PRACTICE_TITLE,
   NAME_LETTER_TYPE,
   LETTER,
+  MODAL_TYPE,
+  ERROR,
 } from "../../common/constants";
 
 function TestDetail() {
@@ -35,6 +42,7 @@ function TestDetail() {
   const navigate = useNavigate();
   const [detector, setDetector] = useState(false);
   const [hint, setHint] = useState(false);
+  const [modal, setModal] = useAtom(modalType);
   const [randomLetters, setRandomLetters] = useState([]);
   const [question, setQuestion] = useState({
     index: 0,
@@ -51,6 +59,10 @@ function TestDetail() {
   const koreanNameOfCurrentLetter = LETTER[typeOfLetter].getKorName(
     engNameOfCurrentLetter,
   );
+
+  const handleModalClose = () => {
+    setModal(MODAL_TYPE.NONE);
+  };
 
   const moveToResultPage = (subPage) => {
     navigate(`/practice/detail/${subPage}/test/result`, {
@@ -135,7 +147,6 @@ function TestDetail() {
             gesture.bestGesture.length &&
             gesture.bestGesture[0].name === randomLetters[index]?.name
           ) {
-            console.log("일치");
             setQuestion((previous) => ({
               ...previous,
               index: previous.index + 1,
@@ -151,13 +162,14 @@ function TestDetail() {
         console.log("error", error);
         detector.dispose();
       }
+    } else {
+      setModal(MODAL_TYPE.ERROR);
     }
   };
 
   useEffect(() => {
     const runHandpose = async () => {
       const detector = await setHandDetector();
-      console.log("detector ready");
       setDetector(detector);
     };
 
@@ -181,6 +193,11 @@ function TestDetail() {
       <Header title="테스트하기" onClick={moveToSubMain} />
       <ContentWrapper>
         <SubWrapper>
+          {!checkOnline() && (
+            <Text className="normal" color="red">
+              {ERROR.OFFLINE}
+            </Text>
+          )}
           <VideoContent
             webcamRef={webcamRef}
             canvasRef={canvasRef}
@@ -213,6 +230,33 @@ function TestDetail() {
           </TextWrapper>
         </SubWrapper>
       </ContentWrapper>
+      {modal === MODAL_TYPE.ERROR && (
+        <Modal onClose={handleModalClose}>
+          <Text className="big">{ERROR.CAMERA_UNDETECTED.title}</Text>
+          <Text className="normal">{ERROR.CAMERA_UNDETECTED.description}</Text>
+          <Button
+            className="normal"
+            width="50%"
+            height="50px"
+            onClick={moveToSubMain}
+          >
+            메인으로 돌아가기
+          </Button>
+        </Modal>
+      )}
+      {modal === MODAL_TYPE.OFFLINE && (
+        <Modal onClose={handleModalClose}>
+          <Text className="big">{ERROR.OFFLINE}</Text>
+          <Button
+            className="normal"
+            width="50%"
+            height="50px"
+            onClick={moveToSubMain}
+          >
+            메인으로 돌아가기
+          </Button>
+        </Modal>
+      )}
     </Container>
   );
 }

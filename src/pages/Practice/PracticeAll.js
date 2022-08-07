@@ -1,30 +1,37 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { media } from "../../styles/media";
 
 import "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-converter";
 import "@tensorflow/tfjs-backend-webgl";
+import { useAtom } from "jotai";
 
 import {
   setHandDetector,
   drawHandKeypoints,
   getPercentage,
   useInterval,
+  checkOnline,
 } from "../../common/utilities";
 import { GestureEstimator, Gestures } from "../../common/Fingerpose";
+import { modalType } from "../../store";
 
 import VideoCanvas from "../../components/modules/VideoCanvas";
 import Header from "../../components/modules/Header";
+import Modal from "../../components/modules/Modal";
 import Text from "../../components/atoms/Text";
 import SelectBox from "../../components/atoms/Select";
+import Button from "../../components/atoms/Button";
 
 import {
   FACING_MODE,
   LETTER,
   PRACTICE_SELECT,
+  MODAL_TYPE,
   NAME_LETTER_TYPE,
+  ERROR,
 } from "../../common/constants";
 
 function PracticeAll() {
@@ -34,12 +41,17 @@ function PracticeAll() {
   const [detector, setDetector] = useState(false);
   const [type, setType] = useState("consonants");
   const [score, setScore] = useState(0);
+  const [modal, setModal] = useAtom(modalType);
   const [detectedGesture, setDetectedGesture] = useState("");
   const [xCordination, setXCordination] = useState([]);
   const koreanNameOfCurrentLetter = LETTER[type].getKorName(detectedGesture);
 
   const moveToSubMain = () => {
     navigate("/practice");
+  };
+
+  const handleModalClose = () => {
+    setModal(MODAL_TYPE.NONE);
   };
 
   const handleSelectChange = (event) => setType(event.target.value);
@@ -116,6 +128,8 @@ function PracticeAll() {
         console.log("error", error);
         detector.dispose();
       }
+    } else {
+      setModal(MODAL_TYPE.ERROR);
     }
   };
 
@@ -139,6 +153,11 @@ function PracticeAll() {
       <Header title="연습하기" onClick={moveToSubMain} />
       <ContentWrapper>
         <SubWrapper>
+          {!checkOnline() && (
+            <Text className="normal" color="red">
+              {ERROR.OFFLINE}
+            </Text>
+          )}
           <VideoCanvas
             webcamRef={webcamRef}
             canvasRef={canvasRef}
@@ -157,6 +176,20 @@ function PracticeAll() {
           </TextWrapper>
         </SubWrapper>
       </ContentWrapper>
+      {modal === MODAL_TYPE.ERROR && (
+        <Modal onClose={handleModalClose}>
+          <Text className="big">{ERROR.CAMERA_UNDETECTED.title}</Text>
+          <Text className="normal">{ERROR.CAMERA_UNDETECTED.description}</Text>
+          <Button
+            className="normal"
+            width="50%"
+            height="50px"
+            onClick={moveToSubMain}
+          >
+            메인으로 돌아가기
+          </Button>
+        </Modal>
+      )}
     </Container>
   );
 }

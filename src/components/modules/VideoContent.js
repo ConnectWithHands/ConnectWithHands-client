@@ -18,7 +18,7 @@ function VideoContent({
     <Container>
       <ButtonList width="100%">
         <Button
-          height="50px"
+          height="40px"
           className="small"
           bgColor="white"
           outline="#748DA6"
@@ -27,7 +27,7 @@ function VideoContent({
           {leftButton.text}
         </Button>
         <Button
-          height="50px"
+          height="40px"
           className="small"
           bgColor="white"
           outline="#748DA6"
