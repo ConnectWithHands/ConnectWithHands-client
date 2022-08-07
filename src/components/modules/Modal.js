@@ -41,11 +41,12 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 50%;
+  max-height: 50%;
   width: 50%;
   position: relative;
   overflow-y: scroll;
   background: white;
+  padding: 1rem;
 
   ${media.small`
     height: 50%;

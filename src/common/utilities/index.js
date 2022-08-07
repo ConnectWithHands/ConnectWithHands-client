@@ -1,6 +1,6 @@
 import { setHandDetector } from "./handpose";
 import { drawHandKeypoints } from "./canvas";
-import { isMobile, getPercentage } from "./global";
+import { isMobile, getPercentage, checkOnline } from "./global";
 import { useInterval } from "./hooks";
 
 export {
@@ -8,5 +8,6 @@ export {
   drawHandKeypoints,
   isMobile,
   getPercentage,
+  checkOnline,
   useInterval,
 };

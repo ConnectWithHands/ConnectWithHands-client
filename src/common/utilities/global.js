@@ -1,9 +1,17 @@
-function getPercentage(value) {
+const getPercentage = (value) => {
   const newValue = value * 10;
   const newValueToStr = newValue + "";
 
   return `${newValueToStr.substring(0, 4)}%`;
-}
+};
+
+const checkOnline = () => {
+  if (navigator.onLine) {
+    return true;
+  }
+
+  return false;
+};
 
 const isiOS = () => {
   return (
@@ -20,4 +28,4 @@ const isMobile = () => {
   return isAndroid() || isiOS();
 };
 
-export { isMobile, getPercentage };
+export { isMobile, getPercentage, checkOnline };
