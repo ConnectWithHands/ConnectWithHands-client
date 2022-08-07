@@ -40,7 +40,8 @@
     {
       "src": "./icons/apple-touch-icon-152x152.png",
       "sizes": "152x152",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "./icons/favicon-512x512.png",
@@ -50,6 +51,7 @@
   ],
   "start_url": ".",
   "display": "standalone",
+  "orientation": "portrait",
   "theme_color": "#D3CEDF",
   "background_color": "#F2D7D9"
 }
