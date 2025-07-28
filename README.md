@@ -11,17 +11,6 @@
 <br />
 <br />
 
-## :link: 배포
-
-
-
-- [Netlify을 이용한 애플리케이션 배포](https://connectwithhand.online/) (링크)
-
-
-
-
-<br />
-<br />
 
 ## 🛹 개발 동기
 
